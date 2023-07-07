@@ -16,28 +16,13 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: false
       },
-      roleName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: "applicant"
-      },
-      firstName: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notNull: {
             args: true,
-            msg: "First name field is required"
-          }
-        }
-      },
-      lastName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: {
-            args: true,
-            msg: "Last name field is required"
+            msg: "name field is required"
           }
         }
       },
@@ -56,7 +41,65 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
+      dateOfBirth: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+        validate: {
+          notNull: {
+            args: true,
+            msg: "dateOfBirth field is required of format: YYYY-MM-DD"
+          }
+        }
+      },
+      gender: {
+        type: DataTypes.ENUM,
+        allowNull: false,
+        values: ["male", "female", "non-binary"],
+        validate: {
+          notNull: {
+            args: true,
+            msg: "gender field is required"
+          }
+        }
+      },
+      stateOfOrigin: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: {
+            args: true,
+            msg: "stateOfOrigin field is required"
+          }
+        }
+      },
+      twitter: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          isUrl: {
+            args: true,
+            msg: "not a valid url"
+          }
+        }
+      },
+
+      howDidYouHearAboutUs: {
+        type: DataTypes.ENUM,
+        allowNull: false,
+        values: ["facebook", "twitter", "instagram", "other"],
+        validate: {
+          notNull: {
+            args: true,
+            msg: "howDidYouHearAboutUs field is required"
+          }
+        }
+      },
       isVerified: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
+      },
+      isCreateAccount: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: false
@@ -84,7 +127,6 @@ module.exports = (sequelize, DataTypes) => {
       {
         id: this.id,
         isAdmin: this.isAdmin,
-        roleName: this.roleName
       },
       process.env.APP_TOKEN_KEY,
       {
