@@ -126,7 +126,7 @@ module.exports = (sequelize, DataTypes) => {
     return jwt.sign(
       {
         id: this.id,
-        isAdmin: this.isAdmin,
+        isAdmin: this.isAdmin
       },
       process.env.APP_TOKEN_KEY,
       {

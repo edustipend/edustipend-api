@@ -1,4 +1,6 @@
 module.exports = {
-    User: require("./User")
-    Authentication: require("./Authentication")
-}
+  User: require("./User"),
+  Authentication: require("./Authentication"),
+  Token: require("./Token"),
+  Mail: require("./Mail")
+};

@@ -34,10 +34,10 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/v1", allRoutes);
 
 //entry point
-app.get('/', (req, res) =>
-	res.status(200).json({
-		message: 'Welcome to Edustipend API server',
-	})
+app.get("/", (req, res) =>
+  res.status(200).json({
+    message: "Welcome to Edustipend API server"
+  })
 );
 
 // Handle unhandled routes
