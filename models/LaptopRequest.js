@@ -56,7 +56,9 @@ module.exports = (sequelize, DataTypes) => {
 
   // relationship
   LaptopRequest.associate = function (models) {
-    LaptopRequest.belongsTo(models.user, { foreignKey: "id" });
+    LaptopRequest.belongsTo(models.user, {
+      foreignKey: "userId"
+    });
   };
 
   return LaptopRequest;

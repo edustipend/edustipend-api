@@ -119,7 +119,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         values: ["laptop", "data", "course"],
         validate: {
-          notNull: {
+          notEmpty: {
             args: true,
             msg: "Stipend category field is required"
           }
