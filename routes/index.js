@@ -2,6 +2,7 @@ const express = require("express");
 const router = express();
 const passport = require("passport");
 const authRouter = require("./api/AuthRoute");
+const userRouter = require("./api/UserRoute");
 
 // Passport Middleware
 router.use(passport.initialize());
@@ -11,5 +12,6 @@ require("../config/passport")(passport);
 
 // authentication routes
 router.use("/", authRouter);
+router.use("/", userRouter);
 
 module.exports = router;
