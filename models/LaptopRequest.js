@@ -1,3 +1,5 @@
+const User = require('./User')
+
 module.exports = (sequelize, DataTypes) => {
   const LaptopRequest = sequelize.define(
     "laptopRequest",
@@ -55,9 +57,7 @@ module.exports = (sequelize, DataTypes) => {
   )
 
   // relationship
-  LaptopRequest.associate = function (models) {
-    LaptopRequest.belongsTo(models.User, { foreignKey: 'id' })
-  }
+  LaptopRequest.belongsTo(User, { foreignKey: 'id' })
 
   return LaptopRequest
 }
