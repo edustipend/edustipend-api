@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true
       },
       reasonForRequest: {
-        type: DataTypes.Text,
+        type: DataTypes.TEXT,
         allowNull: false,
         validate: {
           notNull: {
@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       stepsTakenToEaseProblem: {
-        type: DataTypes.Text,
+        type: DataTypes.TEXT,
         allowNull: false,
         validate: {
           notNull: {
@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       potentialBenefits: {
-        type: DataTypes.Text,
+        type: DataTypes.TEXT,
         allowNull: false,
         validate: {
           notNull: {
@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       futureHelpFromUser: {
-        type: DataTypes.Text,
+        type: DataTypes.TEXT,
         allowNull: false,
         validate: {
           notNull: {
