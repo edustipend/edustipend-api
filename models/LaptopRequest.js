@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: {
             args: true,
-            msg: "reason for request field is required"
+            msg: "Reason for request field is required"
           }
         }
       },
