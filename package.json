@@ -36,22 +36,32 @@
     "mocha": "^8.2.1",
     "mock-req-res": "^1.2.0",
     "nyc": "^15.1.0",
+    "prettier": "3.0.0",
     "sinon": "^9.2.1"
   },
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "node server.js",
-		"lint": "eslint .",
-		"fix-lint": "eslint --fix",
-		"format": "prettier --write \"**/*.+(js|json|md)\"",
-		"dev": "nodemon server.js",
-		"migrate": "node ./database/migration/index",
-		"seed": "node ./database/seed/index",
-		"db:seed": "npm run migrate & npm run seed"
-	},
-	"engines": {
-		"node": "v16.13.0"
-	},
+  "scripts": {
+    "start": "node server.js",
+    "lint": "eslint .",
+    "fix-lint": "eslint --fix",
+    "format": "prettier --write \"**/*.+(js|json|md)\"",
+    "dev": "nodemon server.js",
+    "migrate": "node ./database/migration/index",
+    "seed": "node ./database/seed/index",
+    "db:seed": "npm run migrate & npm run seed",
+    "test:migrate": "NODE_ENV=testing node ./database/migration/index",
+    "test:seed": "NODE_ENV=testing node ./database/seed/index",
+    "test": "NODE_ENV=testing mocha --recursive --exit 'test'",
+    "test:coverage": "NODE_ENV=testing nyc --reporter=html --reporter=text npm run test"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run format",
+      "pre-push": " npm run format"
+    }
+  },
+  "engines": {
+    "node": "v16.13.0"
+  },
   "author": "edustipend team",
   "license": "ISC"
 }
