@@ -39,9 +39,10 @@ $ git checkout -b feature/push_notification
 
 ```
 
-## Before push 
+## Before push
 
-Always run 
+Always run
+
 - install prettier globally from [https://prettier.io/docs/en/install.html]
 
 ```
@@ -61,8 +62,5 @@ next you start the app
 ```
 $ npm start
 ```
-
-
-
 
 Repository powering the backend services for Edustipend

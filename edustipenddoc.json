@@ -50,7 +50,7 @@
         }
       }
     },
-    "/verify" : {
+    "/verify": {
       "post": {
         "tags": ["auth"],
         "summary": "Verify a new user via email",
@@ -115,22 +115,26 @@
         },
         "gender": {
           "type": "string",
-          "enum" : ["male","female"]
+          "enum": ["male", "female"]
         },
         "stateOfOrigin": {
           "type": "string"
         },
         "howDidYouHearAboutUs": {
           "type": "string",
-          "enum": ["facebook", "twitter", "instagram", "whatsapp", "friend", "other"]
+          "enum": [
+            "facebook",
+            "twitter",
+            "instagram",
+            "whatsapp",
+            "friend",
+            "other"
+          ]
         }
-        }
+      }
     },
     "verifyUser": {
-      "required": [
-        "email",
-        "verificationCode"
-      ],
+      "required": ["email", "verificationCode"],
       "properties": {
         "email": {
           "type": "string"
@@ -140,7 +144,5 @@
         }
       }
     }
-    }
-    }
-  
-
+  }
+}
