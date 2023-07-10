@@ -40,7 +40,6 @@
     "sinon": "^9.2.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "lint": "eslint .",
     "fix-lint": "eslint --fix",
@@ -48,7 +47,17 @@
     "dev": "nodemon server.js",
     "migrate": "node ./database/migration/index",
     "seed": "node ./database/seed/index",
-    "db:seed": "npm run migrate & npm run seed"
+    "db:seed": "npm run migrate & npm run seed",
+    "test:migrate": "NODE_ENV=testing node ./database/migration/index",
+    "test:seed": "NODE_ENV=testing node ./database/seed/index",
+    "test": "NODE_ENV=testing mocha --recursive --exit 'test'",
+    "test:coverage": "NODE_ENV=testing nyc --reporter=html --reporter=text npm run test"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run format",
+      "pre-push": " npm run format"
+    }
   },
   "engines": {
     "node": "v16.13.0"
