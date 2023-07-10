@@ -17,6 +17,130 @@
   ],
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "paths": {},
-  "definitions": {}
-}
+  "paths": {
+    "/register": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Register a new user",
+        "description": "Edustipend users can register with this endpoint",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that needs to be added to the database",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/registerUser"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "{ success: true, message: 'Signup successful! Please check your email for verification code.', data: ''}"
+          },
+          "400": {
+            "description": "{ success: false, error: 'Email already exist.' }"
+          },
+          "500": {
+            "description": "Could not connect to DB"
+          }
+        }
+      }
+    },
+    "/verify" : {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Verify a new user via email",
+        "description": "Edustipend users can verify with this endpoint",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "enter user email and confirmation code",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/verifyUser"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "{ success: true, message: 'Account Verification successful.', token: 'Bearer token'}"
+          },
+          "400": {
+            "description": "{ success: false, message: 'Verification code is required' } "
+          },
+          "401": {
+            "description": "{ success: false, message: 'Invalid Verification code' } "
+          },
+          "404": {
+            "description": "{ success: false, message: 'User not found' } "
+          },
+          "500": {
+            "description": "Could not connect to DB"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "registerUser": {
+      "required": [
+        "name",
+        "email",
+        "password",
+        "dateOfBirth",
+        "gender",
+        "stateOfOrigin",
+        "howDidYouHearAboutUs"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "dateOfBirth": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "string",
+          "enum" : ["male","female"]
+        },
+        "stateOfOrigin": {
+          "type": "string"
+        },
+        "howDidYouHearAboutUs": {
+          "type": "string",
+          "enum": ["facebook", "twitter", "instagram", "whatsapp", "friend", "other"]
+        }
+        }
+    },
+    "verifyUser": {
+      "required": [
+        "email",
+        "verificationCode"
+      ],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "verificationCode": {
+          "type": "string"
+        }
+      }
+    }
+    }
+    }
+  
+
