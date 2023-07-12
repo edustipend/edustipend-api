@@ -56,16 +56,14 @@ exports.accountVerify = catchAsyncError(async (req, res, next) => {
  */
 
 exports.password = catchAsyncError(async (req, res, next) => {
-  const newPasswordHasEmptySpace = hasEmptySpace(req.body.password)
-  if(newPasswordHasEmptySpace){
-    throw new ErrorHandler('New password cannot have empty space',404)
+  const newPasswordHasEmptySpace = hasEmptySpace(req.body.password);
+  if (newPasswordHasEmptySpace) {
+    throw new ErrorHandler("New password cannot have empty space", 404);
   }
-  const email = await Authentication.resetPassword(req.body)
+  const email = await Authentication.resetPassword(req.body);
 
   res.status(200).json({
     success: true,
     message: "Password update successful"
   });
 });
-
-

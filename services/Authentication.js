@@ -97,23 +97,25 @@ class Authentication {
     };
   }
 
-  static async resetPassword({ email, password}) { 
-
+  static async resetPassword({ email, password }) {
     if (!email) {
       throw new ErrorHandler("Email is required", 400);
     }
     if (!password) {
       throw new ErrorHandler("Password is required", 400);
     }
-    const oldUserEmail = await models.user.findOne({where: {email}})
+    const oldUserEmail = await models.user.findOne({ where: { email } });
 
-  if(oldUserEmail === null){
-    throw new ErrorHandler('User not found')
-  }
+    if (oldUserEmail === null) {
+      throw new ErrorHandler("User not found");
+    }
     const hashedPassword = await this.hashpassword(password);
 
-    const newPassword = await models.user.update({password: hashedPassword}, {where:{email: email}})
+    const newPassword = await models.user.update(
+      { password: hashedPassword },
+      { where: { email: email } }
+    );
   }
-} 
+}
 
 module.exports = Authentication;

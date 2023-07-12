@@ -114,7 +114,7 @@
           "400": {
             "description": "{ success: false, error: 'New password cannot have empty space' }"
           },
-          "404":{
+          "404": {
             "description": "{ success: false, message: 'User not found' } "
           }
         }
