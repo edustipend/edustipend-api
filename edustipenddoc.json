@@ -87,6 +87,38 @@
           }
         }
       }
+    },
+    "/reset-password": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Reset your password",
+        "description": "Edustipend users can reset password with this endpoint",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that needs to be updated on the database",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/resetPassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{ success: true, message: 'Password update successful'}"
+          },
+          "400": {
+            "description": "{ success: false, error: 'New password cannot have empty space' }"
+          },
+          "404":{
+            "description": "{ success: false, message: 'User not found' } "
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -140,6 +172,17 @@
           "type": "string"
         },
         "verificationCode": {
+          "type": "string"
+        }
+      }
+    },
+    "resetPassword": {
+      "required": ["email", "password"],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
           "type": "string"
         }
       }

@@ -4,6 +4,7 @@ const catchAsyncError = require("../middleware/catchAsyncError");
 const { hasEmptySpace } = require("../utils/helper");
 const ErrorHandler = require("../utils/ErrorHandler");
 const { validateRegisterData } = require("../validation/UserValidation");
+const { authenticate } = require("passport");
 
 /**
  * @route POST api/v1/register
@@ -41,11 +42,30 @@ exports.signup = catchAsyncError(async (req, res, next) => {
 exports.accountVerify = catchAsyncError(async (req, res, next) => {
   const { token, name, email } = await Authentication.verifyAccount(req.body);
 
-  // Mail.sendWelcomeEmail(name, email);
-
   res.status(200).json({
     success: true,
     message: "Account Verification successful.",
     token: `Bearer ${token}`
   });
 });
+
+/**
+ * @route POST api/v1/verify
+ * @description Verify a user email
+ * @acess Private
+ */
+
+exports.password = catchAsyncError(async (req, res, next) => {
+  const newPasswordHasEmptySpace = hasEmptySpace(req.body.password)
+  if(newPasswordHasEmptySpace){
+    throw new ErrorHandler('New password cannot have empty space',404)
+  }
+  const email = await Authentication.resetPassword(req.body)
+
+  res.status(200).json({
+    success: true,
+    message: "Password update successful"
+  });
+});
+
+

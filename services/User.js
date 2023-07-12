@@ -55,18 +55,6 @@ class User {
 
   static async findUserByEmail(email) {
     return await models.User.findOne({where: email})
-    
-  }
-  static async resetPassword(email){
-    try {
-      const oldUser = await models.User.findOne({where: email})
-      if(!oldUser){
-        throw new ErrorHandler('User does not exist', 404)
-      }
-      const secret = process.env.APP_TOKEN_KEY + oldUser.password
-      const token = jwt.sign({email: oldUser.email, id: oldUser.id}, secret, {expiresIn:'5m'})
-      const link = `http://localhost:4500/*reset-password*/${oldUser.id}/${token}`
-    } catch (error) {}
   }
 }
 
