@@ -53,6 +53,10 @@ class User {
       where: { email }
     });
   }
+
+  static async findByPk(id) {
+    return await models.user.findByPk(id);
+  }
 }
 
 module.exports = User;

@@ -1,6 +1,6 @@
 //controller file
 const catchAsyncError = require("../middleware/catchAsyncError");
-const { requestStipend } = require("../services/StipendRequest")
+const { requestStipend } = require("../services/StipendRequest");
 
 /**
  * @route POST api/v1/request-stipend
@@ -11,7 +11,7 @@ const { requestStipend } = require("../services/StipendRequest")
 exports.requestStipend = catchAsyncError(async (req, res) => {
   const payload = req.body;
 
-  await requestStipend(payload)
+  await requestStipend(payload);
 
   return res.status(201).json({
     success: true,
