@@ -124,13 +124,13 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Stipend category field is required"
           }
         }
-      },
+      }
     },
     { paranoid: true }
   );
 
   //  relationship
-  User.associate = function (models) { };
+  User.associate = function (models) {};
 
   // instance method
   User.prototype.generateJwtToken = function () {
