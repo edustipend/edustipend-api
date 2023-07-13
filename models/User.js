@@ -125,24 +125,12 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
-      // A checker for whether the user has previously received a laptop
-      hasReceivedLaptopBefore: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-        defaultValue: false
-      },
-      // whether user has given data consent
-      hasGivenDataConsent: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-        defaultValue: true
-      }
     },
     { paranoid: true }
   );
 
   //  relationship
-  User.associate = function (models) {};
+  User.associate = function (models) { };
 
   // instance method
   User.prototype.generateJwtToken = function () {

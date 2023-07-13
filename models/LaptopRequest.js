@@ -47,6 +47,11 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Future help field is required"
           }
         }
+      },
+      hasReceivedLaptopBefore: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
       }
     },
     {

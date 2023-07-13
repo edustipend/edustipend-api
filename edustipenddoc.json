@@ -189,7 +189,7 @@
         "userId",
         "hasReceivedLaptopBefore"
       ],
-      "properties":{
+      "properties": {
         "reasonForRequest": {
           "type": "string"
         },
@@ -209,7 +209,6 @@
           "type": "boolean"
         }
       }
-
     }
   }
 }
