@@ -105,44 +105,9 @@
             "name": "reasonForRequest",
             "description": "Reason for request",
             "required": true,
+            "type": "string",
             "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "body",
-            "name": "stepsTakenToEaseProblem",
-            "description": "Personal steps taken to solve the problem",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "body",
-            "name": "potentialBenefits",
-            "description": "How this stipend will assist the requester",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "body",
-            "name": "futureHelpFromUser",
-            "description": "How the requester plans on giving back to the Edustipend community",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "body",
-            "name": "userId",
-            "description": "The user Id",
-            "required": true,
-            "schema": {
-              "type": "integer"
+              "$ref": "#/definitions/request-stipend"
             }
           }
         ],
@@ -214,6 +179,37 @@
           "type": "string"
         }
       }
+    },
+    "request-stipend": {
+      "required": [
+        "reasonForRequest",
+        "stepsTakenToEaseProblem",
+        "potentialBenefits",
+        "futureHelpFromUser",
+        "userId",
+        "hasReceivedLaptopBefore"
+      ],
+      "properties":{
+        "reasonForRequest": {
+          "type": "string"
+        },
+        "stepsTakenToEaseProblem": {
+          "type": "string"
+        },
+        "potentialBenefits": {
+          "type": "string"
+        },
+        "futureHelpFromUser": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "integer"
+        },
+        "hasReceivedLaptopBefore": {
+          "type": "boolean"
+        }
+      }
+
     }
   }
 }
