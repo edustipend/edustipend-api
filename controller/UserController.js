@@ -1,23 +1,20 @@
 //controller file
 const catchAsyncError = require("../middleware/catchAsyncError");
-const models = require("../models");
+const { requestStipend } = require("../services/StipendRequest")
+
+/**
+ * @route POST api/v1/request-stipend
+ * @description Request a stipend
+ * @access Private
+ */
 
 exports.requestStipend = catchAsyncError(async (req, res) => {
-  try {
-    const payload = req.body;
+  const payload = req.body;
 
-    await models.laptopRequest.create({
-      ...payload
-    });
+  await requestStipend(payload)
 
-    return res.status(201).json({
-      success: true,
-      message: "Request successfully sent"
-    });
-  } catch (e) {
-    res.status(400).json({
-      success: false,
-      message: "Request not completed"
-    });
-  }
+  return res.status(201).json({
+    success: true,
+    message: "Request successfully sent"
+  });
 });
