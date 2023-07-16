@@ -73,6 +73,23 @@ class Mail {
       }
     );
   }
+
+  static sendPasswordCode(name,email,link){
+this._sendEmail(
+  {
+    email,
+    subject: "Is this email yours?",
+    template: "password-update",
+    params:{
+      name: name,
+      link,
+      userEmail: email
+    }
+  },
+  (err,data)=>{
+    if(err)console.log(err)
+  })
+  }
 }
 
 module.exports = Mail;
