@@ -54,3 +54,27 @@ exports.validateStipendRequest = (data) => {
   });
   return stipendRequestSchema.validate(data, { abortEarly: false });
 };
+
+
+exports.stipendRequestIdsValidation = async (data) => {
+  data.stipendRequestIds = !isEmpty(data.stipendRequestIds)
+    ? data.stipendRequestIds
+    : [];
+  const stipendRequestIdsValidationSchema = Joi.object({
+    stipendRequestIds: Joi.array()
+      .items(
+        Joi.number().min(1).messages({
+          "number.base": "Application Ids Must be a number",
+          "number.min": "Application Ids must be 1 or greater"
+        })
+      )
+      .has(Joi.number().min(1))
+      .messages({
+        "array.base": "stipendIds must be an array",
+        "array.hasKnown": "An application must have an id"
+      })
+  });
+  return await stipendRequestIdsValidationSchema.validateAsync(data, {
+    abortEarly: false
+  });
+};

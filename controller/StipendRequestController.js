@@ -2,7 +2,8 @@ const catchAsyncError = require("../middleware/catchAsyncError");
 const ErrorHandler = require("../utils/ErrorHandler");
 const { StipendRequest, Mail } = require("../services");
 const {
-  validateStipendRequest
+  validateStipendRequest,
+  stipendRequestIdsValidation
 } = require("../validation/StipendRequestValidation");
 
 /**
@@ -23,3 +24,44 @@ exports.requestStipend = catchAsyncError(async (req, res, next) => {
     message: "Request successfully created"
   });
 });
+
+//Todo: add middleware to check for admin. This is an admin route
+/**
+ * @description approve a stipend request
+ * @route PUT /v1/admin/approve-stipend
+ * @access Private
+ */
+exports.approveStipend = catchAsyncError(async ({body}, res, next) => {
+  const validateData = await stipendRequestIdsValidation({
+    ...body
+  });
+
+ 
+
+  await StipendRequest.approve({ ...validateData.value });
+
+  return res.status(200).json({
+    success: true,
+    message: "Stipend request successfully approved"
+  });
+
+})
+
+/**
+ * @description approve a stipend request
+ * @route PUT /v1/admin/reject-stipend
+ * @access Private
+ */
+exports.rejectStipend = catchAsyncError(async ({body}, res, next) => {
+  const validateData = await stipendRequestIdsValidation({
+    ...body
+  });
+
+  await StipendRequest.deny({...validateData.value});
+
+  return res.status(200).json({
+    success: true,
+    message: "Stipend request successfully rejected"
+  });
+
+})

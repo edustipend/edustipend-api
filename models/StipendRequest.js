@@ -86,6 +86,16 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: false
       },
+      isReceived: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
+      },
+      isDenied: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
+      },
       hasReceivedStipendBefore: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
