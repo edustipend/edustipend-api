@@ -17,6 +17,10 @@
     {
       "name": "stipend",
       "description": "Everything about requesting a stipend"
+    },
+    {
+      "name": "admin",
+      "description": "Everything about admin"
     }
   ],
   "consumes": ["application/json"],
@@ -123,6 +127,130 @@
           }
         }
       }
+    },
+    "/login": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Sign in to your account",
+        "description": "Sign in to generate an access token",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Input your",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/signIn"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{ success: true, message: 'Sign in successful', token: Bearer token} "
+          },
+          "400": {
+            "description": "{ success: false, message: 'Invalid data supplied' }"
+          },
+          "401": {
+            "description": "{ success: false, message: 'Invalid credential/Account not verified' }"
+          },
+          "500": {
+            "description": "Could not connect to DB"
+          }
+        }
+      }
+    },
+    "/admin/approve-stipend": {
+      "put": {
+        "tags": ["admin"],
+        "summary": "approve multiple applications",
+        "description": "Admin approve multiple applications",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "applications data",
+            "required": true,
+            "type": "object",
+            "properties": {
+              "stipendRequestIds": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{ success: true, data: 'Stipend request successfully approved' }"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "{ success: false, message: 'Access Denied! :(' }"
+          },
+          "404": {
+            "description": "{ success: false, message: 'Applications not found' }"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/admin/reject-stipend": {
+      "put": {
+        "tags": ["admin"],
+        "summary": "reject multiple applications",
+        "description": "Admin reject multiple applications",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "applications data",
+            "required": true,
+            "type": "object",
+            "properties": {
+              "stipendRequestIds": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{ success: true, data: 'Stipend request successfully rejected' }"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "{ success: false, message: 'Access Denied! :(' }"
+          },
+          "404": {
+            "description": "{ success: false, message: 'Applications not found' }"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -212,6 +340,17 @@
         },
         "hasReceivedLaptopBefore": {
           "type": "boolean"
+        }
+      }
+    },
+    "signIn": {
+      "required": ["email", "password"],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
         }
       }
     }

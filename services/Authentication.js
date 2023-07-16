@@ -95,6 +95,32 @@ class Authentication {
       email: response[1].email
     };
   }
+
+  /**
+   * @description Login a user
+   * @param {object} email
+   * @param {string} password
+   */
+
+  static async loginUser({ email, password }) {
+    const newUser = await User.findOne(email);
+    let data;
+    if (newUser === null) {
+      throw new ErrorHandler("Invalid credential", 401);
+    }
+
+    const checkPassword = await newUser.comparePassword(password);
+    if (!checkPassword) {
+      throw new ErrorHandler("Invalid credential", 401);
+    }
+    data = newUser.generateJwtToken();
+
+    return {
+      success: true,
+      message: "Sign in successful",
+      token: `Bearer ${data}`
+    };
+  }
 }
 
 module.exports = Authentication;
