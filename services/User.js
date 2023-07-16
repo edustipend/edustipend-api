@@ -24,7 +24,8 @@ class User {
         howDidYouHearAboutUs: data.howDidYouHearAboutUs,
         password: data.hashedPassword,
         isVerified,
-        isCreateAccount
+        isCreateAccount,
+        stipendCategory: data.stipendCategory
       });
     } else {
       // Create an account with isVerified and isCreateAccount set to false
@@ -37,7 +38,8 @@ class User {
         howDidYouHearAboutUs: data.howDidYouHearAboutUs,
         password: data.hashedPassword,
         isVerified: false,
-        isCreateAccount: false
+        isCreateAccount: false,
+        stipendCategory: data.stipendCategory
       });
     }
   }

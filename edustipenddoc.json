@@ -13,6 +13,10 @@
     {
       "name": "auth",
       "description": "Everything about signup, sign in, password reset, email verification"
+    },
+    {
+      "name": "request-stipend",
+      "description": "Everything about requesting a stipend"
     }
   ],
   "consumes": ["application/json"],
@@ -93,6 +97,11 @@
         "tags": ["auth"],
         "summary": "Reset your password",
         "description": "Edustipend users can reset password with this endpoint",
+    "/request-stipend": {
+      "post": {
+        "tags": ["request-stipend"],
+        "summary": "Make a request from a user",
+        "description": "Edustipend users can request for stipends with this endpoint",
         "consumes": ["application/json"],
         "produces": ["application/json"],
         "parameters": [
@@ -136,6 +145,47 @@
             "type": "string",
             "schema": {
               "$ref": "#/definitions/updatePassword"
+            "name": "reasonForRequest",
+            "description": "Reason for request",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "body",
+            "name": "stepsTakenToEaseProblem",
+            "description": "Personal steps taken to solve the problem",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "body",
+            "name": "potentialBenefits",
+            "description": "How this stipend will assist the requester",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "body",
+            "name": "futureHelpFromUser",
+            "description": "How the requester plans on giving back to the Edustipend community",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "body",
+            "name": "userId",
+            "description": "The user Id",
+            "required": true,
+            "schema": {
+              "type": "integer"
             }
           }
         ],
@@ -148,6 +198,13 @@
           },
           "404": {
             "description": "{ success: false, message: 'User does not exist' } "
+            "description": "{ success: true, message: 'Request successfully sent'}"
+          },
+          "400": {
+            "description": "{ success: false, message: 'Request not completed'}"
+          },
+          "500": {
+            "description": "Could not connect to DB"
           }
         }
       }
