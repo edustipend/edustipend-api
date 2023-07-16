@@ -9,6 +9,6 @@ const {
 router.post("/register", signup);
 router.post("/verify", accountVerify);
 router.post("/reset-password", resetPassword);
-router.post("/update-password", updatePassword )
+router.post("/update-password", updatePassword);
 
 module.exports = router;

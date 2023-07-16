@@ -56,30 +56,27 @@ exports.accountVerify = catchAsyncError(async (req, res, next) => {
  * @description Verify a user email
  * @acess Private
  */
-exports.resetPassword = catchAsyncError(async(req, res, next)=>{
+exports.resetPassword = catchAsyncError(async (req, res, next) => {
   const validateData = await validateRegisterData(req.body);
-  const user = await Authentication.passwordReset(validateData.value)
- const link = `${process.env.APP_BASE_URL}/v1/reset-password?code=${user.code}`;
-Mail.sendVerificationCode(user.name, user.email, link)
-return res.status(201).json({
-  success: true,
-  message:
-    "Please check your email for a reset password code"
+  const user = await Authentication.passwordReset(validateData.value);
+  const link = `${process.env.APP_BASE_URL}/v1/reset-password?code=${user.code}`;
+  Mail.sendVerificationCode(user.name, user.email, link);
+  return res.status(201).json({
+    success: true,
+    message: "Please check your email for a reset password code"
+  });
 });
 
-})
+exports.updatePassword = catchAsyncError(async (req, res, next) => {
+  const passwordHasEmptySpace = await hasEmptySpace(req.body.password);
+  if (passwordHasEmptySpace) {
+    throw new ErrorHandler("Password cannot have empty space");
+  }
+  const { token, email } = await Authentication.passwordUpdate(req.body);
 
-exports.updatePassword = catchAsyncError(async (req, res, next)=>{
-  const passwordHasEmptySpace = await hasEmptySpace(req.body.password)
-if(passwordHasEmptySpace){
-  throw new ErrorHandler("Password cannot have empty space")
-}
-const {token, email} = await Authentication.passwordUpdate(req.body)
-
-res.status(200).json({
-  success: true,
-  message: "Password update successful.",
-  token: `Bearer ${token}`
+  res.status(200).json({
+    success: true,
+    message: "Password update successful.",
+    token: `Bearer ${token}`
+  });
 });
-})
-
