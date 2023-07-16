@@ -55,7 +55,6 @@ exports.validateStipendRequest = (data) => {
   return stipendRequestSchema.validate(data, { abortEarly: false });
 };
 
-
 exports.stipendRequestIdsValidation = async (data) => {
   data.stipendRequestIds = !isEmpty(data.stipendRequestIds)
     ? data.stipendRequestIds

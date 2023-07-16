@@ -31,12 +31,10 @@ exports.requestStipend = catchAsyncError(async (req, res, next) => {
  * @route PUT /v1/admin/approve-stipend
  * @access Private
  */
-exports.approveStipend = catchAsyncError(async ({body}, res, next) => {
+exports.approveStipend = catchAsyncError(async ({ body }, res, next) => {
   const validateData = await stipendRequestIdsValidation({
     ...body
   });
-
- 
 
   await StipendRequest.approve({ ...validateData.value });
 
@@ -44,24 +42,22 @@ exports.approveStipend = catchAsyncError(async ({body}, res, next) => {
     success: true,
     message: "Stipend request successfully approved"
   });
-
-})
+});
 
 /**
  * @description approve a stipend request
  * @route PUT /v1/admin/reject-stipend
  * @access Private
  */
-exports.rejectStipend = catchAsyncError(async ({body}, res, next) => {
+exports.rejectStipend = catchAsyncError(async ({ body }, res, next) => {
   const validateData = await stipendRequestIdsValidation({
     ...body
   });
 
-  await StipendRequest.deny({...validateData.value});
+  await StipendRequest.deny({ ...validateData.value });
 
   return res.status(200).json({
     success: true,
     message: "Stipend request successfully rejected"
   });
-
-})
+});

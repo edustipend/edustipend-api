@@ -28,7 +28,7 @@ class StipendRequest {
 
   static async findById(id) {
     const stipendRequest = await models.stipendRequest.findByPk(id);
-    if(stipendRequest === null) {
+    if (stipendRequest === null) {
       throw new ErrorHandler("Application not found", 404);
     }
     return stipendRequest;
@@ -39,38 +39,36 @@ class StipendRequest {
    * @param {string} stipendRequestId
    */
 
-  static async approve({stipendRequestIds}) {
+  static async approve({ stipendRequestIds }) {
     const stipend = await models.stipendRequest.update(
-      { isApproved: true, isDenied: false },{
+      { isApproved: true, isDenied: false },
+      {
         where: { id: stipendRequestIds, isReceived: true }
       }
     );
-
-  
 
     if (stipend[0] === 0) {
       throw new ErrorHandler("Application not found", 404);
     }
   }
 
-    /**
+  /**
    * @description Deny a stipend request
    * @param {string} stipendRequestId
    */
 
-    static async deny({stipendRequestIds}) {
-      const stipend = await models.stipendRequest.update(
-        { isApproved: false, isDenied: true },{
-          where: { id: stipendRequestIds, isReceived: true }
-        }
-      );
-  
-      if (!stipend) {
-        throw new ErrorHandler("Application not found", 404);
+  static async deny({ stipendRequestIds }) {
+    const stipend = await models.stipendRequest.update(
+      { isApproved: false, isDenied: true },
+      {
+        where: { id: stipendRequestIds, isReceived: true }
       }
-    }
-   
+    );
 
+    if (!stipend) {
+      throw new ErrorHandler("Application not found", 404);
+    }
+  }
 }
 
 module.exports = StipendRequest;

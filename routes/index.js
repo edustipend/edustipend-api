@@ -3,7 +3,7 @@ const router = express();
 const passport = require("passport");
 const authRouter = require("./api/AuthRoute");
 const userRouter = require("./api/UserRoute");
-const adminRouter = require("./api/AdminRoute")
+const adminRouter = require("./api/AdminRoute");
 
 // Passport Middleware
 router.use(passport.initialize());
