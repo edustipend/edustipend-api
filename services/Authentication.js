@@ -1,10 +1,13 @@
 const bcrypt = require("bcryptjs");
 const User = require("./User");
 const Token = require("./Token");
-const { randomSixDigits, validateEmail } = require("../utils/helper");
+const { randomSixDigits, validateEmail, cryptWords, hasEmptySpace } = require("../utils/helper");
 const ErrorHandler = require("../utils/ErrorHandler");
 const models = require("../models");
 const { where } = require("sequelize");
+const mail = require("./index");
+const { validateRegisterData } = require("../validation/UserValidation");
+const { error } = require("@hapi/joi/lib/annotate");
 
 class Authentication {
   /**
@@ -58,6 +61,7 @@ class Authentication {
     return { name, email, code };
   }
 
+
   /**
    * @description Account Verification
    * @param {string} email
@@ -72,7 +76,7 @@ class Authentication {
       throw new ErrorHandler("Verification code is required", 400);
     }
 
-    const token = await Token.validateCode(verificationCode);
+    const token = await Token.validateToken(verificationCode);
 
     const setVerify = models.user.update(
       { isVerified: true, isCreateAccount: true },
@@ -96,26 +100,56 @@ class Authentication {
       email: response[1].email
     };
   }
-
-  static async resetPassword({ email, password }) {
-    if (!email) {
-      throw new ErrorHandler("Email is required", 400);
-    }
-    if (!password) {
-      throw new ErrorHandler("Password is required", 400);
-    }
-    const oldUserEmail = await models.user.findOne({ where: { email } });
-
-    if (oldUserEmail === null) {
-      throw new ErrorHandler("User not found");
-    }
-    const hashedPassword = await this.hashpassword(password);
-
-    const newPassword = await models.user.update(
-      { password: hashedPassword },
-      { where: { email: email } }
-    );
+  
+static async passwordReset(data){
+const {name, email} = data
+  if (!email) {
+    throw new ErrorHandler("Email is required", 400);
   }
+ const oldUserEmail = await models.user.findOne({ where: { email } });
+ if (oldUserEmail === null) {
+        throw new ErrorHandler("User not found", 404);
+     }
+     const code = randomSixDigits();
+     await Token.genCode(email, code);
+     return { name, email, code };
+}
+
+static async passwordUpdate({email, verificationCode, password, confirmPassword}){
+if(!email){
+  throw new ErrorHandler("Email is required", 400)
+}
+if(!verificationCode){
+  throw new ErrorHandler("Verification code is required", 400)
+}
+const token = await Token.validateCode(verificationCode);
+const setVerify = models.user.update({code: verificationCode}, {where: {email}})
+const userInstance = User.findOne(email);
+const response = await Promise.all([setVerify, userInstance]);
+if (response[1] === null) {
+  throw new ErrorHandler("User does not exist", 404);
+}
+if(!password){
+  throw new ErrorHandler("password is required", 400)
+}
+if(password !== confirmPassword){
+  throw new ErrorHandler("passwords does not match", 400)
+}
+// User.update({ password: 'new_password' }, { where: { email: 'user@example.com' } });
+
+const hashedPassword = await this.hashpassword(password)
+
+const newPassword = await models.user.update({ password: hashedPassword }, { where: { email: email} })
+
+Token.deleteEmail(token.email);
+const jwtToken = response[1].generateJwtToken();
+
+return {
+  token: jwtToken,
+  name: response[1].name,
+  email: response[1].email
+};
+}
 }
 
 module.exports = Authentication;

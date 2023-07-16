@@ -99,7 +99,7 @@
           {
             "in": "body",
             "name": "body",
-            "description": "User object that needs to be updated on the database",
+            "description": "User object that needs to be resetted on the database",
             "required": true,
             "type": "string",
             "schema": {
@@ -108,14 +108,46 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "{ success: true, message: 'Password update successful'}"
+          "201": {
+            "description": "{ success: true, message: 'Please check your email for a reset password code', data: ''}"
           },
           "400": {
-            "description": "{ success: false, error: 'New password cannot have empty space' }"
+            "description": "{ success: false, error: 'Email is required' }"
           },
           "404": {
             "description": "{ success: false, message: 'User not found' } "
+          }
+        }
+      }
+    },
+    "/update-password": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Update your password",
+        "description": "Edustipend users can update password with this endpoint",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that needs to be updated on the database",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/updatePassword"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "{ success: true, message: 'PPassword update successful', data: ''}"
+          },
+          "400": {
+            "description": "{ success: false, error: 'passwords does not match' }"
+          },
+          "404": {
+            "description": "{ success: false, message: 'User does not exist' } "
           }
         }
       }
@@ -177,12 +209,29 @@
       }
     },
     "resetPassword": {
-      "required": ["email", "password"],
+      "required": ["email", "name"],
       "properties": {
         "email": {
           "type": "string"
         },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "updatePassword": {
+      "required": ["email", "verificationCode", "password", "confirmPassword"],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "verificationCode": {
+          "type": "string"
+        },
         "password": {
+          "type": "string"
+        },
+        "confirmPassword": {
           "type": "string"
         }
       }
