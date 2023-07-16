@@ -11,6 +11,9 @@ exports.validateRegisterData = (data) => {
   data.howDidYouHearAboutUs = !isEmpty(data.howDidYouHearAboutUs)
     ? data.howDidYouHearAboutUs
     : "";
+  data.stipendCategory = !isEmpty(data.stipendCategory)
+    ? data.stipendCategory
+    : "";
 
   const userSchema = Joi.object({
     name: Joi.string().required().messages({
@@ -52,6 +55,10 @@ exports.validateRegisterData = (data) => {
       "string.base": "howDidYouHearAboutUs field must be a string",
       "string.empty": "howDidYouHearAboutUs field cannot be empty",
       "any.required": "howDidYouHearAboutUs field is required"
+    }),
+    stipendCategory: Joi.string().required().messages({
+      "string.base": "stipendCategory field must be a selected value",
+      "any.required": "stipendCategory field is required"
     })
   });
   return userSchema.validate(data, { abortEarly: false });
