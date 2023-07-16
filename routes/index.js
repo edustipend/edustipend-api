@@ -12,6 +12,6 @@ require("../config/passport")(passport);
 
 // authentication routes
 router.use("/", authRouter);
-router.use("/", userRouter);
+router.use("/user", userRouter);
 
 module.exports = router;

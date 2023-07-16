@@ -37,8 +37,7 @@ class Authentication {
       dateOfBirth,
       gender,
       stateOfOrigin,
-      howDidYouHearAboutUs,
-      stipendCategory
+      howDidYouHearAboutUs 
     } = data;
 
     const hashedPassword = await this.hashpassword(password);
@@ -49,8 +48,7 @@ class Authentication {
       gender,
       stateOfOrigin,
       howDidYouHearAboutUs,
-      hashedPassword,
-      stipendCategory
+      hashedPassword
     });
 
     const code = randomSixDigits();

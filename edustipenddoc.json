@@ -15,7 +15,7 @@
       "description": "Everything about signup, sign in, password reset, email verification"
     },
     {
-      "name": "request-stipend",
+      "name": "stipend",
       "description": "Everything about requesting a stipend"
     }
   ],
@@ -92,9 +92,9 @@
         }
       }
     },
-    "/request-stipend": {
+    "/user/request-stipend": {
       "post": {
-        "tags": ["request-stipend"],
+        "tags": ["stipend"],
         "summary": "Make a request from a user",
         "description": "Edustipend users can request for stipends with this endpoint",
         "consumes": ["application/json"],
@@ -105,50 +105,15 @@
             "name": "reasonForRequest",
             "description": "Reason for request",
             "required": true,
+            "type": "string",
             "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "body",
-            "name": "stepsTakenToEaseProblem",
-            "description": "Personal steps taken to solve the problem",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "body",
-            "name": "potentialBenefits",
-            "description": "How this stipend will assist the requester",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "body",
-            "name": "futureHelpFromUser",
-            "description": "How the requester plans on giving back to the Edustipend community",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "body",
-            "name": "userId",
-            "description": "The user Id",
-            "required": true,
-            "schema": {
-              "type": "integer"
+              "$ref": "#/definitions/request-stipend"
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "{ success: true, message: 'Request successfully sent'}"
+            "description": "{ success: true, message: 'Request successfully created'}"
           },
           "400": {
             "description": "{ success: false, message: 'Request not completed'}"
@@ -214,6 +179,42 @@
           "type": "string"
         }
       }
+    },
+    "request-stipend": {
+      "required": [
+        "email",
+        "stipendCategory",
+        "reasonForRequest",
+        "stepsTakenToEaseProblem",
+        "potentialBenefits",
+        "futureHelpFromUser",
+        "hasReceivedLaptopBefore"
+      ],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "stipendCategory" : {
+          "type": "string",
+          "enum": ["laptop", "data", "course"]
+        },
+        "reasonForRequest": {
+          "type": "string"
+        },
+        "stepsTakenToEaseProblem": {
+          "type": "string"
+        },
+        "potentialBenefits": {
+          "type": "string"
+        },
+        "futureHelpFromUser": {
+          "type": "string"
+        },
+        "hasReceivedLaptopBefore": {
+          "type": "boolean"
+        }
+      }
     }
   }
 }
+
