@@ -35,9 +35,8 @@ exports.approveStipend = catchAsyncError(async ({ body }, res, next) => {
   const validateData = await stipendRequestIdsValidation({
     ...body
   });
-  
-   await StipendRequest.approve( {...validateData });
-   
+
+  await StipendRequest.approve({ ...validateData });
 
   return res.status(200).json({
     success: true,

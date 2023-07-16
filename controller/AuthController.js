@@ -3,7 +3,10 @@ const { Authentication, Mail } = require("../services");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const { hasEmptySpace } = require("../utils/helper");
 const ErrorHandler = require("../utils/ErrorHandler");
-const { validateRegisterData,loginValidation } = require("../validation/UserValidation");
+const {
+  validateRegisterData,
+  loginValidation
+} = require("../validation/UserValidation");
 
 /**
  * @route POST api/v1/register
@@ -58,9 +61,8 @@ exports.accountVerify = catchAsyncError(async (req, res, next) => {
 
 exports.login = catchAsyncError(async (req, res, next) => {
   const validateData = await loginValidation(req.body);
- 
-  const response = await  Authentication.loginUser(validateData);
 
-  res.status(200).json({response})
+  const response = await Authentication.loginUser(validateData);
 
-})
+  res.status(200).json({ response });
+});
