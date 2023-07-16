@@ -194,7 +194,7 @@
         "email": {
           "type": "string"
         },
-        "stipendCategory" : {
+        "stipendCategory": {
           "type": "string",
           "enum": ["laptop", "data", "course"]
         },
@@ -217,4 +217,3 @@
     }
   }
 }
-

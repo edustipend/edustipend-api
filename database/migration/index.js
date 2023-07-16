@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { sequelize, user, token,stipendRequest } = require("../../models");
+const { sequelize, user, token, stipendRequest } = require("../../models");
 
 (async () => {
   try {

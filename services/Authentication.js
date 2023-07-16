@@ -37,7 +37,7 @@ class Authentication {
       dateOfBirth,
       gender,
       stateOfOrigin,
-      howDidYouHearAboutUs 
+      howDidYouHearAboutUs
     } = data;
 
     const hashedPassword = await this.hashpassword(password);

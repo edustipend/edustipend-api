@@ -91,15 +91,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: false
       }
-    
     },
     {}
   );
-    //relationship
-    StipendRequest.associate = function (models) {
-        StipendRequest.belongsTo(models.user, {
-            foreignKey: "userId"
-        });
-    }
+  //relationship
+  StipendRequest.associate = function (models) {
+    StipendRequest.belongsTo(models.user, {
+      foreignKey: "userId"
+    });
+  };
   return StipendRequest;
 };
