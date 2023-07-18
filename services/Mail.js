@@ -91,6 +91,27 @@ class Mail {
       }
     );
   }
+  /**
+   * @description Send stipend request email recieved
+   * @param {*} stipend request
+   * @param {*} email
+   */
+
+  static sendReceivedStipendRequest(stipendCategory, email) {
+    this._sendEmail(
+      {
+        email,
+        subject: "Stipend Request Recieved",
+        template: "stipend-request-recieved",
+        params: {
+          stipendRequest: stipendCategory
+        }
+      },
+      (err, data) => {
+        if (err) console.log(err);
+      }
+    );
+  }
 }
 
 module.exports = Mail;

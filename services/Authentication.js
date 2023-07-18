@@ -11,7 +11,7 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const models = require("../models");
 const { where } = require("sequelize");
 const mail = require("./index");
-const { validateRegisterData } = require("../validation/UserValidation");
+// const { validateRegisterData } = require("../validation/UserValidation");
 const { error } = require("@hapi/joi/lib/annotate");
 
 class Authentication {
@@ -46,8 +46,7 @@ class Authentication {
       dateOfBirth,
       gender,
       stateOfOrigin,
-      howDidYouHearAboutUs,
-      stipendCategory
+      howDidYouHearAboutUs
     } = data;
 
     const hashedPassword = await this.hashpassword(password);
@@ -58,13 +57,26 @@ class Authentication {
       gender,
       stateOfOrigin,
       howDidYouHearAboutUs,
-      hashedPassword,
-      stipendCategory
+      hashedPassword
     });
 
     const code = randomSixDigits();
     await Token.genCode(email, code);
 
+    return { name, email, code };
+  }
+
+  static async passwordReset(data) {
+    const { name, email } = data;
+    if (!email) {
+      throw new ErrorHandler("Email is required", 400);
+    }
+    const oldUserEmail = await models.user.findOne({ where: { email } });
+    if (oldUserEmail === null) {
+      throw new ErrorHandler("User not found", 404);
+    }
+    const code = randomSixDigits();
+    await Token.genCode(email, code);
     return { name, email, code };
   }
 
@@ -106,21 +118,6 @@ class Authentication {
       email: response[1].email
     };
   }
-
-  static async passwordReset(data) {
-    const { name, email } = data;
-    if (!email) {
-      throw new ErrorHandler("Email is required", 400);
-    }
-    const oldUserEmail = await models.user.findOne({ where: { email } });
-    if (oldUserEmail === null) {
-      throw new ErrorHandler("User not found", 404);
-    }
-    const code = randomSixDigits();
-    await Token.genCode(email, code);
-    return { name, email, code };
-  }
-
   static async passwordUpdate({
     email,
     verificationCode,
@@ -165,6 +162,29 @@ class Authentication {
       token: jwtToken,
       name: response[1].name,
       email: response[1].email
+    };
+  }
+
+  /**
+@description Login a user
+@param {object} email
+@param {string} password
+   */
+  static async loginUser({ email, password }) {
+    const newUser = await User.findOne(email);
+    let data;
+    if (newUser === null) {
+      throw new ErrorHandler("Invalid credential", 401);
+    }
+    const checkPassword = await newUser.comparePassword(password);
+    if (!checkPassword) {
+      throw new ErrorHandler("Invalid credential", 401);
+    }
+    data = newUser.generateJwtToken();
+    return {
+      success: true,
+      message: "Sign in successful",
+      token: `Bearer ${data}`
     };
   }
 }

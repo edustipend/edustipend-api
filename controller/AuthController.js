@@ -3,10 +3,12 @@ const { Authentication, Mail } = require("../services");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const { hasEmptySpace } = require("../utils/helper");
 const ErrorHandler = require("../utils/ErrorHandler");
-const { validateRegisterData } = require("../validation/UserValidation");
-const { authenticate } = require("passport");
-const randomSixDigits = require("../utils/helper");
+// const { validateRegisterData } = require("../validation/UserValidation");
 const { error } = require("@hapi/joi/lib/base");
+const {
+  validateRegisterData,
+  loginValidation
+} = require("../validation/UserValidation");
 
 /**
  * @route POST api/v1/register
@@ -79,4 +81,18 @@ exports.updatePassword = catchAsyncError(async (req, res, next) => {
     message: "Password update successful.",
     token: `Bearer ${token}`
   });
+});
+
+/*
+ * @route POST /v1/login
+ * @description Login a user
+ * @access Public
+ */
+
+exports.login = catchAsyncError(async (req, res, next) => {
+  const validateData = await loginValidation(req.body);
+
+  const response = await Authentication.loginUser(validateData);
+
+  res.status(200).json({ response });
 });

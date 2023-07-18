@@ -82,7 +82,6 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
-
       howDidYouHearAboutUs: {
         type: DataTypes.ENUM,
         allowNull: false,
@@ -113,36 +112,18 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Password field is required"
           }
         }
-      },
-      stipendCategory: {
-        type: DataTypes.ENUM,
-        allowNull: false,
-        values: ["laptop", "data", "course"],
-        validate: {
-          notEmpty: {
-            args: true,
-            msg: "Stipend category field is required"
-          }
-        }
-      },
-      // A checker for whether the user has previously received a laptop
-      hasReceivedLaptopBefore: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-        defaultValue: false
-      },
-      // whether user has given data consent
-      hasGivenDataConsent: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-        defaultValue: true
       }
     },
     { paranoid: true }
   );
 
   //  relationship
-  User.associate = function (models) {};
+  User.associate = function (models) {
+    User.hasMany(models.stipendRequest, {
+      foreignKey: "userId",
+      as: "stipendRequests"
+    });
+  };
 
   // instance method
   User.prototype.generateJwtToken = function () {
