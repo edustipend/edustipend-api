@@ -15,8 +15,12 @@
       "description": "Everything about signup, sign in, password reset, email verification"
     },
     {
-      "name": "request-stipend",
+      "name": "stipend",
       "description": "Everything about requesting a stipend"
+    },
+    {
+      "name": "admin",
+      "description": "Everything about admin"
     }
   ],
   "consumes": ["application/json"],
@@ -92,9 +96,9 @@
         }
       }
     },
-    "/request-stipend": {
+    "/user/request-stipend": {
       "post": {
-        "tags": ["request-stipend"],
+        "tags": ["stipend"],
         "summary": "Make a request from a user",
         "description": "Edustipend users can request for stipends with this endpoint",
         "consumes": ["application/json"],
@@ -105,56 +109,145 @@
             "name": "reasonForRequest",
             "description": "Reason for request",
             "required": true,
+            "type": "string",
             "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "body",
-            "name": "stepsTakenToEaseProblem",
-            "description": "Personal steps taken to solve the problem",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "body",
-            "name": "potentialBenefits",
-            "description": "How this stipend will assist the requester",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "body",
-            "name": "futureHelpFromUser",
-            "description": "How the requester plans on giving back to the Edustipend community",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "body",
-            "name": "userId",
-            "description": "The user Id",
-            "required": true,
-            "schema": {
-              "type": "integer"
+              "$ref": "#/definitions/request-stipend"
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "{ success: true, message: 'Request successfully sent'}"
+            "description": "{ success: true, message: 'Request successfully created'}"
           },
           "400": {
             "description": "{ success: false, message: 'Request not completed'}"
           },
           "500": {
             "description": "Could not connect to DB"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Sign in to your account",
+        "description": "Sign in to generate an access token",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Input your",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/signIn"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{ success: true, message: 'Sign in successful', token: Bearer token} "
+          },
+          "400": {
+            "description": "{ success: false, message: 'Invalid data supplied' }"
+          },
+          "401": {
+            "description": "{ success: false, message: 'Invalid credential/Account not verified' }"
+          },
+          "500": {
+            "description": "Could not connect to DB"
+          }
+        }
+      }
+    },
+    "/admin/approve-stipend": {
+      "put": {
+        "tags": ["admin"],
+        "summary": "approve multiple applications",
+        "description": "Admin approve multiple applications",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "applications data",
+            "required": true,
+            "type": "object",
+            "properties": {
+              "stipendRequestIds": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{ success: true, data: 'Stipend request successfully approved' }"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "{ success: false, message: 'Access Denied! :(' }"
+          },
+          "404": {
+            "description": "{ success: false, message: 'Applications not found' }"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/admin/reject-stipend": {
+      "put": {
+        "tags": ["admin"],
+        "summary": "reject multiple applications",
+        "description": "Admin reject multiple applications",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "applications data",
+            "required": true,
+            "type": "object",
+            "properties": {
+              "stipendRequestIds": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{ success: true, data: 'Stipend request successfully rejected' }"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "{ success: false, message: 'Access Denied! :(' }"
+          },
+          "404": {
+            "description": "{ success: false, message: 'Applications not found' }"
+          },
+          "500": {
+            "description": "Server error"
           }
         }
       }
@@ -211,6 +304,52 @@
           "type": "string"
         },
         "verificationCode": {
+          "type": "string"
+        }
+      }
+    },
+    "request-stipend": {
+      "required": [
+        "email",
+        "stipendCategory",
+        "reasonForRequest",
+        "stepsTakenToEaseProblem",
+        "potentialBenefits",
+        "futureHelpFromUser",
+        "hasReceivedLaptopBefore"
+      ],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "stipendCategory": {
+          "type": "string",
+          "enum": ["laptop", "data", "course"]
+        },
+        "reasonForRequest": {
+          "type": "string"
+        },
+        "stepsTakenToEaseProblem": {
+          "type": "string"
+        },
+        "potentialBenefits": {
+          "type": "string"
+        },
+        "futureHelpFromUser": {
+          "type": "string"
+        },
+        "hasReceivedLaptopBefore": {
+          "type": "boolean"
+        }
+      }
+    },
+    "signIn": {
+      "required": ["email", "password"],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
           "type": "string"
         }
       }

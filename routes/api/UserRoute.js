@@ -1,6 +1,7 @@
-const userRouter = require("express").Router();
-const { requestStipend } = require("../../controller/UserController");
+const { requestStipend } = require("../../controller/StipendRequestController");
 
-userRouter.post("/request-stipend", requestStipend);
+const router = require("express").Router();
 
-module.exports = userRouter;
+router.post("/request-stipend", requestStipend);
+
+module.exports = router;

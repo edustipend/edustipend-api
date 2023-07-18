@@ -37,8 +37,7 @@ class Authentication {
       dateOfBirth,
       gender,
       stateOfOrigin,
-      howDidYouHearAboutUs,
-      stipendCategory
+      howDidYouHearAboutUs
     } = data;
 
     const hashedPassword = await this.hashpassword(password);
@@ -49,8 +48,7 @@ class Authentication {
       gender,
       stateOfOrigin,
       howDidYouHearAboutUs,
-      hashedPassword,
-      stipendCategory
+      hashedPassword
     });
 
     const code = randomSixDigits();
@@ -95,6 +93,32 @@ class Authentication {
       token: jwtToken,
       name: response[1].name,
       email: response[1].email
+    };
+  }
+
+  /**
+   * @description Login a user
+   * @param {object} email
+   * @param {string} password
+   */
+
+  static async loginUser({ email, password }) {
+    const newUser = await User.findOne(email);
+    let data;
+    if (newUser === null) {
+      throw new ErrorHandler("Invalid credential", 401);
+    }
+
+    const checkPassword = await newUser.comparePassword(password);
+    if (!checkPassword) {
+      throw new ErrorHandler("Invalid credential", 401);
+    }
+    data = newUser.generateJwtToken();
+
+    return {
+      success: true,
+      message: "Sign in successful",
+      token: `Bearer ${data}`
     };
   }
 }

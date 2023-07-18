@@ -3,6 +3,7 @@ const router = express();
 const passport = require("passport");
 const authRouter = require("./api/AuthRoute");
 const userRouter = require("./api/UserRoute");
+const adminRouter = require("./api/AdminRoute");
 
 // Passport Middleware
 router.use(passport.initialize());
@@ -12,6 +13,7 @@ require("../config/passport")(passport);
 
 // authentication routes
 router.use("/", authRouter);
-router.use("/", userRouter);
+router.use("/user", userRouter);
+router.use("/admin", adminRouter);
 
 module.exports = router;
