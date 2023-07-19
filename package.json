@@ -51,7 +51,9 @@
     "test:migrate": "NODE_ENV=testing node ./database/migration/index",
     "test:seed": "NODE_ENV=testing node ./database/seed/index",
     "test": "NODE_ENV=testing mocha --recursive --exit 'test'",
-    "test:coverage": "NODE_ENV=testing nyc --reporter=html --reporter=text npm run test"
+    "test:coverage": "NODE_ENV=testing nyc --reporter=html --reporter=text npm run test",
+    "windows-test:migrate": "set NODE_ENV=testing node ./database/migration/index",
+    "windows-test": "set NODE_ENV=testing mocha --recursive --exit 'test'"
   },
   "husky": {
     "hooks": {

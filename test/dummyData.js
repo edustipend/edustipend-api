@@ -19,7 +19,36 @@ const badRegisterUserRequest = {
   howDidYouHearAboutUs: "facebook"
 };
 
+const goodRequestData = {
+  email: "tes@gmail.com",
+  stipendCategory: "course",
+  reasonForRequest: "To help me with one",
+  stepsTakenToEaseProblem: "I have used pirate sites",
+  potentialBenefits: "I could get to learn a lot",
+  futureHelpFromUser: "I will give back to the community",
+  hasReceivedLaptopBefore: false
+}
+
+const badRequestData = {
+  email: "tes@gmail.com",
+  stipendCategory: "course",
+  reasonForRequest: "To help me with one",
+}
+
+const badRequestDataType = {
+  email: "tes@gmail.com",
+  stipendCategory: "course",
+  reasonForRequest: "To help me with one",
+  stepsTakenToEaseProblem: "I have used pirate sites",
+  potentialBenefits: "I could get to learn a lot",
+  futureHelpFromUser: "I will give back to the community",
+  hasReceivedLaptopBefore: "Not received"
+}
+
 module.exports = {
   registerUser,
-  badRegisterUserRequest
+  badRegisterUserRequest,
+  goodRequestData,
+  badRequestData,
+  badRequestDataType
 };
