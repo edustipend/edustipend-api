@@ -27,13 +27,13 @@ const goodRequestData = {
   potentialBenefits: "I could get to learn a lot",
   futureHelpFromUser: "I will give back to the community",
   hasReceivedLaptopBefore: false
-}
+};
 
 const badRequestData = {
   email: "tes@gmail.com",
   stipendCategory: "course",
-  reasonForRequest: "To help me with one",
-}
+  reasonForRequest: "To help me with one"
+};
 
 const badRequestDataType = {
   email: "tes@gmail.com",
@@ -43,7 +43,7 @@ const badRequestDataType = {
   potentialBenefits: "I could get to learn a lot",
   futureHelpFromUser: "I will give back to the community",
   hasReceivedLaptopBefore: "Not received"
-}
+};
 
 module.exports = {
   registerUser,
