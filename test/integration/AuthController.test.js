@@ -32,7 +32,6 @@ describe("Test for AuthController", function () {
         "Registration successful, please check your email for verification link"
       );
     });
-
   });
   describe("Users can't register with incomplete data", function () {
     this.beforeAll(async function () {
@@ -80,7 +79,6 @@ describe("Test for AuthController", function () {
       expect(res.body.success).to.equal(false);
     });
 
-  
     it("should return error if email is wrong", async function () {
       res = await chai
         .request(server)
