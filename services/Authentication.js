@@ -66,19 +66,7 @@ class Authentication {
     return { name, email, code };
   }
 
-  static async passwordReset(data) {
-    const { name, email } = data;
-    if (!email) {
-      throw new ErrorHandler("Email is required", 400);
-    }
-    const oldUserEmail = await models.user.findOne({ where: { email } });
-    if (oldUserEmail === null) {
-      throw new ErrorHandler("User not found", 404);
-    }
-    const code = randomSixDigits();
-    await Token.genCode(email, code);
-    return { name, email, code };
-  }
+
 
   /**
    * @description Account Verification
@@ -94,7 +82,7 @@ class Authentication {
       throw new ErrorHandler("Verification code is required", 400);
     }
 
-    const token = await Token.validateToken(verificationCode);
+    const token = await Token.validateCode(verificationCode);
 
     const setVerify = models.user.update(
       { isVerified: true, isCreateAccount: true },
@@ -118,6 +106,22 @@ class Authentication {
       email: response[1].email
     };
   }
+
+  static async passwordReset(data) {
+    const { name, email } = data;
+    if (!email) {
+      throw new ErrorHandler("Email is required", 400);
+    }
+    const oldUserEmail = await models.user.findOne({ where: { email } });
+    if (oldUserEmail === null) {
+      throw new ErrorHandler("User not found", 404);
+    }
+    const code = randomSixDigits();
+    await Token.genCode(email, code);
+    return { name, email, code };
+  }
+
+
   static async passwordUpdate({
     email,
     verificationCode,
