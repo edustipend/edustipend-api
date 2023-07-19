@@ -9,7 +9,7 @@ const db = {};
 let sequelize;
 
 sequelize = new Sequelize(
-  process.env.DB_DATABASE,
+  process.env.NODE_ENV !== "testing" ? process.env.DB_DATABASE : process.env.TEST_DB_DATABASE,
   process.env.DB_USERNAME,
   process.env.DB_PASSWORD,
   {
