@@ -55,8 +55,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run format",
-      "pre-push": " npm run format"
+      "pre-commit": "npm run test && npm run format",
+      "pre-push": " npm run format && npm run test"
     }
   },
   "engines": {
