@@ -66,8 +66,6 @@ class Authentication {
     return { name, email, code };
   }
 
-
-
   /**
    * @description Account Verification
    * @param {string} email
@@ -120,7 +118,6 @@ class Authentication {
     await Token.genCode(email, code);
     return { name, email, code };
   }
-
 
   static async passwordUpdate({
     email,
