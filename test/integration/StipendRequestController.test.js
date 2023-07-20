@@ -31,7 +31,6 @@ describe("Test for Stipend Request", function () {
         .send(completeStipendRequestData);
     });
     it("should be able to successfully send a good request", async function () {
-      console.log("The value of the response is", res);
       expect(res).to.have.status(201);
       expect(res.body.success).to.equal(true);
       expect(res.body.message).to.equal("Request successfully created");
