@@ -19,23 +19,22 @@ const badRegisterUserRequest = {
   howDidYouHearAboutUs: "facebook"
 };
 
-const goodRequestData = {
+const completeStipendRequestData = {
   email: "tes@gmail.com",
   stipendCategory: "course",
   reasonForRequest: "To help me with one",
   stepsTakenToEaseProblem: "I have used pirate sites",
   potentialBenefits: "I could get to learn a lot",
   futureHelpFromUser: "I will give back to the community",
-  hasReceivedLaptopBefore: false
 };
 
-const badRequestData = {
+const incompleteStipendRequestData = {
   email: "tes@gmail.com",
   stipendCategory: "course",
   reasonForRequest: "To help me with one"
 };
 
-const badRequestDataType = {
+const badStipendRequestDataType = {
   email: "tes@gmail.com",
   stipendCategory: "course",
   reasonForRequest: "To help me with one",
@@ -48,7 +47,7 @@ const badRequestDataType = {
 module.exports = {
   registerUser,
   badRegisterUserRequest,
-  goodRequestData,
-  badRequestData,
-  badRequestDataType
+  completeStipendRequestData,
+  incompleteStipendRequestData,
+  badStipendRequestDataType
 };
