@@ -80,7 +80,7 @@ describe("Test for Stipend Request", function () {
     it("should be able to check that sent requests reflect in the database", async function () {
       let newRequest = await models.stipendRequest.findOne({
         where: { reasonForRequest: completeStipendRequestData.reasonForRequest }
-      })
+      });
       expect(newRequest).to.include({ ...completeStipendRequestData });
     });
   });
