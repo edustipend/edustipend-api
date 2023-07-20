@@ -48,10 +48,10 @@
     "migrate": "node ./database/migration/index",
     "seed": "node ./database/seed/index",
     "db:seed": "npm run migrate & npm run seed",
-    "test:migrate": "NODE_ENV=testing node ./database/migration/index",
-    "test:seed": "NODE_ENV=testing node ./database/seed/index",
-    "test": "NODE_ENV=testing mocha --recursive --exit 'test'",
-    "test:coverage": "NODE_ENV=testing nyc --reporter=html --reporter=text npm run test"
+    "test:migrate": " cross-env NODE_ENV=testing node ./database/migration/index",
+    "test:seed": "cross-env NODE_ENV=testing node ./database/seed/index",
+    "test": "cross-env NODE_ENV=testing mocha --recursive --exit 'test'",
+    "test:coverage": "cross-env NODE_ENV=testing nyc --reporter=html --reporter=text npm run test"
   },
   "husky": {
     "hooks": {
