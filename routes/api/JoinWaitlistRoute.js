@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const { joinWaitlist } = require("../../controller/WaitlistController")
+const { joinWaitlist } = require("../../controller/WaitlistController");
 
-router.post('/join-waitlist', joinWaitlist)
+router.post("/join-waitlist", joinWaitlist);
 
-module.exports = router
+module.exports = router;

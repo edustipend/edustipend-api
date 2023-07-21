@@ -262,7 +262,8 @@
         "summary": "join a waitlist",
         "description": "Adds people to be notified when fresh application window opens",
         "produces": ["application/json"],
-        "parameters": [{
+        "parameters": [
+          {
             "in": "body",
             "name": "body",
             "description": "User to be added to waitlist",
@@ -271,7 +272,8 @@
             "schema": {
               "$ref": "#/definitions/join-waitlist"
             }
-          }],
+          }
+        ],
         "responses": {
           "201": {
             "description": "{ success: true, message: 'Successfully added to the waitlist'}"

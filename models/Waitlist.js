@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Waitlist = sequelize.define(
-    'waitlist',
+    "waitlist",
     {
       id: {
         type: DataTypes.INTEGER(11),
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       paranoid: true
     }
-  )
+  );
 
-  return Waitlist
-}
+  return Waitlist;
+};
