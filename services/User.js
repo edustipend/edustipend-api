@@ -1,5 +1,6 @@
 const models = require("../models");
 const ErrorHandler = require("../utils/ErrorHandler");
+const jwt = require("jsonwebtoken");
 const {
   Sequelize: { Op }
 } = models;
@@ -50,6 +51,10 @@ class User {
     return await models.user.findOne({
       where: { email }
     });
+  }
+
+  static async findUserByEmail(email) {
+    return await models.User.findOne({ where: email });
   }
 }
 
