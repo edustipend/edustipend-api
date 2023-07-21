@@ -286,6 +286,26 @@
           }
         }
       }
+    },
+    "/admin/notify-waitlist": {
+      "post": {
+        "tags": ["admin"],
+        "summary": "notify the waitlist",
+        "description": "Notify every email in the wait list",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "{ success: true, message: 'Successfully notified to the waitlist'}"
+          },
+          "400": {
+            "description": "{ success: false, message: 'Request not completed'}"
+          },
+          "500": {
+            "description": "Could not connect to DB"
+          }
+        }
+      }
     }
   },
   "definitions": {

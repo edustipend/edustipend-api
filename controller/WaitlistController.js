@@ -24,10 +24,10 @@ exports.joinWaitlist = catchAsyncError(async (req, res, next) => {
 });
 
 exports.notifyWaitlist = catchAsyncError(async (req, res, next) => {
-  const emails = await Waitlist.getPeopleInWaitlist()
-  await Waitlist.notifyPeopleInWaitlist(emails)
+  const emails = await Waitlist.getPeopleInWaitlist();
+  await Waitlist.notifyPeopleInWaitlist(emails);
   return res.status(201).json({
     success: true,
     message: "Successfully notified the waitlist"
-  })
-})
+  });
+});

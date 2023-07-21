@@ -22,15 +22,18 @@ class Waitlist {
    */
   static async notifyPeopleInWaitlist(peopleObjects) {
     for (const people of peopleObjects) {
-      const email = people.email
-      Mail.sendWelcomeToWaitlist(email)
-      await models.waitlist.update({
-        hasBeenNotified: true
-      }, {
-        where: {
-          email,
+      const email = people.email;
+      Mail.sendWelcomeToWaitlist(email);
+      await models.waitlist.update(
+        {
+          hasBeenNotified: true
+        },
+        {
+          where: {
+            email
+          }
         }
-      })
+      );
     }
   }
 
@@ -40,14 +43,14 @@ class Waitlist {
   static async getPeopleInWaitlist() {
     const condition = {
       hasBeenNotified: false
-    }
+    };
 
-    const columnsToRetrieve = ['email']
+    const columnsToRetrieve = ["email"];
 
     return await models.waitlist.findAll({
       where: condition,
       attributes: columnsToRetrieve
-    })
+    });
   }
 }
 
