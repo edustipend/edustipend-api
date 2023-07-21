@@ -74,13 +74,30 @@ class Mail {
     );
   }
 
+  static sendPasswordCode(name, email, link) {
+    this._sendEmail(
+      {
+        email,
+        subject: "Is this email yours?",
+        template: "password-update",
+        params: {
+          name: name,
+          link,
+          userEmail: email
+        }
+      },
+      (err, data) => {
+        if (err) console.log(err);
+      }
+    );
+  }
   /**
    * @description Send stipend request email recieved
    * @param {*} stipend request
    * @param {*} email
    */
 
-  static sendRecievedStipendRequest(stipendCategory, email) {
+  static sendReceivedStipendRequest(stipendCategory, email) {
     this._sendEmail(
       {
         email,
