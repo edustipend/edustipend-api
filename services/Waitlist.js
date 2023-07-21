@@ -1,5 +1,6 @@
 const models = require("../models");
 const ErrorHandler = require("../utils/ErrorHandler");
+const Mail = require("./Mail");
 
 class Waitlist {
   /**
@@ -19,7 +20,35 @@ class Waitlist {
   /**
    * @description Notify people in the waitlist
    */
-  static async notifyPeopleInWaitlist() {}
+  static async notifyPeopleInWaitlist(peopleObjects) {
+    for (const people of peopleObjects) {
+      const email = people.email
+      Mail.sendWelcomeToWaitlist(email)
+      await models.waitlist.update({
+        hasBeenNotified: true
+      }, {
+        where: {
+          email,
+        }
+      })
+    }
+  }
+
+  /**
+   * @description Get people in the waitlist
+   */
+  static async getPeopleInWaitlist() {
+    const condition = {
+      hasBeenNotified: false
+    }
+
+    const columnsToRetrieve = ['email']
+
+    return await models.waitlist.findAll({
+      where: condition,
+      attributes: columnsToRetrieve
+    })
+  }
 }
 
 module.exports = Waitlist;

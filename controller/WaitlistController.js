@@ -14,7 +14,6 @@ exports.joinWaitlist = catchAsyncError(async (req, res, next) => {
   const validatedData = await validateWaitlistEntry(req.body);
 
   const newWaitlistEntry = await Waitlist.addToWaitlist(validatedData.value);
-  console.log("the value of new waitlist is ", newWaitlistEntry);
 
   Mail.sendWelcomeToWaitlist(newWaitlistEntry.email);
 
@@ -23,3 +22,12 @@ exports.joinWaitlist = catchAsyncError(async (req, res, next) => {
     message: "Successfully added to the waitlist"
   });
 });
+
+exports.notifyWaitlist = catchAsyncError(async (req, res, next) => {
+  const emails = await Waitlist.getPeopleInWaitlist()
+  await Waitlist.notifyPeopleInWaitlist(emails)
+  return res.status(201).json({
+    success: true,
+    message: "Successfully notified the waitlist"
+  })
+})
