@@ -2,9 +2,7 @@ const {
   approveStipend,
   rejectStipend
 } = require("../../controller/StipendRequestController");
-const {
-  notifyWaitlist
-} = require("../../controller/WaitlistController");
+const { notifyWaitlist } = require("../../controller/WaitlistController");
 
 const router = require("express").Router();
 
