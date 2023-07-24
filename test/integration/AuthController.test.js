@@ -7,10 +7,7 @@ chai.use(chaiHttp);
 const expect = chai.expect;
 const server = require("../../server");
 const models = require("../../models");
-const {
-  registerUser,
-  badRegisterUserRequest
-} = require("../dummyData");
+const { registerUser, badRegisterUserRequest } = require("../dummyData");
 const { declutter } = require("../../database/migration/test");
 
 let res, newUser;
