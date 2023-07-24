@@ -19,7 +19,6 @@ const badRegisterUserRequest = {
   howDidYouHearAboutUs: "facebook"
 };
 
-
 module.exports = {
   registerUser,
   badRegisterUserRequest

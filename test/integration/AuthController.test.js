@@ -9,10 +9,7 @@ const server = require("../../server");
 const models = require("../../models");
 const {
   registerUser,
-  badRegisterUserRequest,
-  passwordReset,
-  badPasswordReset,
-  passwordVerify
+  badRegisterUserRequest
 } = require("../dummyData");
 const { declutter } = require("../../database/migration/test");
 
@@ -79,7 +76,6 @@ describe("Test for AuthController", function () {
         .request(server)
         .post("/v1/verify")
         .send({ verificationCode: "wrong code", email: newUser.email });
-        console.log(res)
 
       expect(res).to.have.status(401);
       expect(res.body.message).to.equal("Invalid Verification code");
