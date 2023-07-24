@@ -45,7 +45,6 @@
             }
           }
         ],
-
         "responses": {
           "201": {
             "description": "{ success: true, message: 'Signup successful! Please check your email for verification code.', data: ''}"
@@ -55,95 +54,6 @@
           },
           "500": {
             "description": "Could not connect to DB"
-          }
-        }
-      },
-      "definitions": {
-        "registerUser": {
-          "required": [
-            "name",
-            "email",
-            "password",
-            "dateOfBirth",
-            "gender",
-            "stateOfOrigin",
-            "howDidYouHearAboutUs"
-          ],
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "email": {
-              "type": "string"
-            },
-            "password": {
-              "type": "string"
-            },
-            "dateOfBirth": {
-              "type": "string"
-            },
-            "gender": {
-              "type": "string",
-              "enum": ["male", "female"]
-            },
-            "stateOfOrigin": {
-              "type": "string"
-            },
-            "howDidYouHearAboutUs": {
-              "type": "string",
-              "enum": [
-                "facebook",
-                "twitter",
-                "instagram",
-                "whatsapp",
-                "friend",
-                "other"
-              ]
-            }
-          }
-        }
-      },
-      "verifyUser": {
-        "required": ["email", "verificationCode"],
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "verificationCode": {
-            "type": "string"
-          }
-        }
-      },
-      "resetPassword": {
-        "required": ["email", "name"],
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          }
-        }
-      },
-      "updatePassword": {
-        "required": [
-          "email",
-          "verificationCode",
-          "password",
-          "confirmPassword"
-        ],
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "verificationCode": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          },
-          "confirmPassword": {
-            "type": "string"
           }
         }
       }
@@ -211,82 +121,6 @@
           },
           "400": {
             "description": "{ success: false, message: 'Request not completed'}"
-          },
-          "500": {
-            "description": "Could not connect to DB"
-          }
-        }
-      }
-    },
-    "/reset-password": {
-      "post": {
-        "tags": ["auth"],
-        "summary": "Reset your password",
-        "description": "Edustipend users can reset password with this endpoint",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "enter user email and confirmation code",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "$ref": "#/definitions/reset-password"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "{ success: true, message: 'Account Verification successful.', token: 'Bearer token'}"
-          },
-          "400": {
-            "description": "{ success: false, message: 'Verification code is required' } "
-          },
-          "401": {
-            "description": "{ success: false, message: 'Invalid Verification code' } "
-          },
-          "404": {
-            "description": "{ success: false, message: 'User not found' } "
-          },
-          "500": {
-            "description": "Could not connect to DB"
-          }
-        }
-      }
-    },
-    "/update-password": {
-      "post": {
-        "tags": ["auth"],
-        "summary": "Update your password",
-        "description": "Edustipend users can update password with this endpoint",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "enter user email and confirmation code",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "$ref": "#/definitions/update-password"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "{ success: true, message: 'Account Verification successful.', token: 'Bearer token'}"
-          },
-          "400": {
-            "description": "{ success: false, message: 'Verification code is required' } "
-          },
-          "401": {
-            "description": "{ success: false, message: 'Invalid Verification code' } "
-          },
-          "404": {
-            "description": "{ success: false, message: 'User not found' } "
           },
           "500": {
             "description": "Could not connect to DB"
@@ -470,34 +304,6 @@
           "type": "string"
         },
         "verificationCode": {
-          "type": "string"
-        }
-      }
-    },
-    "update-password": {
-      "required": ["email", "verificationCode", "password", "confirmPassword"],
-      "properties": {
-        "email": {
-          "type": "string"
-        },
-        "verificationCode": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        },
-        "confirmPassword": {
-          "type": "string"
-        }
-      }
-    },
-    "reset-password": {
-      "required": ["email", "verificationCode"],
-      "properties": {
-        "email": {
-          "type": "string"
-        },
-        "name": {
           "type": "string"
         }
       }
