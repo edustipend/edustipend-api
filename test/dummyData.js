@@ -19,20 +19,20 @@ const badRegisterUserRequest = {
   howDidYouHearAboutUs: "facebook"
 };
 
-const passwordReset ={
+const passwordReset = {
   email: "linda@gmail.com",
   name: "linda"
-}
+};
 
-const badPasswordReset ={
+const badPasswordReset = {
   email: "linda@gmail.com"
-}
+};
 
-const passwordVerify ={
+const passwordVerify = {
   email: "linda@gmail.com",
   password: "string123456",
-  verificationCode: 'ABCD1234'
-}
+  verificationCode: "ABCD1234"
+};
 
 module.exports = {
   registerUser,

@@ -110,8 +110,8 @@ class Authentication {
     if (!email) {
       throw new ErrorHandler("Email is required", 400);
     }
-    if(!name){
-      throw new ErrorHandler("Name is required", 400)
+    if (!name) {
+      throw new ErrorHandler("Name is required", 400);
     }
     const oldUserEmail = await models.user.findOne({ where: { email } });
     if (oldUserEmail === null) {

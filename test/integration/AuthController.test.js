@@ -90,13 +90,12 @@
 //     });
 //   });
 
-  
 //   describe("Test to reset user password", async function () {
 //     this.beforeAll(async function () {
 //       this.timeout(0);
 //       res = await chai.request(server).post("/v1/reset-password").send(passwordReset);
 //     });
-  
+
 //     it("should be able to successfully reset password", async function () {
 //       expect(res).to.have.status(201);
 //       expect(res.body.success).to.equal(true);
@@ -114,5 +113,5 @@
 //     expect(res.body.success).to.equal(false)
 //     expect(res.body.message).to.equal("Name is required")
 //   })
- 
+
 // });
