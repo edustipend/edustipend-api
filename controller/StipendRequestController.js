@@ -17,7 +17,7 @@ exports.requestStipend = catchAsyncError(async (req, res, next) => {
 
   const stipend = await StipendRequest.create(validateData.value);
 
-  Mail.sendReceivedStipendRequest(stipend.stipendCategory, stipend.email);
+  Mail.sendRecievedStipendRequest(stipend.stipendCategory, stipend.email);
 
   return res.status(201).json({
     success: true,

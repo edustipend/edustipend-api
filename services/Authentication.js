@@ -1,18 +1,9 @@
 const bcrypt = require("bcryptjs");
 const User = require("./User");
 const Token = require("./Token");
-const {
-  randomSixDigits,
-  validateEmail,
-  cryptWords,
-  hasEmptySpace
-} = require("../utils/helper");
+const { randomSixDigits, validateEmail } = require("../utils/helper");
 const ErrorHandler = require("../utils/ErrorHandler");
 const models = require("../models");
-const { where } = require("sequelize");
-const mail = require("./index");
-// const { validateRegisterData } = require("../validation/UserValidation");
-const { error } = require("@hapi/joi/lib/annotate");
 
 class Authentication {
   /**
@@ -170,21 +161,24 @@ class Authentication {
   }
 
   /**
-@description Login a user
-@param {object} email
-@param {string} password
+   * @description Login a user
+   * @param {object} email
+   * @param {string} password
    */
+
   static async loginUser({ email, password }) {
     const newUser = await User.findOne(email);
     let data;
     if (newUser === null) {
       throw new ErrorHandler("Invalid credential", 401);
     }
+
     const checkPassword = await newUser.comparePassword(password);
     if (!checkPassword) {
       throw new ErrorHandler("Invalid credential", 401);
     }
     data = newUser.generateJwtToken();
+
     return {
       success: true,
       message: "Sign in successful",
