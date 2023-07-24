@@ -1,36 +1,43 @@
 const faker = require("faker");
 
 const registerUser = {
-  name: "eloghosa",
-  email: "tes@gmail.com",
+  name: "linda",
+  email: "linda@gmail.com",
   password: "string123456",
   dateOfBirth: "1990-09-02",
-  gender: "male",
+  gender: "female",
   stateOfOrigin: "lagos",
   howDidYouHearAboutUs: "facebook"
 };
 
 const badRegisterUserRequest = {
-  name: "eloghosa",
-  email: "test@gmail.com",
+  name: "linda",
+  email: "linda@gmail.com",
   password: "string123456",
 
   gender: "male",
   howDidYouHearAboutUs: "facebook"
 };
 
-const passwordReset = {
-  name: "eloghosa",
-  email: "tes@gmail.com"
+const passwordReset ={
+  email: "linda@gmail.com",
+  name: "linda"
 }
 
-const badResetRequest = {
-    email: "test@gmail.com"
+const badPasswordReset ={
+  email: "linda@gmail.com"
+}
+
+const passwordVerify ={
+  email: "linda@gmail.com",
+  password: "string123456",
+  verificationCode: 'ABCD1234'
 }
 
 module.exports = {
   registerUser,
   badRegisterUserRequest,
   passwordReset,
-  badResetRequest
+  badPasswordReset,
+  passwordVerify
 };
