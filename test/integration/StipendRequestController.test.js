@@ -20,9 +20,9 @@ describe("Test for Stipend Request", function () {
     await declutter();
   });
 
-  let res
-  let secondRequest
-  let firstRequestId
+  let res;
+  let secondRequest;
+  let firstRequestId;
 
   describe("Test for sending stipend request", function () {
     this.beforeAll(async function () {
@@ -84,7 +84,7 @@ describe("Test for Stipend Request", function () {
         where: { reasonForRequest: completeStipendRequestData.reasonForRequest }
       });
       // get the request id of this request and save for future tests
-      firstRequestId = newRequest.id
+      firstRequestId = newRequest.id;
       expect(newRequest).to.include({ ...completeStipendRequestData });
     });
   });
@@ -97,25 +97,26 @@ describe("Test for Stipend Request", function () {
       await chai
         .request(server)
         .post("/v1/user/request-stipend")
-        .send({ ...anotherCompleteStipendRequestData, id: firstRequestId + 1 })
-
+        .send({ ...anotherCompleteStipendRequestData, id: firstRequestId + 1 });
 
       res = await chai
         .request(server)
         .put("/v1/admin/approve-stipend")
         .send({
           stipendRequestIds: [firstRequestId, firstRequestId + 1]
-        })
-    })
+        });
+    });
     it("should reflect in the database", async function () {
-      expect(res).to.have.status(200)
+      expect(res).to.have.status(200);
       // check that it reflects in database
       let newRequest = await models.stipendRequest.findOne({
-        where: { reasonForRequest: anotherCompleteStipendRequestData.reasonForRequest }
-      })
-      expect(newRequest.isApproved).to.equal(true)
-    })
-  })
+        where: {
+          reasonForRequest: anotherCompleteStipendRequestData.reasonForRequest
+        }
+      });
+      expect(newRequest.isApproved).to.equal(true);
+    });
+  });
 
   describe("Admin rejecting multiple stipend requests should work", function () {
     this.beforeAll(async function () {
@@ -126,17 +127,19 @@ describe("Test for Stipend Request", function () {
         .put("/v1/admin/reject-stipend")
         .send({
           stipendRequestIds: [firstRequestId, firstRequestId + 1]
-        })
-    })
+        });
+    });
     it("should reflect in the database", async function () {
-      expect(res).to.have.status(200)
+      expect(res).to.have.status(200);
       // check that it reflects in database
       let newRequest = await models.stipendRequest.findOne({
-        where: { reasonForRequest: anotherCompleteStipendRequestData.reasonForRequest }
-      })
-      expect(newRequest.isApproved).to.equal(false)
-    })
-  })
+        where: {
+          reasonForRequest: anotherCompleteStipendRequestData.reasonForRequest
+        }
+      });
+      expect(newRequest.isApproved).to.equal(false);
+    });
+  });
 
   /**
    * @todo a test to make sure only admins can access route for approval/rejection

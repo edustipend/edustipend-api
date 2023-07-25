@@ -35,7 +35,7 @@ const anotherCompleteStipendRequestData = {
   stepsTakenToEaseProblem: "I go to expensive cyber cafes",
   potentialBenefits: "It would give me more practice time",
   futureHelpFromUser: "I will re-invest in edustipend"
-}
+};
 
 const incompleteStipendRequestData = {
   email: "tes@gmail.com",
