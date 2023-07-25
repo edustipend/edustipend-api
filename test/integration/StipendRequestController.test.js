@@ -21,7 +21,6 @@ describe("Test for Stipend Request", function () {
   });
 
   let res;
-  let secondRequest;
   let firstRequestId;
 
   describe("Test for sending stipend request", function () {
