@@ -27,15 +27,16 @@ const badResetData = {
   email: "tes@gmail.com"
 };
 
-const passwordCheck={
-  email: 'tes@gmail.com',
-  password: 'newPassword_123',
-  confirmPassword: 'newPassword'
-}
+const passwordCheck = {
+  email: "tes@gmail.com",
+  password: "newPassword_123",
+  confirmPassword: "newPassword"
+};
 
 module.exports = {
   registerUser,
   badRegisterUserRequest,
   BadResetPasswordData,
   badResetData,
-passwordCheck};
+  passwordCheck
+};

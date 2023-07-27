@@ -7,7 +7,7 @@
 // const server = require("../../server");
 // const models = require("../../models");
 // const {
- 
+
 //   passwordCheck
 // } = require("../dummyData");
 // const { declutter } = require("../../database/migration/test");
@@ -22,8 +22,12 @@ chai.use(chaiHttp);
 const expect = chai.expect;
 const server = require("../../server");
 const models = require("../../models");
-const { registerUser, BadResetPasswordData,
-   badResetData,badRegisterUserRequest, } = require("../dummyData");
+const {
+  registerUser,
+  BadResetPasswordData,
+  badResetData,
+  badRegisterUserRequest
+} = require("../dummyData");
 const { declutter } = require("../../database/migration/test");
 
 let res, newUser;
@@ -178,7 +182,3 @@ describe("Update Password Feature", async function () {
       });
   });
 });
-
-
-
-
