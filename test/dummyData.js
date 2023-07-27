@@ -19,32 +19,23 @@ const badRegisterUserRequest = {
   howDidYouHearAboutUs: "facebook"
 };
 
-const resetPassword = {
-  name: "eloghosa",
-  email: "tes@gmail.com"
-}
-
 const BadResetPasswordData = {
   name: "eloghosa"
-}
+};
 
 const badResetData = {
-  email: 'tes@gmail.com'
-}
+  email: "tes@gmail.com"
+};
 
-const updatePassword ={
-  email: "tes@gmail.com",
-  password: "12345",
-  confirmPassword: "12345",
-  verificationCode: "123456"
+const passwordCheck={
+  email: 'tes@gmail.com',
+  password: 'newPassword_123',
+  confirmPassword: 'newPassword'
 }
-
 
 module.exports = {
   registerUser,
   badRegisterUserRequest,
-  resetPassword,
   BadResetPasswordData,
   badResetData,
-  updatePassword
-};
+passwordCheck};
