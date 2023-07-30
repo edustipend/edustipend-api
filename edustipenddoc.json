@@ -251,6 +251,40 @@
           }
         }
       }
+    },
+    "/admin/application-window": {
+      "put": {
+        "tags": ["admin"],
+        "summary": "set application window",
+        "description": "Admin sets a new application window",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "set the next application window",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/set-application-window"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{ success: true, data: 'Application window has been set' }"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -350,6 +384,17 @@
           "type": "string"
         },
         "password": {
+          "type": "string"
+        }
+      }
+    },
+    "set-application-window": {
+      "required": ["startDate", "endDate"],
+      "properties": {
+        "startDate": {
+          "type": "string"
+        },
+        "endDate": {
           "type": "string"
         }
       }
