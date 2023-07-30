@@ -10,5 +10,5 @@ exports.isWindowOpen = async (req, res, next) => {
     });
   }
 
-  next();
+  return next();
 };
