@@ -77,6 +77,21 @@ class ApplicationWindow {
       }
     );
   }
+
+  /**
+   * @description returns a boolean on whether application window is open or not
+   */
+  static async isOpen() {
+    const isWindowOpen = await models.applicationWindow.findOne({
+      where: {
+        status: "active",
+        isClosedByAdmin: false
+      }
+    });
+
+    // return boolean equivalent of isWindowOpen
+    return !!isWindowOpen;
+  }
 }
 
 module.exports = ApplicationWindow;
