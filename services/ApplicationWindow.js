@@ -51,6 +51,20 @@ class ApplicationWindow {
       }
     );
   }
+
+  /**
+   * @description manually close an application window
+   */
+  static async manuallyClose() {
+    return await models.applicationWindow.update(
+      { isClosedByAdmin: true },
+      {
+        where: {
+          status: "active"
+        }
+      }
+    );
+  }
 }
 
 module.exports = ApplicationWindow;
