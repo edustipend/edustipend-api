@@ -3,5 +3,6 @@ module.exports = {
   Authentication: require("./Authentication"),
   Token: require("./Token"),
   Mail: require("./Mail"),
-  StipendRequest: require("./StipendRequest")
+  StipendRequest: require("./StipendRequest"),
+  ApplicationWindow: require("./ApplicationWindow")
 };
