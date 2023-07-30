@@ -1,4 +1,5 @@
 const models = require("../models");
+const { Op } = require("sequelize");
 const ErrorHandler = require("../utils/ErrorHandler");
 
 class ApplicationWindow {
@@ -12,7 +13,7 @@ class ApplicationWindow {
     const isClosedByAdmin = !!data.isClosedByAdmin;
 
     // Set application status to upcoming
-    const status = "upcoming";
+    let status = "upcoming";
 
     // Check if application window with the same startDate exists
     const existingRecord = await models.applicationWindow.findOne({
@@ -21,11 +22,20 @@ class ApplicationWindow {
       }
     });
 
+    // check if the start date is the same as the current date, and set status to active
+    const currentDate = new Date();
+    const currentDateOnly = currentDate.toISOString().split("T")[0];
+
+    // compare both dates in ISO format
+    if (data.startDate.toISOString().split("T")[0] === currentDateOnly) {
+      status = "active";
+    }
+
     // if it exists, modify it with the new endDate
     if (existingRecord) {
       Object.assign(existingRecord, {
         ...data,
-        status: "upcoming"
+        status
       });
       return await existingRecord.save();
     } // else, create a new record
@@ -46,7 +56,9 @@ class ApplicationWindow {
       { status: "expired" },
       {
         where: {
-          status: "upcoming"
+          status: {
+            [Op.or]: ["active", "upcoming"]
+          }
         }
       }
     );

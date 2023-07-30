@@ -3,7 +3,8 @@ const {
   rejectStipend
 } = require("../../controller/StipendRequestController");
 const {
-  setApplicationWindow
+  setApplicationWindow,
+  manuallyCloseApplicationWindow
 } = require("../../controller/ApplicationWindowController");
 
 const router = require("express").Router();
@@ -12,5 +13,6 @@ const router = require("express").Router();
 router.put("/approve-stipend", approveStipend);
 router.put("/reject-stipend", rejectStipend);
 router.put("/application-window", setApplicationWindow);
+router.put("/close-application-window", manuallyCloseApplicationWindow);
 
 module.exports = router;

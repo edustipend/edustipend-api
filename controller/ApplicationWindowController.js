@@ -6,8 +6,7 @@ const {
 
 /**
  * @description open a new application window
- * @route PUT /v1
- * @access private
+ * @route PUT /v1/admin/application-window
  */
 
 exports.setApplicationWindow = catchAsyncError(async (req, res, next) => {
@@ -23,3 +22,18 @@ exports.setApplicationWindow = catchAsyncError(async (req, res, next) => {
     message: "Application window has been set"
   });
 });
+
+/**
+ * @description An admin manually ends an application window
+ * @route PUT v1/admin/close-application-window
+ */
+exports.manuallyCloseApplicationWindow = catchAsyncError(
+  async (req, res, next) => {
+    await ApplicationWindow.manuallyClose();
+
+    return res.status(201).json({
+      success: true,
+      message: "Application window has been manually closed by an admin"
+    });
+  }
+);
