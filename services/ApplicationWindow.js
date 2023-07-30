@@ -12,23 +12,22 @@ class ApplicationWindow {
     const isClosedByAdmin = !!data.isClosedByAdmin;
 
     // Set application status to upcoming
-    const status = "upcoming"
+    const status = "upcoming";
 
     // Check if application window with the same startDate exists
     const existingRecord = await models.applicationWindow.findOne({
       where: {
         startDate: data.startDate
       }
-    })
+    });
 
     // if it exists, modify it with the new endDate
     if (existingRecord) {
       Object.assign(existingRecord, {
         ...data,
         status: "upcoming"
-      })
-      return await existingRecord.save()
-
+      });
+      return await existingRecord.save();
     } // else, create a new record
     else {
       return await models.applicationWindow.create({
@@ -38,7 +37,6 @@ class ApplicationWindow {
       });
     }
   }
-
 
   /**
    * @description set all previous application windows to "expired"
@@ -51,7 +49,7 @@ class ApplicationWindow {
           status: "upcoming"
         }
       }
-    )
+    );
   }
 }
 

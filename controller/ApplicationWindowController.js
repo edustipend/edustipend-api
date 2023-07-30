@@ -1,6 +1,8 @@
 const catchAsyncError = require("../middleware/catchAsyncError");
-const { ApplicationWindow } = require("../services")
-const { validateApplicationWindow } = require("../validation/ApplicationWindowValidation")
+const { ApplicationWindow } = require("../services");
+const {
+  validateApplicationWindow
+} = require("../validation/ApplicationWindowValidation");
 
 /**
  * @description open a new application window
@@ -10,15 +12,14 @@ const { validateApplicationWindow } = require("../validation/ApplicationWindowVa
 
 exports.setApplicationWindow = catchAsyncError(async (req, res, next) => {
   // First things first, set all previous "upcoming" statuses to "expired"
-  await ApplicationWindow.expireAll()
+  await ApplicationWindow.expireAll();
 
-  const validatedData = await validateApplicationWindow(req.body)
+  const validatedData = await validateApplicationWindow(req.body);
 
-  await ApplicationWindow.create(validatedData.value)
+  await ApplicationWindow.create(validatedData.value);
 
   return res.status(201).json({
     success: true,
     message: "Application window has been set"
-  })
-
-})
+  });
+});
