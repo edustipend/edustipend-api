@@ -21,6 +21,10 @@
     {
       "name": "admin",
       "description": "Everything about admin"
+    },
+    {
+      "name": "waitlist",
+      "description": "Everything about waitlist"
     }
   ],
   "consumes": ["application/json"],
@@ -251,6 +255,57 @@
           }
         }
       }
+    },
+    "/waitlist/join-waitlist": {
+      "post": {
+        "tags": ["waitlist"],
+        "summary": "join a waitlist",
+        "description": "Adds people to be notified when fresh application window opens",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User to be added to waitlist",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/join-waitlist"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "{ success: true, message: 'Successfully added to the waitlist'}"
+          },
+          "400": {
+            "description": "{ success: false, message: 'Request not completed'}"
+          },
+          "500": {
+            "description": "Could not connect to DB"
+          }
+        }
+      }
+    },
+    "/admin/notify-waitlist": {
+      "post": {
+        "tags": ["admin"],
+        "summary": "notify the waitlist",
+        "description": "Notify every email in the wait list",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "{ success: true, message: 'Successfully notified to the waitlist'}"
+          },
+          "400": {
+            "description": "{ success: false, message: 'Request not completed'}"
+          },
+          "500": {
+            "description": "Could not connect to DB"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -350,6 +405,14 @@
           "type": "string"
         },
         "password": {
+          "type": "string"
+        }
+      }
+    },
+    "join-waitlist": {
+      "required": ["email"],
+      "properties": {
+        "email": {
           "type": "string"
         }
       }

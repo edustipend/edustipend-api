@@ -95,6 +95,25 @@ class Mail {
       }
     );
   }
+
+  /**
+   * @description Send notification that user has been added to waitlist
+   * @param {*} email
+   */
+
+  static sendWelcomeToWaitlist(email) {
+    this._sendEmail(
+      {
+        email,
+        subject: "Welcome to the Waitlist",
+        template: "welcome-to-waitlist",
+        params: {}
+      },
+      (err, data) => {
+        if (err) console.log(err);
+      }
+    );
+  }
 }
 
 module.exports = Mail;
