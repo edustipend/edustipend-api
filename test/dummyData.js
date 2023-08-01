@@ -63,7 +63,7 @@ module.exports = {
   badRegisterUserRequest,
   BadResetPasswordData,
   badResetData,
-  passwordCheck
+  passwordCheck,
   completeStipendRequestData,
   incompleteStipendRequestData,
   badStipendRequestDataType
