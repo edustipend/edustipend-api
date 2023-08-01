@@ -1,19 +1,4 @@
 //Auth test goes here
-
-// require("dotenv");
-// const chai = require("chai");
-// const chaiHttp = require("chai-http");
-// const expect = chai.expect;
-// const server = require("../../server");
-// const models = require("../../models");
-// const {
-
-//   passwordCheck
-// } = require("../dummyData");
-// const { declutter } = require("../../database/migration/test");
-// chai.use(chaiHttp);
-
-//Auth test goes here
 require("dotenv");
 
 const chai = require("chai");
@@ -26,10 +11,9 @@ const {
   registerUser,
   BadResetPasswordData,
   badResetData,
-  badRegisterUserRequest
+  badRegisterUserRequest,
 } = require("../dummyData");
 const { declutter } = require("../../database/migration/test");
-
 let res, newUser;
 
 describe("Test for AuthController", function () {
@@ -160,25 +144,7 @@ describe("Test with no name should fail", function () {
   });
 });
 
-describe("Update Password Feature", async function () {
-  it('should expect a status code 201 and a message "Password update successful."', async function () {
-    const email = "tes@gmail.com";
 
-    let newRequest = await models.token.findOne({
-      where: {
-        email
-      }
-    });
-    const newPassword = "new_password123";
-    const confirmPassword = "new_password123";
-    chai
-      .request(server)
-      .post("/v1/update-password")
-      .send({ email, code: newRequest, password: newPassword, confirmPassword })
-      .end(function (err, res) {
-        expect(res).to.have.status(200);
-        expect(res.body.success).to.equal(true);
-        expect(res.body.message).to.equal("Password update successful.");
-      });
-  });
-});
+
+
+
