@@ -1,4 +1,19 @@
 //Auth test goes here
+
+// require("dotenv");
+// const chai = require("chai");
+// const chaiHttp = require("chai-http");
+// const expect = chai.expect;
+// const server = require("../../server");
+// const models = require("../../models");
+// const {
+
+//   passwordCheck
+// } = require("../dummyData");
+// const { declutter } = require("../../database/migration/test");
+// chai.use(chaiHttp);
+
+//Auth test goes here
 require("dotenv");
 
 const chai = require("chai");
@@ -12,8 +27,10 @@ const {
   BadResetPasswordData,
   badResetData,
   badRegisterUserRequest,
+  passwordCheck
 } = require("../dummyData");
 const { declutter } = require("../../database/migration/test");
+const { updatePassword } = require("../../controller/AuthController");
 let res, newUser;
 
 describe("Test for AuthController", function () {
@@ -144,7 +161,52 @@ describe("Test with no name should fail", function () {
   });
 });
 
+describe("password check", function () {
+  this.beforeAll(async function () {
+    this.timeout(0);
 
+    newUser = await models.user.findOne({
+      where: { email: passwordCheck.email }
+    });
+    code = await models.token.findOne({
+      where: { email: passwordCheck.email }
+    });
+    password = newUser.password;
 
+    confirmPassword = password;
 
+    res = await chai.request(server).post("/v1/update-password").send({
+      verificationCode: code.dataValues.code,
+      email: newUser.email,
+      password,
+      confirmPassword
+    });
+  });
 
+  it("should expect a status 0f 200", async function () {
+    expect(res).to.have.status(200);
+  });
+});
+
+// describe("Update Password Feature",  function () {
+//   it('should expect a status code 201 and a message "Password update successful."', async function () {
+//     const email = "tes@gmail.com";
+
+//     let newRequest = await models.token.findOne({
+//       where: {
+//         email
+//       }
+//     });
+//     const Password = "new_password123";
+//     const confirm = "new_password123";
+//      await chai
+//       .request(server)
+//       .post("/v1/update-password")
+//       .send({ email, code: newRequest, password: Password, confirmPassword:confirm })
+//       .end(function (err, res) {
+//         expect(res).to.have.status(200);
+//         expect(res.body.success).to.equal(true);
+//         expect(res.body.message).to.equal("Password update successful.");
+//       });
+//   });
+// });

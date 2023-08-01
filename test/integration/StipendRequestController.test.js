@@ -19,7 +19,6 @@ describe("Test for Stipend Request", function () {
     this.timeout(0);
     await declutter();
   });
-  
 
   let res;
   let firstRequestId;
