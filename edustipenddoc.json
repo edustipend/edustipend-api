@@ -253,7 +253,7 @@
       }
     },
     "/admin/application-window": {
-      "put": {
+      "post": {
         "tags": ["admin"],
         "summary": "set application window",
         "description": "Admin sets a new application window",

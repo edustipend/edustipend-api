@@ -69,10 +69,13 @@ class ApplicationWindow {
    */
   static async manuallyClose() {
     return await models.applicationWindow.update(
-      { isClosedByAdmin: true },
+      {
+        isClosedByAdmin: true,
+        status: "expired"
+      },
       {
         where: {
-          status: "active"
+          [Op.or]: [{ status: "active" }, { status: "upcoming" }]
         }
       }
     );

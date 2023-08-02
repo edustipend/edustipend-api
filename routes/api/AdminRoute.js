@@ -12,7 +12,7 @@ const router = require("express").Router();
 //Todo: Add isAdmin middleware to routes after testing and speaking with Uduak
 router.put("/approve-stipend", approveStipend);
 router.put("/reject-stipend", rejectStipend);
-router.put("/application-window", setApplicationWindow);
+router.post("/application-window", setApplicationWindow);
 router.put("/close-application-window", manuallyCloseApplicationWindow);
 
 module.exports = router;
