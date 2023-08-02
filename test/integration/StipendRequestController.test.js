@@ -9,7 +9,8 @@ const models = require("../../models");
 const {
   completeStipendRequestData,
   incompleteStipendRequestData,
-  badStipendRequestDataType
+  badStipendRequestDataType,
+  anotherCompleteStipendRequestData
 } = require("../dummyData");
 const { declutter } = require("../../database/migration/test");
 
@@ -20,6 +21,7 @@ describe("Test for Stipend Request", function () {
   });
 
   let res;
+  let firstRequestId;
 
   describe("Test for sending stipend request", function () {
     this.beforeAll(async function () {
@@ -80,16 +82,79 @@ describe("Test for Stipend Request", function () {
       let newRequest = await models.stipendRequest.findOne({
         where: { reasonForRequest: completeStipendRequestData.reasonForRequest }
       });
+      // get the request id of this request and save for future tests
+      firstRequestId = newRequest.id;
       expect(newRequest).to.include({ ...completeStipendRequestData });
     });
   });
+
+  describe("Admin approving multiple stipend requests should work", function () {
+    this.beforeAll(async function () {
+      this.timeout(0);
+
+      // I will be sending a second request, and putting the ID to be trackable from the first req
+      await chai
+        .request(server)
+        .post("/v1/user/request-stipend")
+        .send({ ...anotherCompleteStipendRequestData, id: firstRequestId + 1 });
+
+      res = await chai
+        .request(server)
+        .put("/v1/admin/approve-stipend")
+        .send({
+          stipendRequestIds: [firstRequestId, firstRequestId + 1]
+        });
+    });
+    it("should reflect in the database", async function () {
+      expect(res).to.have.status(200);
+      // check that it reflects in database
+      let newRequest = await models.stipendRequest.findOne({
+        where: {
+          reasonForRequest: anotherCompleteStipendRequestData.reasonForRequest
+        }
+      });
+      expect(newRequest.isApproved).to.equal(true);
+    });
+  });
+
+  describe("Admin rejecting multiple stipend requests should work", function () {
+    this.beforeAll(async function () {
+      this.timeout(0);
+
+      res = await chai
+        .request(server)
+        .put("/v1/admin/reject-stipend")
+        .send({
+          stipendRequestIds: [firstRequestId, firstRequestId + 1]
+        });
+    });
+    it("should reflect in the database", async function () {
+      expect(res).to.have.status(200);
+      // check that it reflects in database
+      let newRequest = await models.stipendRequest.findOne({
+        where: {
+          reasonForRequest: anotherCompleteStipendRequestData.reasonForRequest
+        }
+      });
+      expect(newRequest.isApproved).to.equal(false);
+    });
+  });
+
+  /**
+   * @todo a test to make sure only admins can access route for approval/rejection
+   */
+  describe("Only admins can access route", function () {
+    /**
+     * @todo add beforeAll function and code logic
+     */
+  })
 
   describe("All applications must fall under the application window, or fail", function () {
     /**
      * @todo add beforeAll function
      */
 
-    it.skip("should not allow applications to happen outside the application window", async function () {});
-    it.skip("should make sure that applications within that window work", async function () {});
+    it.skip("should not allow applications to happen outside the application window", async function () { });
+    it.skip("should make sure that applications within that window work", async function () { });
   });
 });
