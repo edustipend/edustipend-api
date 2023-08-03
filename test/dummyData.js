@@ -19,6 +19,21 @@ const badRegisterUserRequest = {
   howDidYouHearAboutUs: "facebook"
 };
 
+const BadResetPasswordData = {
+  name: "eloghosa"
+};
+
+const badResetData = {
+  email: "tes@gmail.com"
+};
+
+const passwordCheck = {
+  email: "tes@gmail.com",
+  password: "newPassword_123",
+  confirmPassword: "newPassword_123",
+  code: "123456"
+};
+
 const completeStipendRequestData = {
   email: "tes@gmail.com",
   stipendCategory: "course",
@@ -56,6 +71,9 @@ const badStipendRequestDataType = {
 module.exports = {
   registerUser,
   badRegisterUserRequest,
+  BadResetPasswordData,
+  badResetData,
+  passwordCheck,
   completeStipendRequestData,
   incompleteStipendRequestData,
   badStipendRequestDataType,
