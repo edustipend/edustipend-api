@@ -53,11 +53,50 @@ const badStipendRequestDataType = {
   hasReceivedLaptopBefore: "Not received"
 };
 
+/**
+ * I will set a startDate that will always be 2 days ahead of the current date
+ * And an endDate that will always be 5 days ahead of the current date
+ * So that the test will never fail because of expiration of dates
+ */
+
+// today's date
+const todaysDate = new Date();
+todaysDate.toISOString().split("T")[0];
+
+// startDate
+const startDate = new Date();
+startDate.setDate(startDate.getDate() + 2);
+startDate.toISOString().split("T")[0];
+
+// endDate
+const endDate = new Date();
+endDate.setDate(startDate.getDate() + 5);
+endDate.toISOString().split("T")[0];
+
+// upcoming date object
+const validUpcomingApplicationWindow = {
+  startDate,
+  endDate
+};
+
+const validActiveApplicationWindow = {
+  startDate: todaysDate,
+  endDate
+};
+
+const invalidApplicationWindowFormat = {
+  startDate: "09-01-1998",
+  endDate: "09-08-1998"
+};
+
 module.exports = {
   registerUser,
   badRegisterUserRequest,
   completeStipendRequestData,
   incompleteStipendRequestData,
   badStipendRequestDataType,
-  anotherCompleteStipendRequestData
+  anotherCompleteStipendRequestData,
+  validUpcomingApplicationWindow,
+  validActiveApplicationWindow,
+  invalidApplicationWindowFormat
 };

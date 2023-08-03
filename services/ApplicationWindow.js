@@ -40,6 +40,7 @@ class ApplicationWindow {
       return await existingRecord.save();
     } // else, create a new record
     else {
+      this.expireAll();
       return await models.applicationWindow.create({
         ...data,
         status,
