@@ -514,10 +514,24 @@
       }
     },
     "join-waitlist": {
-      "required": ["email"],
+      "required": ["email", "name", "howDidYouHearAboutUs"],
       "properties": {
         "email": {
           "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "howDidYouHearAboutUs": {
+          "type": "string",
+          "enum": [
+            "facebook",
+            "twitter",
+            "instagram",
+            "whatsapp",
+            "friend",
+            "other"
+          ]
         }
       }
     }
