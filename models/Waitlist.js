@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
             msg: "howDidYouHearAboutUs field is required"
           }
         }
-      },
+      }
     },
     {
       paranoid: true
