@@ -1,5 +1,11 @@
 require("dotenv").config();
-const { sequelize, user, token, stipendRequest } = require("../../models");
+const {
+  sequelize,
+  user,
+  token,
+  stipendRequest,
+  waitlist
+} = require("../../models");
 
 (async () => {
   try {
@@ -10,6 +16,7 @@ const { sequelize, user, token, stipendRequest } = require("../../models");
     await user.sync({ alter: true });
     await token.sync({ alter: true });
     await stipendRequest.sync({ alter: true });
+    await waitlist.sync({ alter: true });
 
     console.log("Database synchronization completed.");
   } catch (error) {

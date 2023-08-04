@@ -27,6 +27,27 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: false
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: {
+            args: true,
+            msg: "name field is required"
+          }
+        }
+      },
+      howDidYouHearAboutUs: {
+        type: DataTypes.ENUM,
+        allowNull: false,
+        values: ["facebook", "twitter", "instagram", "other"],
+        validate: {
+          notNull: {
+            args: true,
+            msg: "howDidYouHearAboutUs field is required"
+          }
+        }
       }
     },
     {

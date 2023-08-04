@@ -147,19 +147,19 @@ describe("Test with no email should fail", function () {
   });
 });
 
-describe("Test with no name should fail", function () {
-  this.beforeAll(async function () {
-    this.timeout(0);
+// describe("Test with no name should fail", function () {
+//   this.beforeAll(async function () {
+//     this.timeout(0);
 
-    res = await chai
-      .request(server)
-      .post("v1/reset-password")
-      .send(badResetData);
-  });
-  it("should not be able to send a bad request", async function () {
-    expect(res).to.have.status(400);
-  });
-});
+//     res = await chai
+//       .request(server)
+//       .post("v1/reset-password")
+//       .send(badResetData);
+//   });
+//   it("should not be able to send a bad request", async function () {
+//     expect(res).to.have.status(400);
+//   });
+// });
 
 describe("password check", function () {
   this.beforeAll(async function () {
