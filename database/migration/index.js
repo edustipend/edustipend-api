@@ -4,7 +4,8 @@ const {
   user,
   token,
   stipendRequest,
-  applicationWindow
+  waitlist,
+  applicationWindow,
 } = require("../../models");
 
 (async () => {
@@ -16,6 +17,7 @@ const {
     await user.sync({ alter: true });
     await token.sync({ alter: true });
     await stipendRequest.sync({ alter: true });
+    await waitlist.sync({ alter: true });
     await applicationWindow.sync({ alter: true });
 
     console.log("Database synchronization completed.");
