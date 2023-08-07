@@ -5,7 +5,7 @@ const {
   token,
   stipendRequest,
   waitlist,
-  applicationWindow,
+  applicationWindow
 } = require("../../models");
 
 (async () => {
