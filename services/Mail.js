@@ -96,6 +96,57 @@ class Mail {
     );
   }
 
+  
+  static applicationStatus(email,stipendCategory, message, subject) {
+    this._sendEmail(
+      {
+        email,
+        subject: "Application Status",
+        template: "update-for-recieved",
+        params: {
+          email: email,
+          stipendRequest: stipendCategory
+        }
+      },
+      (err, data) => {
+        if (err) console.log(err);
+      }
+    );
+  }
+
+  static applicationStatusForApproved(email,stipendCategory, message, subject) {
+    this._sendEmail(
+      {
+        email,
+        subject: "Application Status",
+        template: "update-for-approved",
+        params: {
+          email: email,
+          stipendRequest: stipendCategory
+        }
+      },
+      (err, data) => {
+        if (err) console.log(err);
+      }
+    );
+  }
+  static applicationStatusForDenied(email,stipendCategory, message, subject) {
+    this._sendEmail(
+      {
+        email,
+        subject: "Application Status",
+        template: "update-for-denied",
+        params: {
+          email: email,
+          stipendRequest: stipendCategory
+        }
+      },
+      (err, data) => {
+        if (err) console.log(err);
+      }
+    );
+  }
+
   /**
    * @description Send notification that user has been added to waitlist
    * @param {*} email
