@@ -1,4 +1,7 @@
-const { requestStipend, applicationStatus } = require("../../controller/StipendRequestController");
+const {
+  requestStipend,
+  applicationStatus
+} = require("../../controller/StipendRequestController");
 
 const router = require("express").Router();
 

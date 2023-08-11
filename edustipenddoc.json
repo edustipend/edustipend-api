@@ -158,7 +158,7 @@
           "200": {
             "description": "{ success: false, message: 'Denied' } "
           },
-          "404":{
+          "404": {
             "description": "{ success: false, error: 'Application does not exist.' }"
           }
         }
@@ -386,8 +386,8 @@
     },
     "application-status": {
       "required": ["id"],
-      "properties":{
-        "id":{
+      "properties": {
+        "id": {
           "type": "number"
         }
       }

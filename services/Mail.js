@@ -96,8 +96,7 @@ class Mail {
     );
   }
 
-  
-  static applicationStatus(email,stipendCategory, message, subject) {
+  static applicationStatus(email, stipendCategory, message, subject) {
     this._sendEmail(
       {
         email,
@@ -114,7 +113,12 @@ class Mail {
     );
   }
 
-  static applicationStatusForApproved(email,stipendCategory, message, subject) {
+  static applicationStatusForApproved(
+    email,
+    stipendCategory,
+    message,
+    subject
+  ) {
     this._sendEmail(
       {
         email,
@@ -130,7 +134,7 @@ class Mail {
       }
     );
   }
-  static applicationStatusForDenied(email,stipendCategory, message, subject) {
+  static applicationStatusForDenied(email, stipendCategory, message, subject) {
     this._sendEmail(
       {
         email,
