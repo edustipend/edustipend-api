@@ -15,7 +15,7 @@ exports.joinWaitlist = catchAsyncError(async (req, res, next) => {
 
   const newWaitlistEntry = await Waitlist.addToWaitlist(validatedData.value);
 
-  Mail.sendWelcomeToWaitlist(newWaitlistEntry.email);
+  Mail.sendWelcomeToWaitlist(newWaitlistEntry.email, newWaitlistEntry.name);
 
   return res.status(201).json({
     success: true,
