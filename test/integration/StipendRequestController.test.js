@@ -145,7 +145,6 @@ describe("Test for Stipend Request", function () {
   /**
    * @todo a test to make sure only admins can access route for approval/rejection
    */
-  
 });
 //
 describe("Another Test for sending stipend request", function () {
@@ -163,37 +162,45 @@ describe("Another Test for sending stipend request", function () {
     expect(res.body.message).to.equal("Request successfully created");
   });
 });
-let res
+let res;
 
-describe('Application Status for denied', function () {
-  this.beforeAll(async function(){
-    this.timeout(0)
+describe("Application Status for denied", function () {
+  this.beforeAll(async function () {
+    this.timeout(0);
     // const user = 77
-    const userId = await models.stipendRequest.findOne({where: {email: anotherCompleteStipendRequestData.email}});
-    const user = userId.id
-   res = await chai.request(server).get(`/v1/user/application-status/${user}`).send({id: user})
-  })
+    const userId = await models.stipendRequest.findOne({
+      where: { email: anotherCompleteStipendRequestData.email }
+    });
+    const user = userId.id;
+    res = await chai
+      .request(server)
+      .get(`/v1/user/application-status/${user}`)
+      .send({ id: user });
+  });
 
-  it('should return "rejected" for a user with a denied application', async() => {
-    expect(res).to.have.status(200)
-    expect(res.body.message).to.equal('Rejected')
-    expect(res.body.success).to.equal(true)
+  it('should return "rejected" for a user with a denied application', async () => {
+    expect(res).to.have.status(200);
+    expect(res.body.message).to.equal("Rejected");
+    expect(res.body.success).to.equal(true);
   });
 });
 
-describe('Application Status for approved', function () {
-  this.beforeAll(async function(){
-    this.timeout(0)
-    const userId = await models.stipendRequest.findOne({where: {email: approvedUser.email}});
-    const user = userId.id
-   res = await chai.request(server).get(`/v1/user/application-status/${user}`).send({id: user})
-  })
+describe("Application Status for approved", function () {
+  this.beforeAll(async function () {
+    this.timeout(0);
+    const userId = await models.stipendRequest.findOne({
+      where: { email: approvedUser.email }
+    });
+    const user = userId.id;
+    res = await chai
+      .request(server)
+      .get(`/v1/user/application-status/${user}`)
+      .send({ id: user });
+  });
 
-  it('should return "Approved" for a user with an approved application', async() => {
-    expect(res).to.have.status(200)
-    expect(res.body.message).to.equal('Approved')
-    expect(res.body.success).to.equal(true)
+  it('should return "Approved" for a user with an approved application', async () => {
+    expect(res).to.have.status(200);
+    expect(res.body.message).to.equal("Approved");
+    expect(res.body.success).to.equal(true);
   });
 });
-
-

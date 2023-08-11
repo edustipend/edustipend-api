@@ -53,16 +53,16 @@ const badStipendRequestDataType = {
   futureHelpFromUser: "I will give back to the community",
   hasReceivedLaptopBefore: "Not received"
 };
-const approvedUser ={
-email: 'linda@gmail.com',
-stipendCategory: "data",
-reasonForRequest: "To help me pleas",
-stepsTakenToEaseProblem: "none yet",
-potentialBenefits: "I could get to learn a lot",
-futureHelpFromUser: "I will give back to the community",
-hasReceivedLaptopBefore: "Not received",
-isApproved: true
-}
+const approvedUser = {
+  email: "linda@gmail.com",
+  stipendCategory: "data",
+  reasonForRequest: "To help me pleas",
+  stepsTakenToEaseProblem: "none yet",
+  potentialBenefits: "I could get to learn a lot",
+  futureHelpFromUser: "I will give back to the community",
+  hasReceivedLaptopBefore: "Not received",
+  isApproved: true
+};
 
 module.exports = {
   registerUser,
