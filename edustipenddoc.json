@@ -132,6 +132,83 @@
         }
       }
     },
+
+    "/reset-password": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Reset your password",
+        "description": "Edustipend users can reset password with this endpoint",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "enter user email and confirmation code",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/reset-password"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "{ success: true, message: 'Account Verification successful.', token: 'Bearer token'}"
+          },
+          "400": {
+            "description": "{ success: false, message: 'Verification code is required' } "
+          },
+          "401": {
+            "description": "{ success: false, message: 'Invalid Verification code' } "
+          },
+          "404": {
+            "description": "{ success: false, message: 'User not found' } "
+          },
+          "500": {
+            "description": "Could not connect to DB"
+          }
+        }
+      }
+    },
+    "/update-password": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Update your password",
+        "description": "Edustipend users can update password with this endpoint",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "enter user email and confirmation code",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/update-password"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "{ success: true, message: 'Account Verification successful.', token: 'Bearer token'}"
+          },
+          "400": {
+            "description": "{ success: false, message: 'Verification code is required' } "
+          },
+          "401": {
+            "description": "{ success: false, message: 'Invalid Verification code' } "
+          },
+          "404": {
+            "description": "{ success: false, message: 'User not found' } "
+          },
+          "500": {
+            "description": "Could not connect to DB"
+          }
+        }
+      }
+    },
     "/login": {
       "post": {
         "tags": ["auth"],
@@ -283,6 +360,37 @@
           },
           "500": {
             "description": "Could not connect to DB"
+          }
+        }
+      }
+    },
+    "/user/application-status/{userId}": {
+      "get": {
+        "tags": ["stipend"],
+        "summary": "Get a user stipend application status",
+        "description": "Edustipend users can get their stipend application status with this end point",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "description": "get the user id",
+            "required": true,
+            "type": "number",
+            "schema": {
+              "$ref": "#/definitions/application-status"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "{ success: true, message: 'Approved.'}"
+          },
+          "200": {
+            "description": "{ success: false, message: 'Denied' } "
+          },
+          "404": {
+            "description": "{ success: false, error: 'Application does not exist.' }"
           }
         }
       }
