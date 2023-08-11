@@ -1,4 +1,19 @@
 //Auth test goes here
+
+// require("dotenv");
+// const chai = require("chai");
+// const chaiHttp = require("chai-http");
+// const expect = chai.expect;
+// const server = require("../../server");
+// const models = require("../../models");
+// const {
+
+//   passwordCheck
+// } = require("../dummyData");
+// const { declutter } = require("../../database/migration/test");
+// chai.use(chaiHttp);
+
+//Auth test goes here
 require("dotenv");
 
 const chai = require("chai");
@@ -7,9 +22,15 @@ chai.use(chaiHttp);
 const expect = chai.expect;
 const server = require("../../server");
 const models = require("../../models");
-const { registerUser, badRegisterUserRequest } = require("../dummyData");
+const {
+  registerUser,
+  BadResetPasswordData,
+  badResetData,
+  badRegisterUserRequest,
+  passwordCheck
+} = require("../dummyData");
 const { declutter } = require("../../database/migration/test");
-
+const { updatePassword } = require("../../controller/AuthController");
 let res, newUser;
 
 describe("Test for AuthController", function () {
@@ -90,3 +111,102 @@ describe("Test for AuthController", function () {
     });
   });
 });
+
+describe("Test for reset password", function () {
+  this.beforeAll(async function () {
+    this.timeout(0);
+
+    res = await chai
+      .request(server)
+      .post("/v1/reset-password")
+      .send(registerUser);
+  });
+
+  it("should be able to successfully reset a user password", async function () {
+    expect(res).to.have.status(201);
+    expect(res.body.success).to.equal(true);
+    expect(res.body.message).to.equal(
+      "Please check your email for a reset password code"
+    );
+  });
+});
+
+describe("Test with no email should fail", function () {
+  this.beforeAll(async function () {
+    this.timeout(0);
+
+    res = await chai
+      .request(server)
+      .post("/v1/reset-password")
+      .send(BadResetPasswordData);
+  });
+  it("should not be able to send a bad request", async function () {
+    expect(res).to.have.status(400);
+    expect(res.body.success).to.equal(false);
+    expect(res.body.message).to.equal("Email is required");
+  });
+});
+
+// describe("Test with no name should fail", function () {
+//   this.beforeAll(async function () {
+//     this.timeout(0);
+
+//     res = await chai
+//       .request(server)
+//       .post("v1/reset-password")
+//       .send(badResetData);
+//   });
+//   it("should not be able to send a bad request", async function () {
+//     expect(res).to.have.status(400);
+//   });
+// });
+
+describe("password check", function () {
+  this.beforeAll(async function () {
+    this.timeout(0);
+
+    newUser = await models.user.findOne({
+      where: { email: passwordCheck.email }
+    });
+    code = await models.token.findOne({
+      where: { email: passwordCheck.email }
+    });
+    password = newUser.password;
+
+    confirmPassword = password;
+
+    res = await chai.request(server).post("/v1/update-password").send({
+      verificationCode: code.dataValues.code,
+      email: newUser.email,
+      password,
+      confirmPassword
+    });
+  });
+
+  it("should expect a status 0f 200", async function () {
+    expect(res).to.have.status(200);
+  });
+});
+
+// describe("Update Password Feature",  function () {
+//   it('should expect a status code 201 and a message "Password update successful."', async function () {
+//     const email = "tes@gmail.com";
+
+//     let newRequest = await models.token.findOne({
+//       where: {
+//         email
+//       }
+//     });
+//     const Password = "new_password123";
+//     const confirm = "new_password123";
+//      await chai
+//       .request(server)
+//       .post("/v1/update-password")
+//       .send({ email, code: newRequest, password: Password, confirmPassword:confirm })
+//       .end(function (err, res) {
+//         expect(res).to.have.status(200);
+//         expect(res.body.success).to.equal(true);
+//         expect(res.body.message).to.equal("Password update successful.");
+//       });
+//   });
+// });
