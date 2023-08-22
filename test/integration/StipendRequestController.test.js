@@ -143,4 +143,18 @@ describe("Test for Stipend Request", function () {
   /**
    * @todo a test to make sure only admins can access route for approval/rejection
    */
+  describe("Only admins can access route", function () {
+    /**
+     * @todo add beforeAll function and code logic
+     */
+  });
+
+  describe("All applications must fall under the application window, or fail", function () {
+    /**
+     * @todo add beforeAll function
+     */
+
+    it.skip("should not allow applications to happen outside the application window", async function () {});
+    it.skip("should make sure that applications within that window work", async function () {});
+  });
 });
