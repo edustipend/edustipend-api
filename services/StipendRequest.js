@@ -80,14 +80,14 @@ class StipendRequest {
       where: {
         email: email
       },
-      order: [['createdAt', 'DESC']]
-    })
+      order: [["createdAt", "DESC"]]
+    });
 
     if (!stipendRequest) {
-      throw new ErrorHandler("No previous stipend request found", 404)
+      throw new ErrorHandler("No previous stipend request found", 404);
     }
 
-    return stipendRequest
+    return stipendRequest;
   }
 }
 

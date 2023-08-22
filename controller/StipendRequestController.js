@@ -67,10 +67,10 @@ exports.rejectStipend = catchAsyncError(async ({ body }, res, next) => {
  * @access Private
  */
 exports.oneClickApply = catchAsyncError(async (req, res, next) => {
-  const lastUsedData = await StipendRequest.getMostRecent(req.params.email)
+  const lastUsedData = await StipendRequest.getMostRecent(req.params.email);
 
   return res.status(200).json({
     success: true,
     message: lastUsedData
-  })
-})
+  });
+});
