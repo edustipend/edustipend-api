@@ -69,6 +69,26 @@ class StipendRequest {
       throw new ErrorHandler("Application not found", 404);
     }
   }
+
+  /**
+   * @description Get most recent stipend request
+   * @param {string} email
+   */
+
+  static async getMostRecent(email) {
+    const stipendRequest = await models.stipendRequest.findOne({
+      where: {
+        email: email
+      },
+      order: [['createdAt', 'DESC']]
+    })
+
+    if (!stipendRequest) {
+      throw new ErrorHandler("No previous stipend request found", 404)
+    }
+
+    return stipendRequest
+  }
 }
 
 module.exports = StipendRequest;
