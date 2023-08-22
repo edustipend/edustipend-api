@@ -1,5 +1,12 @@
 require("dotenv").config();
-const { sequelize, user, token, stipendRequest } = require("../../models");
+const {
+  sequelize,
+  user,
+  token,
+  stipendRequest,
+  applicationWindow,
+  waitlist
+} = require("../../models");
 
 exports.declutter = async () => {
   try {
@@ -7,6 +14,8 @@ exports.declutter = async () => {
     await user.destroy({ where: {}, force: true });
     await token.destroy({ where: {}, force: true });
     await stipendRequest.destroy({ where: {}, force: true });
+    await waitlist.destroy({ where: {}, force: true });
+    await applicationWindow.destroy({ where: {}, force: true });
   } catch (e) {
     console.log(e);
   }

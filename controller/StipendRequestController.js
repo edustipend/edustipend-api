@@ -1,5 +1,4 @@
 const catchAsyncError = require("../middleware/catchAsyncError");
-const ErrorHandler = require("../utils/ErrorHandler");
 const { StipendRequest, Mail } = require("../services");
 const {
   validateStipendRequest,

@@ -4,5 +4,6 @@ module.exports = {
   Token: require("./Token"),
   Mail: require("./Mail"),
   StipendRequest: require("./StipendRequest"),
-  Waitlist: require("./Waitlist")
+  Waitlist: require("./Waitlist"),
+  ApplicationWindow: require("./ApplicationWindow")
 };

@@ -174,13 +174,15 @@ class Mail {
    * @param {*} email
    */
 
-  static sendWelcomeToWaitlist(email) {
+  static sendWelcomeToWaitlist(email, name) {
     this._sendEmail(
       {
         email,
         subject: "Welcome to the Waitlist",
         template: "welcome-to-waitlist",
-        params: {}
+        params: {
+          name
+        }
       },
       (err, data) => {
         if (err) console.log(err);
