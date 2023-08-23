@@ -66,7 +66,7 @@ exports.rejectStipend = catchAsyncError(async ({ body }, res, next) => {
  * @route GET /v1/user/one-click-apply
  * @access Private
  */
-exports.oneClickApply = catchAsyncError(async (req, res, next) => {
+exports.retrieveForOneClickApply = catchAsyncError(async (req, res, next) => {
   const lastUsedData = await StipendRequest.getMostRecent(req.params.email);
 
   return res.status(200).json({

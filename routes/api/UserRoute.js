@@ -1,6 +1,6 @@
 const {
   requestStipend,
-  oneClickApply
+  retrieveForOneClickApply
 } = require("../../controller/StipendRequestController");
 const {
   isWindowOpen
@@ -14,6 +14,6 @@ const router = require("express").Router();
 
 // router.use(isWindowOpen)
 router.post("/request-stipend", requestStipend);
-router.get("/one-click-apply/:email", oneClickApply);
+router.get("/one-click-apply/:email", retrieveForOneClickApply);
 
 module.exports = router;
