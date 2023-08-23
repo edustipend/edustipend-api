@@ -70,7 +70,6 @@ describe("Test for Stipend Request", function () {
   // });
 
   describe("Successful stipend request will show in the database", function () {
-
     it("should be able to check that sent requests reflect in the database", async function () {
       let newRequest = await models.stipendRequest.findOne({
         where: { reasonForRequest: completeStipendRequestData.reasonForRequest }
@@ -153,23 +152,27 @@ describe("Test for Stipend Request", function () {
 
   describe("Data from last stipend request must be retrievable", function () {
     this.beforeAll(async function () {
-      this.timeout(0)
+      this.timeout(0);
 
       // I need to introduce a small delay so that the last request will come seconds later
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       await chai
         .request(server)
         .post("/v1/user/request-stipend")
-        .send({ ...completeStipendRequestData, id: firstRequestId + 2, stipendCategory: "data" })
+        .send({
+          ...completeStipendRequestData,
+          id: firstRequestId + 2,
+          stipendCategory: "data"
+        });
 
       res = await chai
         .request(server)
-        .get(`/v1/user/one-click-apply/${completeStipendRequestData.email}`)
-    })
+        .get(`/v1/user/one-click-apply/${completeStipendRequestData.email}`);
+    });
 
     it("should return the newer request", async function () {
-      expect(res.body.message.id).to.equal(firstRequestId + 2)
-    })
-  })
+      expect(res.body.message.id).to.equal(firstRequestId + 2);
+    });
+  });
 });

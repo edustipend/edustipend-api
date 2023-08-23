@@ -64,7 +64,7 @@ const badStipendRequestDataType = {
   reasonForRequest: "To help me with one",
   stepsTakenToEaseProblem: "I have used pirate sites",
   potentialBenefits: "I could get to learn a lot",
-  futureHelpFromUser: "I will give back to the community",
+  futureHelpFromUser: "I will give back to the community"
 };
 
 /**
