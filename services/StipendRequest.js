@@ -87,7 +87,17 @@ class StipendRequest {
       throw new ErrorHandler("No previous stipend request found", 404);
     }
 
-    return stipendRequest;
+    const filteredResponse = {
+      id: stipendRequest.id,
+      email: stipendRequest.email,
+      stipendCategory: stipendRequest.stipendCategory,
+      reasonForRequest: stipendRequest.reasonForRequest,
+      stepsTakenToEaseProblem: stipendRequest.stepsTakenToEaseProblem,
+      potentialBenefits: stipendRequest.potentialBenefits,
+      futureHelpFromUser: stipendRequest.futureHelpFromUser
+    };
+
+    return filteredResponse;
   }
 }
 
