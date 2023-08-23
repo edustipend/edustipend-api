@@ -16,7 +16,7 @@ exports.setApplicationWindow = catchAsyncError(async (req, res, next) => {
 
   const validatedData = await validateApplicationWindow(req.body);
   if (validatedData.error) {
-    throw new ErrorHandler(validatedData.error, 400)
+    throw new ErrorHandler(validatedData.error, 400);
   }
 
   await ApplicationWindow.create(validatedData.value);

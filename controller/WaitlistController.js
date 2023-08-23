@@ -14,7 +14,7 @@ const {
 exports.joinWaitlist = catchAsyncError(async (req, res, next) => {
   const validatedData = await validateWaitlistEntry(req.body);
   if (validatedData.error) {
-    throw new ErrorHandler(validatedData.error, 400)
+    throw new ErrorHandler(validatedData.error, 400);
   }
 
   const newWaitlistEntry = await Waitlist.addToWaitlist(validatedData.value);
