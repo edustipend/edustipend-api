@@ -26,7 +26,7 @@ exports.validateStipendRequest = (data) => {
       "string.email": "email must be a valid email",
       "any.required": "email field is required"
     }),
-    stipendCategory: Joi.string().required().messages({
+    stipendCategory: Joi.string().required().valid('laptop','course','data').messages({
       "string.base": "stipendCategory field must be a string",
       "string.empty": "stipendCategory field cannot be empty",
       "any.required": "stipendCategory field is required"
@@ -50,7 +50,8 @@ exports.validateStipendRequest = (data) => {
       "string.base": "futureHelpFromUser field must be a string",
       "string.empty": "futureHelpFromUser field cannot be empty",
       "any.required": "futureHelpFromUser field is required"
-    })
+    }),
+    id: Joi.number()
   });
   return stipendRequestSchema.validate(data, { abortEarly: false });
 };
