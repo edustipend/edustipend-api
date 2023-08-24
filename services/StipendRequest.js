@@ -34,9 +34,20 @@ class StipendRequest {
     return stipendRequest;
   }
 
+  /**
+   * @description get a user application status
+   * @param {*} userId
+   * @returns
+   */
+
   static async appStatus(userId) {
     const application = await models.stipendRequest.findByPk(userId);
     return application;
+  }
+
+  static async appHistory(userId) {
+    const applicationHistory = await models.stipendRequest.findByPk(userId);
+    return applicationHistory;
   }
 
   /**

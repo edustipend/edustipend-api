@@ -118,3 +118,21 @@ exports.applicationStatus = catchAsyncError(async (req, res, next) => {
     return "Pending Review";
   }
 });
+
+/**
+ * @description get a user application history
+ * @route GET /v1/user/application-history
+ * @access Private
+ */
+
+exports.applicationHistory = catchAsyncError(async (req, res, next) => {
+  let userId = req.params.id;
+  const data = await StipendRequest.appHistory(userId);
+  const { stipendCategory, isApproved, createdAt } = data;
+  return res.status(200).json({
+    success: true,
+    stipendCategory,
+    isApproved,
+    createdAt
+  });
+});
