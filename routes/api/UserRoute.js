@@ -1,4 +1,7 @@
-const { requestStipend } = require("../../controller/StipendRequestController");
+const {
+  requestStipend,
+  applicationStatus
+} = require("../../controller/StipendRequestController");
 const {
   isWindowOpen
 } = require("../../middleware/ApplicationWIndowMiddleware");
@@ -11,5 +14,6 @@ const router = require("express").Router();
 
 // router.use(isWindowOpen)
 router.post("/request-stipend", requestStipend);
+router.get("/application-status/:id", applicationStatus);
 
 module.exports = router;

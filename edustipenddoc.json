@@ -132,6 +132,7 @@
         }
       }
     },
+
     "/reset-password": {
       "post": {
         "tags": ["auth"],
@@ -363,6 +364,37 @@
         }
       }
     },
+    "/user/application-status/{userId}": {
+      "get": {
+        "tags": ["stipend"],
+        "summary": "Get a user stipend application status",
+        "description": "Edustipend users can get their stipend application status with this end point",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "description": "get the user id",
+            "required": true,
+            "type": "number",
+            "schema": {
+              "$ref": "#/definitions/application-status"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "{ success: true, message: 'Approved.'}"
+          },
+          "200": {
+            "description": "{ success: false, message: 'Denied' } "
+          },
+          "404": {
+            "description": "{ success: false, error: 'Application does not exist.' }"
+          }
+        }
+      }
+    },
     "/admin/notify-waitlist": {
       "post": {
         "tags": ["admin"],
@@ -482,6 +514,14 @@
             "friend",
             "other"
           ]
+        }
+      }
+    },
+    "application-status": {
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "number"
         }
       }
     },

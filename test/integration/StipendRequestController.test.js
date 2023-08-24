@@ -10,7 +10,9 @@ const {
   completeStipendRequestData,
   incompleteStipendRequestData,
   badStipendRequestDataType,
-  anotherCompleteStipendRequestData
+  anotherCompleteStipendRequestData,
+  approvedUser,
+  registerUser
 } = require("../dummyData");
 const { declutter } = require("../../database/migration/test");
 
@@ -156,5 +158,63 @@ describe("Test for Stipend Request", function () {
 
     it.skip("should not allow applications to happen outside the application window", async function () {});
     it.skip("should make sure that applications within that window work", async function () {});
+  });
+});
+//
+describe("Another Test for sending stipend request", function () {
+  this.beforeAll(async function () {
+    this.timeout(0);
+
+    res = await chai
+      .request(server)
+      .post("/v1/user/request-stipend")
+      .send(approvedUser);
+  });
+  it("should be able to successfully send a good request", async function () {
+    expect(res).to.have.status(201);
+    expect(res.body.success).to.equal(true);
+    expect(res.body.message).to.equal("Request successfully created");
+  });
+});
+let res;
+
+describe("Application Status for denied", function () {
+  this.beforeAll(async function () {
+    this.timeout(0);
+    // const user = 77
+    const userId = await models.stipendRequest.findOne({
+      where: { email: anotherCompleteStipendRequestData.email }
+    });
+    const user = userId.id;
+    res = await chai
+      .request(server)
+      .get(`/v1/user/application-status/${user}`)
+      .send({ id: user });
+  });
+
+  it('should return "rejected" for a user with a denied application', async () => {
+    expect(res).to.have.status(200);
+    expect(res.body.message).to.equal("Rejected");
+    expect(res.body.success).to.equal(true);
+  });
+});
+
+describe("Application Status for approved", function () {
+  this.beforeAll(async function () {
+    this.timeout(0);
+    const userId = await models.stipendRequest.findOne({
+      where: { email: approvedUser.email }
+    });
+    const user = userId.id;
+    res = await chai
+      .request(server)
+      .get(`/v1/user/application-status/${user}`)
+      .send({ id: user });
+  });
+
+  it('should return "Approved" for a user with an approved application', async () => {
+    expect(res).to.have.status(200);
+    expect(res.body.message).to.equal("Approved");
+    expect(res.body.success).to.equal(true);
   });
 });
