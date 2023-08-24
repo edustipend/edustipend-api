@@ -1,5 +1,6 @@
 const catchAsyncError = require("../middleware/catchAsyncError");
 const { StipendRequest, Mail } = require("../services");
+const ErrorHandler = require("../utils/ErrorHandler");
 const {
   validateStipendRequest,
   stipendRequestIdsValidation
@@ -13,6 +14,9 @@ const {
 
 exports.requestStipend = catchAsyncError(async (req, res, next) => {
   const validateData = await validateStipendRequest(req.body);
+  if (validateData.error) {
+    throw new ErrorHandler(validateData.error, 400);
+  }
 
   const stipend = await StipendRequest.create(validateData.value);
 

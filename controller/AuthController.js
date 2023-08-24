@@ -22,6 +22,9 @@ exports.signup = catchAsyncError(async (req, res, next) => {
   }
 
   const validateData = await validateRegisterData(req.body);
+  if (validateData.error) {
+    throw new ErrorHandler(validateData.error, 400);
+  }
 
   const newUser = await Authentication.register(validateData.value);
   const link = `${process.env.APP_BASE_URL}/v1/verify?code=${newUser.code}`;
