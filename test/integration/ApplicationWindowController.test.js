@@ -71,8 +71,8 @@ describe("Tests for application window", function () {
         .send(invalidApplicationWindowFormat);
     });
 
-    it("should have status code of 500 when invalid date formats are passed", async function () {
-      expect(res).to.have.status(500);
+    it("should have status code of 400 when invalid date formats are passed", async function () {
+      expect(res).to.have.status(400);
     });
   });
 

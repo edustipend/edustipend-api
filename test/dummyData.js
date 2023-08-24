@@ -7,7 +7,8 @@ const registerUser = {
   dateOfBirth: "1990-09-02",
   gender: "male",
   stateOfOrigin: "lagos",
-  howDidYouHearAboutUs: "facebook"
+  howDidYouHearAboutUs: "facebook",
+  isApproved: true
 };
 
 const badRegisterUserRequest = {
@@ -66,6 +67,15 @@ const badStipendRequestDataType = {
   potentialBenefits: "I could get to learn a lot",
   futureHelpFromUser: "I will give back to the community"
 };
+const approvedUser = {
+  email: "linda@gmail.com",
+  stipendCategory: "data",
+  reasonForRequest: "To help me pleas",
+  stepsTakenToEaseProblem: "none yet",
+  potentialBenefits: "I could get to learn a lot",
+  futureHelpFromUser: "I will give back to the community",
+  isApproved: true
+};
 
 /**
  * I will set a startDate that will always be 2 days ahead of the current date
@@ -113,6 +123,7 @@ module.exports = {
   incompleteStipendRequestData,
   badStipendRequestDataType,
   anotherCompleteStipendRequestData,
+  approvedUser,
   validUpcomingApplicationWindow,
   validActiveApplicationWindow,
   invalidApplicationWindowFormat

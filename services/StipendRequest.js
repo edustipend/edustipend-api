@@ -34,6 +34,11 @@ class StipendRequest {
     return stipendRequest;
   }
 
+  static async appStatus(userId) {
+    const application = await models.stipendRequest.findByPk(userId);
+    return application;
+  }
+
   /**
    * @description approve a stipend request
    * @param {string} stipendRequestId

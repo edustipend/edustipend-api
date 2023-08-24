@@ -26,11 +26,14 @@ exports.validateStipendRequest = (data) => {
       "string.email": "email must be a valid email",
       "any.required": "email field is required"
     }),
-    stipendCategory: Joi.string().required().messages({
-      "string.base": "stipendCategory field must be a string",
-      "string.empty": "stipendCategory field cannot be empty",
-      "any.required": "stipendCategory field is required"
-    }),
+    stipendCategory: Joi.string()
+      .required()
+      .valid("laptop", "course", "data")
+      .messages({
+        "string.base": "stipendCategory field must be a string",
+        "string.empty": "stipendCategory field cannot be empty",
+        "any.required": "stipendCategory field is required"
+      }),
     reasonForRequest: Joi.string().required().messages({
       "string.base": "reasonForRequest field must be a string",
       "string.empty": "reasonForRequest field cannot be empty",
@@ -50,7 +53,9 @@ exports.validateStipendRequest = (data) => {
       "string.base": "futureHelpFromUser field must be a string",
       "string.empty": "futureHelpFromUser field cannot be empty",
       "any.required": "futureHelpFromUser field is required"
-    })
+    }),
+    id: Joi.number(),
+    isApproved: Joi.boolean()
   });
   return stipendRequestSchema.validate(data, { abortEarly: false });
 };

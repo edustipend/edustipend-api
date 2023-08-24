@@ -64,7 +64,7 @@ describe("Test for AuthController", function () {
         .send(badRegisterUserRequest);
     });
     it("should be able to successfully signup a user", async function () {
-      expect(res).to.have.status(500);
+      expect(res).to.have.status(400);
       expect(res.body.success).to.equal(false);
     });
   });
@@ -147,19 +147,19 @@ describe("Test with no email should fail", function () {
   });
 });
 
-// describe("Test with no name should fail", function () {
-//   this.beforeAll(async function () {
-//     this.timeout(0);
+describe("Test with no name should fail", function () {
+  this.beforeAll(async function () {
+    this.timeout(0);
 
-//     res = await chai
-//       .request(server)
-//       .post("v1/reset-password")
-//       .send(badResetData);
-//   });
-//   it("should not be able to send a bad request", async function () {
-//     expect(res).to.have.status(400);
-//   });
-// });
+    res = await chai
+      .request(server)
+      .post("/v1/reset-password")
+      .send(badResetData);
+  });
+  it("should not be able to send a bad request", async function () {
+    expect(res).to.have.status(400);
+  });
+});
 
 describe("password check", function () {
   this.beforeAll(async function () {
@@ -187,26 +187,3 @@ describe("password check", function () {
     expect(res).to.have.status(200);
   });
 });
-
-// describe("Update Password Feature",  function () {
-//   it('should expect a status code 201 and a message "Password update successful."', async function () {
-//     const email = "tes@gmail.com";
-
-//     let newRequest = await models.token.findOne({
-//       where: {
-//         email
-//       }
-//     });
-//     const Password = "new_password123";
-//     const confirm = "new_password123";
-//      await chai
-//       .request(server)
-//       .post("/v1/update-password")
-//       .send({ email, code: newRequest, password: Password, confirmPassword:confirm })
-//       .end(function (err, res) {
-//         expect(res).to.have.status(200);
-//         expect(res.body.success).to.equal(true);
-//         expect(res.body.message).to.equal("Password update successful.");
-//       });
-//   });
-// });
