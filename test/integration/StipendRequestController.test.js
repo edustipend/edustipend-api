@@ -41,35 +41,35 @@ describe("Test for Stipend Request", function () {
     });
   });
 
-  // describe("Stipend request with incomplete data should fail", function () {
-  //   this.beforeAll(async function () {
-  //     this.timeout(0);
+  describe("Stipend request with incomplete data should fail", function () {
+    this.beforeAll(async function () {
+      this.timeout(0);
 
-  //     res = await chai
-  //       .request(server)
-  //       .post("/v1/user/request-stipend")
-  //       .send(incompleteStipendRequestData);
-  //   });
-  //   it("should not be able to send a bad request", async function () {
-  //     expect(res).to.have.status(400);
-  //     expect(res.body.success).to.equal(false);
-  //   });
-  // });
+      res = await chai
+        .request(server)
+        .post("/v1/user/request-stipend")
+        .send(incompleteStipendRequestData);
+    });
+    it("should not be able to send a bad request", async function () {
+      expect(res).to.have.status(400);
+      expect(res.body.success).to.equal(false);
+    });
+  });
 
-  // describe("Stipend request with wrong data types should fail", function () {
-  //   this.beforeAll(async function () {
-  //     this.timeout(0);
+  describe("Stipend request with wrong data types should fail", function () {
+    this.beforeAll(async function () {
+      this.timeout(0);
 
-  //     res = await chai
-  //       .request(server)
-  //       .post("/v1/user/request-stipend")
-  //       .send(badStipendRequestDataType);
-  //   });
-  //   it("should not be able to send a bad request", async function () {
-  //     expect(res).to.have.status(400);
-  //     expect(res.body.success).to.equal(false);
-  //   });
-  // });
+      res = await chai
+        .request(server)
+        .post("/v1/user/request-stipend")
+        .send(badStipendRequestDataType);
+    });
+    it("should not be able to send a bad request", async function () {
+      expect(res).to.have.status(400);
+      expect(res.body.success).to.equal(false);
+    });
+  });
 
   describe("Successful stipend request will show in the database", function () {
     it("should be able to check that sent requests reflect in the database", async function () {
