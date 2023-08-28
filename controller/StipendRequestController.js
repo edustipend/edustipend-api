@@ -71,7 +71,7 @@ exports.applicationStatus = catchAsyncError(async (req, res, next) => {
   // convert it to an integer
   const parsedId = parseInt(userId);
   // check if id passed is a number
-  if (parsedId == NaN || parsedId <= 0) {
+  if (isNaN(parsedId) || parsedId <= 0) {
     throw new ErrorHandler("must be an integer", 404);
   }
   // get id from database
@@ -130,20 +130,25 @@ exports.applicationStatus = catchAsyncError(async (req, res, next) => {
  */
 
 exports.applicationHistory = catchAsyncError(async (req, res, next) => {
-  // let userId = req.params.id;
-  const data = await StipendRequest.appHistory(req.query.id);  
+  const userId = req.query.id;
+  const parsedId = parseInt(userId);
+  // check if id passed is a number
+  if (isNaN(parsedId) || parsedId <= 0) {
+    throw new ErrorHandler("must be an integer", 404);
+  }
+  const data = await StipendRequest.appHistory(parsedId);
   return res.status(200).json({
     success: true,
     message: data
-  })
-})
+  });
+});
 
-    /**
-     * @description get most recent stipend request
+/**
+ * @description get most recent stipend request
  * @route GET /v1/user/one-click-apply
  * @access Private
-     */
-    
+ */
+
 exports.retrieveForOneClickApply = catchAsyncError(async (req, res, next) => {
   const lastUsedData = await StipendRequest.getMostRecent(req.params.email);
 
