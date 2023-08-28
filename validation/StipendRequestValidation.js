@@ -54,7 +54,8 @@ exports.validateStipendRequest = (data) => {
       "string.empty": "futureHelpFromUser field cannot be empty",
       "any.required": "futureHelpFromUser field is required"
     }),
-    id: Joi.number()
+    id: Joi.number(),
+    isApproved: Joi.boolean()
   });
   return stipendRequestSchema.validate(data, { abortEarly: false });
 };

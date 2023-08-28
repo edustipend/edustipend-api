@@ -61,12 +61,11 @@ const incompleteStipendRequestData = {
 
 const badStipendRequestDataType = {
   email: "tes@gmail.com",
-  stipendCategory: "course",
+  stipendCategory: "",
   reasonForRequest: "To help me with one",
   stepsTakenToEaseProblem: "I have used pirate sites",
   potentialBenefits: "I could get to learn a lot",
-  futureHelpFromUser: "I will give back to the community",
-  hasReceivedLaptopBefore: "Not received"
+  futureHelpFromUser: "I will give back to the community"
 };
 const approvedUser = {
   email: "linda@gmail.com",
@@ -75,7 +74,6 @@ const approvedUser = {
   stepsTakenToEaseProblem: "none yet",
   potentialBenefits: "I could get to learn a lot",
   futureHelpFromUser: "I will give back to the community",
-  hasReceivedLaptopBefore: "Not received",
   isApproved: true
 };
 

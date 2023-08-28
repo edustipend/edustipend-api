@@ -122,3 +122,17 @@ exports.applicationStatus = catchAsyncError(async (req, res, next) => {
     return "Pending Review";
   }
 });
+
+/**
+ * @description get most recent stipend request
+ * @route GET /v1/user/one-click-apply
+ * @access Private
+ */
+exports.retrieveForOneClickApply = catchAsyncError(async (req, res, next) => {
+  const lastUsedData = await StipendRequest.getMostRecent(req.params.email);
+
+  return res.status(200).json({
+    success: true,
+    message: lastUsedData
+  });
+});
