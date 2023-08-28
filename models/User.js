@@ -132,7 +132,7 @@ module.exports = (sequelize, DataTypes) => {
         id: this.id,
         isAdmin: this.isAdmin,
         name: this.name,
-        email: this.email,
+        email: this.email
       },
       process.env.APP_TOKEN_KEY,
       {
