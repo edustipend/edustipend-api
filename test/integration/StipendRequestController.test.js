@@ -72,14 +72,6 @@ describe("Test for Stipend Request", function () {
   });
 
   describe("Successful stipend request will show in the database", function () {
-    this.beforeAll(async function () {
-      this.timeout(0);
-
-      res = await chai
-        .request(server)
-        .post("/v1/user/request-stipend")
-        .send(completeStipendRequestData);
-    });
     it("should be able to check that sent requests reflect in the database", async function () {
       let newRequest = await models.stipendRequest.findOne({
         where: { reasonForRequest: completeStipendRequestData.reasonForRequest }
@@ -95,7 +87,7 @@ describe("Test for Stipend Request", function () {
       this.timeout(0);
 
       // I will be sending a second request, and putting the ID to be trackable from the first req
-      await chai
+      const res2 = await chai
         .request(server)
         .post("/v1/user/request-stipend")
         .send({ ...anotherCompleteStipendRequestData, id: firstRequestId + 1 });
@@ -158,6 +150,32 @@ describe("Test for Stipend Request", function () {
 
     it.skip("should not allow applications to happen outside the application window", async function () {});
     it.skip("should make sure that applications within that window work", async function () {});
+  });
+
+  describe("Data from last stipend request must be retrievable", function () {
+    this.beforeAll(async function () {
+      this.timeout(0);
+
+      // I need to introduce a small delay so that the last request will come seconds later
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      await chai
+        .request(server)
+        .post("/v1/user/request-stipend")
+        .send({
+          ...completeStipendRequestData,
+          id: firstRequestId + 2,
+          stipendCategory: "data"
+        });
+
+      res = await chai
+        .request(server)
+        .get(`/v1/user/one-click-apply/${completeStipendRequestData.email}`);
+    });
+
+    it("should return the newer request", async function () {
+      expect(res.body.message.id).to.equal(firstRequestId + 2);
+    });
   });
 });
 //

@@ -51,7 +51,8 @@ exports.validateRegisterData = (data) => {
       "string.base": "howDidYouHearAboutUs field must be a string",
       "string.empty": "howDidYouHearAboutUs field cannot be empty",
       "any.required": "howDidYouHearAboutUs field is required"
-    })
+    }),
+    isApproved: Joi.boolean()
   });
   return userSchema.validate(data, { abortEarly: false });
 };

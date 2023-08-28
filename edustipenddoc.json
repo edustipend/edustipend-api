@@ -471,6 +471,34 @@
           }
         }
       }
+    },
+    "/user/one-click-apply/{email}": {
+      "get": {
+        "tags": ["stipend"],
+        "summary": "get last application",
+        "description": "User gets details of last application",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "User ID to retrieve the most frequent stipend request",
+            "required": "true",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "{ success: true, data: 'Application window has been manually closed' }"
+          },
+          "401": {
+            "description": "No previous stipend request was found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -571,8 +599,7 @@
         "reasonForRequest",
         "stepsTakenToEaseProblem",
         "potentialBenefits",
-        "futureHelpFromUser",
-        "hasReceivedLaptopBefore"
+        "futureHelpFromUser"
       ],
       "properties": {
         "email": {
@@ -593,9 +620,6 @@
         },
         "futureHelpFromUser": {
           "type": "string"
-        },
-        "hasReceivedLaptopBefore": {
-          "type": "boolean"
         }
       }
     },

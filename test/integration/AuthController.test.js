@@ -64,7 +64,7 @@ describe("Test for AuthController", function () {
         .send(badRegisterUserRequest);
     });
     it("should be able to successfully signup a user", async function () {
-      expect(res).to.have.status(500);
+      expect(res).to.have.status(400);
       expect(res.body.success).to.equal(false);
     });
   });

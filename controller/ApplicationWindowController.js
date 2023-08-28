@@ -1,5 +1,6 @@
 const catchAsyncError = require("../middleware/catchAsyncError");
 const { ApplicationWindow } = require("../services");
+const ErrorHandler = require("../utils/ErrorHandler");
 const {
   validateApplicationWindow
 } = require("../validation/ApplicationWindowValidation");
@@ -14,6 +15,9 @@ exports.setApplicationWindow = catchAsyncError(async (req, res, next) => {
   await ApplicationWindow.expireAll();
 
   const validatedData = await validateApplicationWindow(req.body);
+  if (validatedData.error) {
+    throw new ErrorHandler(validatedData.error, 400);
+  }
 
   await ApplicationWindow.create(validatedData.value);
 

@@ -1,5 +1,6 @@
 const catchAsyncError = require("../middleware/catchAsyncError");
 const { StipendRequest, Mail } = require("../services");
+const ErrorHandler = require("../utils/ErrorHandler");
 const {
   validateStipendRequest,
   stipendRequestIdsValidation
@@ -13,6 +14,9 @@ const {
 
 exports.requestStipend = catchAsyncError(async (req, res, next) => {
   const validateData = await validateStipendRequest(req.body);
+  if (validateData.error) {
+    throw new ErrorHandler(validateData.error, 400);
+  }
 
   const stipend = await StipendRequest.create(validateData.value);
 
@@ -126,13 +130,25 @@ exports.applicationStatus = catchAsyncError(async (req, res, next) => {
  */
 
 exports.applicationHistory = catchAsyncError(async (req, res, next) => {
-  let userId = req.params.id;
-  const data = await StipendRequest.appHistory(userId);
-  const { stipendCategory, isApproved, createdAt } = data;
+  // let userId = req.params.id;
+  const data = await StipendRequest.appHistory(req.query.id);  
   return res.status(200).json({
     success: true,
-    stipendCategory,
-    isApproved,
-    createdAt
+    message: data
+  })
+})
+
+    /**
+     * @description get most recent stipend request
+ * @route GET /v1/user/one-click-apply
+ * @access Private
+     */
+    
+exports.retrieveForOneClickApply = catchAsyncError(async (req, res, next) => {
+  const lastUsedData = await StipendRequest.getMostRecent(req.params.email);
+
+  return res.status(200).json({
+    success: true,
+    message: lastUsedData
   });
 });

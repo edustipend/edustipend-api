@@ -45,9 +45,17 @@ class StipendRequest {
     return application;
   }
 
-  static async appHistory(userId) {
-    const applicationHistory = await models.stipendRequest.findByPk(userId);
-    return applicationHistory;
+  static async appHistory(id) {
+    const applicationHistory = await models.stipendRequest.findByPk(id)
+    const history = {
+       stipendCategory: applicationHistory.stipendCategory,
+       isApproved : applicationHistory.isApproved,
+        epsTakenToEaseProblem: applicationHistory.stepsTakenToEaseProblem,
+        potentialBenefits: applicationHistory.potentialBenefits,
+        futureHelpFromUser: applicationHistory.futureHelpFromUser,
+        createdAt : applicationHistory.createdAt,
+       } 
+    return history;
   }
 
   /**
@@ -84,6 +92,36 @@ class StipendRequest {
     if (!stipend) {
       throw new ErrorHandler("Application not found", 404);
     }
+  }
+
+  /**
+   * @description Get most recent stipend request
+   * @param {string} email
+   */
+
+  static async getMostRecent(email) {
+    const stipendRequest = await models.stipendRequest.findOne({
+      where: {
+        email: email
+      },
+      order: [["createdAt", "DESC"]]
+    });
+
+    if (!stipendRequest) {
+      throw new ErrorHandler("No previous stipend request found", 404);
+    }
+
+    const filteredResponse = {
+      id: stipendRequest.id,
+      email: stipendRequest.email,
+      stipendCategory: stipendRequest.stipendCategory,
+      reasonForRequest: stipendRequest.reasonForRequest,
+      stepsTakenToEaseProblem: stipendRequest.stepsTakenToEaseProblem,
+      potentialBenefits: stipendRequest.potentialBenefits,
+      futureHelpFromUser: stipendRequest.futureHelpFromUser
+    };
+
+    return filteredResponse;
   }
 }
 
