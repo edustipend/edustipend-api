@@ -121,7 +121,7 @@
         ],
         "responses": {
           "201": {
-            "description": "{ success: true, message: 'Request successfully created'}"
+            "description": "{ success: true, message: 'Request successfully created', requestID: [requestId]}"
           },
           "400": {
             "description": "{ success: false, message: 'Request not completed'}"
