@@ -1,6 +1,7 @@
 const {
   requestStipend,
   applicationStatus,
+  applicationHistory,
   retrieveForOneClickApply
 } = require("../../controller/StipendRequestController");
 const {
@@ -16,6 +17,7 @@ const router = require("express").Router();
 // router.use(isWindowOpen)
 router.post("/request-stipend", requestStipend);
 router.get("/application-status/:id", applicationStatus);
+router.get("/application-history/search", applicationHistory);
 router.get("/one-click-apply/:email", retrieveForOneClickApply);
 
 module.exports = router;

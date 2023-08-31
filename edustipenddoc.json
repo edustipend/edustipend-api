@@ -472,6 +472,34 @@
         }
       }
     },
+    "/user/application-history/search?id={userId}": {
+      "get": {
+        "tags": ["stipend"],
+        "summary": "Get a user stipend application history",
+        "description": "Edustipend users can get their stipend application history with this endpoint",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "description": "get the user id",
+            "required": true,
+            "type": "number",
+            "schema": {
+              "$ref": "#/definitions/application-history"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "{ success: true, message: 'data'}"
+          },
+          "404": {
+            "description": "{ success: false, error: 'user history does not exist' }"
+          }
+        }
+      }
+    },
     "/user/one-click-apply/{email}": {
       "get": {
         "tags": ["stipend"],
@@ -572,6 +600,14 @@
         },
         "name": {
           "type": "string"
+        }
+      }
+    },
+    "application-history": {
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "number"
         }
       }
     },
