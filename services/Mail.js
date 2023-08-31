@@ -147,6 +147,7 @@ class Mail {
           stipendRequest: stipendCategory
         }
       },
+
       (err, data) => {
         if (err) console.log(err);
       }

@@ -236,3 +236,20 @@ describe("Application Status for approved", function () {
     expect(res.body.success).to.equal(true);
   });
 });
+
+describe("Test for application history should pass", async function () {
+  this.beforeAll(async function () {
+    const userId = await models.stipendRequest.findOne({
+      where: { email: approvedUser.email }
+    });
+    const user = userId.id;
+    res = await chai
+      .request(server)
+      .get(`/v1/user/application-history/search?id=${user}`)
+      .send({ id: user });
+  });
+  it('should return "true" for a valid application history', async () => {
+    expect(res).to.have.status(200);
+    expect(res.body.success).to.equal(true);
+  });
+});

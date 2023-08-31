@@ -34,9 +34,36 @@ class StipendRequest {
     return stipendRequest;
   }
 
+  /**
+   * @description get a user application status
+   * @param {*} userId
+   * @returns
+   */
+
   static async appStatus(userId) {
     const application = await models.stipendRequest.findByPk(userId);
+    if (application === null) {
+      throw new ErrorHandler("Stipend application does not exist", 404);
+    }
     return application;
+  }
+
+  static async appHistory(id) {
+    const applicationHistory = await models.stipendRequest.findOne({
+      where: { id: id }
+    });
+    if (applicationHistory === null) {
+      throw new ErrorHandler("user history does not exist", 404);
+    }
+    const history = {
+      stipendCategory: applicationHistory.stipendCategory,
+      isApproved: applicationHistory.isApproved,
+      stepsTakenToEaseProblem: applicationHistory.stepsTakenToEaseProblem,
+      potentialBenefits: applicationHistory.potentialBenefits,
+      futureHelpFromUser: applicationHistory.futureHelpFromUser,
+      createdAt: applicationHistory.createdAt
+    };
+    return history;
   }
 
   /**
