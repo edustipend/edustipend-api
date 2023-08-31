@@ -24,7 +24,8 @@ exports.requestStipend = catchAsyncError(async (req, res, next) => {
 
   return res.status(201).json({
     success: true,
-    message: "Request successfully created"
+    message: "Request successfully created",
+    requestId: stipend.id
   });
 });
 

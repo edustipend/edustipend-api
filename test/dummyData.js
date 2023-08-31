@@ -1,4 +1,5 @@
 const faker = require("faker");
+const dayjs = require("dayjs");
 
 const registerUser = {
   name: "eloghosa",
@@ -84,28 +85,23 @@ const approvedUser = {
  */
 
 // today's date
-const todaysDate = new Date();
-todaysDate.toISOString().split("T")[0];
+const todaysDate = dayjs();
 
 // startDate
-const startDate = new Date();
-startDate.setDate(startDate.getDate() + 2);
-startDate.toISOString().split("T")[0];
+const startDate = todaysDate.add(2, "days");
 
 // endDate
-const endDate = new Date();
-endDate.setDate(startDate.getDate() + 5);
-endDate.toISOString().split("T")[0];
+const endDate = todaysDate.add(5, "days");
 
 // upcoming date object
 const validUpcomingApplicationWindow = {
-  startDate,
-  endDate
+  startDate: startDate.format("YYYY-MM-DD"),
+  endDate: endDate.format("YYYY-MM-DD")
 };
 
 const validActiveApplicationWindow = {
-  startDate: todaysDate,
-  endDate
+  startDate: todaysDate.format("YYYY-MM-DD"),
+  endDate: endDate.format("YYYY-MM-DD")
 };
 
 const invalidApplicationWindowFormat = {
