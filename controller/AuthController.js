@@ -34,7 +34,8 @@ exports.signup = catchAsyncError(async (req, res, next) => {
   return res.status(201).json({
     success: true,
     message:
-      "Registration successful, please check your email for verification link"
+      "Registration successful, please check your email for verification link",
+    id: newUser.id
   });
 });
 
