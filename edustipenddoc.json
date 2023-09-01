@@ -635,7 +635,8 @@
         "reasonForRequest",
         "stepsTakenToEaseProblem",
         "potentialBenefits",
-        "futureHelpFromUser"
+        "futureHelpFromUser",
+        "userId"
       ],
       "properties": {
         "email": {
@@ -656,6 +657,9 @@
         },
         "futureHelpFromUser": {
           "type": "string"
+        },
+        "userId": {
+          "type": "number"
         }
       }
     },

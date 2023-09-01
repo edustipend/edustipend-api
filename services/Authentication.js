@@ -52,7 +52,7 @@ class Authentication {
     });
 
     const code = randomSixDigits();
-    const { id } = newUser
+    const { id } = newUser;
 
     await Token.genCode(email, code);
 
