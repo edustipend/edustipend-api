@@ -50,7 +50,7 @@ class StipendRequest {
 
   static async appHistory(id) {
     const applicationHistory = await models.stipendRequest.findOne({
-      where: { id: id }
+      where: { userId: id }
     });
     if (applicationHistory === null) {
       throw new ErrorHandler("user history does not exist", 404);
