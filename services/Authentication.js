@@ -41,7 +41,7 @@ class Authentication {
     } = data;
 
     const hashedPassword = await this.hashpassword(password);
-    await User.create({
+    const newUser = await User.create({
       name,
       email,
       dateOfBirth,
@@ -52,9 +52,11 @@ class Authentication {
     });
 
     const code = randomSixDigits();
+    const { id } = newUser
+
     await Token.genCode(email, code);
 
-    return { name, email, code };
+    return { name, email, code, id };
   }
 
   /**
