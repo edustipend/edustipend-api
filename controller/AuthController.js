@@ -27,7 +27,7 @@ exports.signup = catchAsyncError(async (req, res, next) => {
   }
 
   const newUser = await Authentication.register(validateData.value);
-  const link = `${process.env.APP_BASE_URL}/application?=${newUser.code}`;
+  const link = `${process.env.APP_BASE_URL}/application?email=${newUser.email}&code=${newUser.code}`;
 
   Mail.sendVerificationCode(newUser.name, newUser.email, link);
 
