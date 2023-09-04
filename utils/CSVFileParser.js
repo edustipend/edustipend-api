@@ -1,7 +1,6 @@
 const fs = require("fs");
 const { parse } = require("csv-parse");
 
-
 const parseRecords = ({ fileName, startLine }) => {
   const records = [];
   fs.createReadStream(fileName)
