@@ -56,7 +56,7 @@ exports.validateStipendRequest = (data) => {
     }),
     id: Joi.number(),
     isApproved: Joi.boolean(),
-    userId: Joi.number(),
+    userId: Joi.number()
   });
   return stipendRequestSchema.validate(data, { abortEarly: false });
 };

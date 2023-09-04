@@ -46,6 +46,7 @@ class Mail {
       if (err) {
         return cb(err, null);
       }
+      console.log("Email sent successfully");
       return cb(null, data);
     });
   };
@@ -60,7 +61,7 @@ class Mail {
     this._sendEmail(
       {
         email,
-        subject: "Is this email yours?",
+        subject: "Please confirm your email",
         template: "verification-token",
         params: {
           name: name,
@@ -102,7 +103,7 @@ class Mail {
     this._sendEmail(
       {
         email,
-        subject: "Stipend Request Recieved",
+        subject: "Stipend Request Received",
         template: "stipend-request-recieved",
         params: {
           stipendRequest: stipendCategory
