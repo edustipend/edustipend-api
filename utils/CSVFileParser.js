@@ -1,6 +1,7 @@
 const fs = require("fs");
 const { parse } = require("csv-parse");
 
+
 const parseRecords = ({ fileName, startLine }) => {
   const records = [];
   fs.createReadStream(fileName)
@@ -16,6 +17,7 @@ const parseRecords = ({ fileName, startLine }) => {
       console.error("Error parsing file");
       console.log(error.message);
     });
+  return records;
 };
 
 module.exports = {
