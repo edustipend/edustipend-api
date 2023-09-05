@@ -73,7 +73,7 @@ class Authentication {
       throw new ErrorHandler("Verification code is required", 400);
     }
 
-    const token = await Token.validateCode(verificationCode);
+    const token = await Token.validateCode(email, verificationCode);
 
     const setVerify = models.user.update(
       { isVerified: true, isCreateAccount: true },

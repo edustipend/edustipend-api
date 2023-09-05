@@ -32,13 +32,13 @@ class Token {
    * @param {*} email
    * @param {*} code
    */
-  static async findCode(code) {
-    const token = await models.token.findOne({ where: { code } });
+  static async findCode(email, code) {
+    const token = await models.token.findOne({ where: { email, code } });
     return token;
   }
 
-  static async validateCode(code) {
-    const token = await this.findCode(code);
+  static async validateCode(email, code) {
+    const token = await this.findCode(email, code);
 
     if (token === null) {
       throw new ErrorHandler("Invalid Verification code", 401);
