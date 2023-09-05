@@ -44,9 +44,9 @@ class Token {
       throw new ErrorHandler("Invalid Verification code", 401);
     }
 
-    if (dateDiff(token.createdAt) > 20) {
-      throw new ErrorHandler("Invalid Verification code", 401);
-    }
+    // if (dateDiff(token.createdAt) > 20) {
+    //   throw new ErrorHandler("Invalid Verification code", 401);
+    // }
     return token;
   }
 
