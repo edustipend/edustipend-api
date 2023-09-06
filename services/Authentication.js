@@ -73,6 +73,19 @@ class Authentication {
       throw new ErrorHandler("Verification code is required", 400);
     }
 
+    const verifiedUser = User.isUserVerified(email);
+
+    if (verifiedUser) {
+      const jwtToken = verifiedUser.generateJwtToken();
+
+      return {
+        token: jwtToken,
+        name: verifiedUser.name,
+        email: verifiedUser.email,
+        message: "User already verified"
+      };
+    }
+
     const token = await Token.validateCode(email, verificationCode);
 
     const setVerify = models.user.update(
@@ -94,7 +107,8 @@ class Authentication {
     return {
       token: jwtToken,
       name: response[1].name,
-      email: response[1].email
+      email: response[1].email,
+      message: "Account Verification successful."
     };
   }
 
