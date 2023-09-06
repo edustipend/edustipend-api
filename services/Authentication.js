@@ -74,7 +74,7 @@ class Authentication {
       throw new ErrorHandler("Verification code is required", 400);
     }
 
-    const verifiedUser = User.isUserVerified(email);
+    const verifiedUser = await User.isUserVerified(email);
     if (verifiedUser) {
       const jwtToken = generateJwtToken(verifiedUser);
 
