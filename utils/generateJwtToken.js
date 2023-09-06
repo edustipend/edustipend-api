@@ -1,7 +1,7 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
-export const generateJwtToken = function ({
+const generateJwtToken = function ({
 	id,
 	isAdmin,
 	name,
@@ -20,3 +20,7 @@ export const generateJwtToken = function ({
 		}
 	);
 };
+
+module.exports = {
+	generateJwtToken
+}
