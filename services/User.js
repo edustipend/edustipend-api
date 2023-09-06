@@ -51,6 +51,17 @@ class User {
       where: { email }
     });
   }
+
+  /**
+ * @description Find a user by email
+ * @param {string} email
+ */
+
+  static async isUserVerified(email) {
+    return await models.user.findOne({
+      where: { email, isVerified: true }
+    });
+  }
 }
 
 module.exports = User;
