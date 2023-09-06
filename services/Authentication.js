@@ -4,6 +4,7 @@ const Token = require("./Token");
 const { randomSixDigits, validateEmail } = require("../utils/helper");
 const ErrorHandler = require("../utils/ErrorHandler");
 const models = require("../models");
+const { generateJwtToken } = require("../utils/generateJwtToken");
 
 class Authentication {
   /**
@@ -74,9 +75,8 @@ class Authentication {
     }
 
     const verifiedUser = User.isUserVerified(email);
-
     if (verifiedUser) {
-      const jwtToken = verifiedUser.generateJwtToken();
+      const jwtToken = generateJwtToken(verifiedUser);
 
       return {
         token: jwtToken,

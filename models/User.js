@@ -136,7 +136,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       process.env.APP_TOKEN_KEY,
       {
-        expiresIn: "2d"
+        expiresIn: "5d"
       }
     );
   };
