@@ -73,7 +73,10 @@ class Authentication {
       throw new ErrorHandler("Verification code is required", 400);
     }
 
-    const verifiedUser = User.isUserVerified(email);
+    // const verifiedUser = User.isUserVerified(email);
+    const verifiedUser = models.user.findOne({
+      where: { email, isVerified: true }
+    })
 
     if (verifiedUser) {
       const jwtToken = verifiedUser.generateJwtToken();
