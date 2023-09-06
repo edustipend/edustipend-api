@@ -1,6 +1,8 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
+const TOKEN_EXPIRATION_DEFAULT = '5d';
+
 const generateJwtToken = function ({
 	id,
 	isAdmin,
@@ -16,7 +18,7 @@ const generateJwtToken = function ({
 		},
 		process.env.APP_TOKEN_KEY,
 		{
-			expiresIn: "5d"
+			expiresIn: TOKEN_EXPIRATION_DEFAULT
 		}
 	);
 };
