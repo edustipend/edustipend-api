@@ -4,6 +4,7 @@ const Token = require("./Token");
 const { randomSixDigits, validateEmail } = require("../utils/helper");
 const ErrorHandler = require("../utils/ErrorHandler");
 const models = require("../models");
+const { generateJwtToken } = require("../utils/generateJwtToken");
 
 class Authentication {
   /**
@@ -73,13 +74,9 @@ class Authentication {
       throw new ErrorHandler("Verification code is required", 400);
     }
 
-    // const verifiedUser = User.isUserVerified(email);
-    const verifiedUser = models.user.findOne({
-      where: { email, isVerified: true }
-    })
-
+    const verifiedUser = User.isUserVerified(email);
     if (verifiedUser) {
-      const jwtToken = verifiedUser.generateJwtToken();
+      const jwtToken = generateJwtToken(verifiedUser);
 
       return {
         token: jwtToken,
