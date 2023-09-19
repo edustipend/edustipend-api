@@ -39,6 +39,7 @@ class Token {
 
   static async validateCode(email, code) {
     const token = await this.findCode(email, code);
+    console.log("The token is", token);
 
     if (token === null) {
       throw new ErrorHandler("Invalid Verification code", 401);
