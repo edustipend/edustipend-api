@@ -79,7 +79,7 @@ exports.login = catchAsyncError(async (req, res, next) => {
 exports.resetPassword = catchAsyncError(async (req, res, next) => {
   const validateData = await validateRegisterData(req.body);
   const user = await Authentication.passwordReset(validateData.value);
-  const link = `${process.env.APP_BASE_URL}/v1/reset-password?email=${user.email}&code=${user.code}`;
+  const link = `${process.env.APP_BASE_URL}/reset-password?email=${user.email}&code=${user.code}`;
   Mail.sendPasswordCode(user.name, user.email, link);
   return res.status(201).json({
     success: true,
