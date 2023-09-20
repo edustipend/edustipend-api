@@ -46,7 +46,9 @@ exports.signup = catchAsyncError(async (req, res, next) => {
  */
 
 exports.accountVerify = catchAsyncError(async (req, res, next) => {
-  const { token, name, email, message } = await Authentication.verifyAccount(req.body);
+  const { token, name, email, message } = await Authentication.verifyAccount(
+    req.body
+  );
 
   // Mail.sendWelcomeEmail(name, email);
 

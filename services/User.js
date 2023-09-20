@@ -53,9 +53,9 @@ class User {
   }
 
   /**
- * @description Find a user by email
- * @param {string} email
- */
+   * @description Find a user by email
+   * @param {string} email
+   */
 
   static async isUserVerified(email) {
     return await models.user.findOne({
