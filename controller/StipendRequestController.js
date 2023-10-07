@@ -115,7 +115,7 @@ exports.applicationStatus = catchAsyncError(async (req, res, next) => {
     Mail.applicationStatus(application.email, application.stipendCategory);
     return res.status(200).json({
       success: true,
-      message: "Under Review"
+      message: "In review"
     });
   }
   // check for any other factor
