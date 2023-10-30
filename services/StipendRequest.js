@@ -41,7 +41,12 @@ class StipendRequest {
    */
 
   static async appStatus(userId) {
-    const application = await models.stipendRequest.findByPk(userId);
+    const application = await models.stipendRequest.findOne({
+      where: {
+        userId
+      },
+      order: [['createdAt', 'DESC']]
+    });
     if (application === null) {
       throw new ErrorHandler("Stipend application does not exist", 404);
     }
@@ -49,21 +54,14 @@ class StipendRequest {
   }
 
   static async appHistory(id) {
-    const applicationHistory = await models.stipendRequest.findOne({
+    const applicationHistory = await models.stipendRequest.findAll({
       where: { userId: id }
     });
     if (applicationHistory === null) {
       throw new ErrorHandler("user history does not exist", 404);
     }
-    const history = {
-      stipendCategory: applicationHistory.stipendCategory,
-      isApproved: applicationHistory.isApproved,
-      stepsTakenToEaseProblem: applicationHistory.stepsTakenToEaseProblem,
-      potentialBenefits: applicationHistory.potentialBenefits,
-      futureHelpFromUser: applicationHistory.futureHelpFromUser,
-      createdAt: applicationHistory.createdAt
-    };
-    return history;
+
+    return applicationHistory;
   }
 
   /**
