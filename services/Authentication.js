@@ -2,8 +2,6 @@ const bcrypt = require("bcryptjs");
 const { findByUserName } = require("./User");
 const ErrorHandler = require("../utils/ErrorHandler");
 const models = require("../models");
-//TODO: Deprecate this
-const { generateJwtToken } = require("../utils/generateJwtToken");
 const User = require("../models/UserV2");
 const Logger = require("../config/logger");
 const TokenExpiration = require("../constants/tokenExpiration");
