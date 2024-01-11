@@ -34,8 +34,6 @@ exports.verifyEmailMiddleware = async function (req, res, next) {
   }
 
   const user = await User.findByUserName(validateData.username);
-  let verifyToken = req.query.jwt;
-
   if (!user) {
     return res.status(400).json({
       error: "User does not exist"
@@ -49,6 +47,7 @@ exports.verifyEmailMiddleware = async function (req, res, next) {
     });
   }
 
+  let verifyToken = req.query.jwt;
   if (!verifyToken) {
     return res.status(400).json({
       success: false,
@@ -63,6 +62,7 @@ exports.verifyEmailMiddleware = async function (req, res, next) {
     next();
   } catch (err) {
     Logger.error(err);
+
     // We are sending user a new token because previous has expired
     link = await generateVerificationTokenAndSendMail(user);
     return res.status(498).json({
