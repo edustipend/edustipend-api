@@ -5,7 +5,7 @@ const expressFileupload = require("express-fileupload");
 const server = require("http").Server(app);
 const cors = require("cors");
 
-const dbInitialize = require("./database/init")
+const dbInitialize = require("./database/init");
 dbInitialize();
 
 // middleware

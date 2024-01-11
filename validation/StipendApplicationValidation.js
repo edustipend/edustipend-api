@@ -55,27 +55,36 @@ exports.validateFirstStipendApplication = (data) => {
       "string.empty": "dateOfBirth field cannot be empty",
       "any.required": "dateOfBirth field is required"
     }),
-    gender: Joi.string().required().messages({
-      "string.base": "gender field must be a string",
-      "string.empty": "gender field cannot be empty",
-      "any.required": "gender field is required"
-    }).valid('male', 'female', 'binary'),
-    stateOfOrigin: Joi.string().required().messages({
-      "string.base": "stateOfOrigin field must be a string",
-      "string.empty": "stateOfOrigin field cannot be empty",
-      "any.required": "stateOfOrigin field is required"
-    }).custom((value, helper) => {
-      if (!STATES_OF_ORIGIN[value]) {
-        return helper.message("Invalid state of origin provided");
-      }
-      return value;
-    }),
+    gender: Joi.string()
+      .required()
+      .messages({
+        "string.base": "gender field must be a string",
+        "string.empty": "gender field cannot be empty",
+        "any.required": "gender field is required"
+      })
+      .valid("male", "female", "binary"),
+    stateOfOrigin: Joi.string()
+      .required()
+      .messages({
+        "string.base": "stateOfOrigin field must be a string",
+        "string.empty": "stateOfOrigin field cannot be empty",
+        "any.required": "stateOfOrigin field is required"
+      })
+      .custom((value, helper) => {
+        if (!STATES_OF_ORIGIN[value]) {
+          return helper.message("Invalid state of origin provided");
+        }
+        return value;
+      }),
     /** Stipend Application Validation */
-    howDidYouHearAboutUs: Joi.string().required().messages({
-      "string.base": "howDidYouHearAboutUs field must be a string",
-      "string.empty": "howDidYouHearAboutUs field cannot be empty",
-      "any.required": "howDidYouHearAboutUs field is required"
-    }).valid('facebook', 'twitter', 'instagram', 'linkedin', 'other'),
+    howDidYouHearAboutUs: Joi.string()
+      .required()
+      .messages({
+        "string.base": "howDidYouHearAboutUs field must be a string",
+        "string.empty": "howDidYouHearAboutUs field cannot be empty",
+        "any.required": "howDidYouHearAboutUs field is required"
+      })
+      .valid("facebook", "twitter", "instagram", "linkedin", "other"),
     futureHelpFromUser: Joi.string().required().messages({
       "string.base": "futureHelpFromUser field must be a string",
       "string.empty": "futureHelpFromUser field cannot be empty",
@@ -103,7 +112,7 @@ exports.validateFirstStipendApplication = (data) => {
         "string.base": "stipendCategory field must be a string",
         "string.empty": "stipendCategory field cannot be empty",
         "any.required": "stipendCategory field is required"
-      }),
+      })
   });
   return initialRequestSchema.validate(data, { abortEarly: false });
 };
@@ -167,7 +176,7 @@ exports.validateStipendApplication = (data) => {
         "string.empty": "email field cannot be empty",
         "string.email": "email must be a valid email",
         "any.required": "email field is required"
-      }),
+      })
       // email: Joi.string()
       //   .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
     })

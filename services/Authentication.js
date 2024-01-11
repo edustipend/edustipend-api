@@ -27,9 +27,12 @@ class Authentication {
 
     try {
       user = await findByUserName(username);
-      authRes = await this.getTokenForAuthenticatedUser(username, user, TokenExpiration.TWO_WEEKS);
-    }
-    catch (err) {
+      authRes = await this.getTokenForAuthenticatedUser(
+        username,
+        user,
+        TokenExpiration.TWO_WEEKS
+      );
+    } catch (err) {
       Logger.error(err);
       throw new ErrorHandler(err.message, 500);
     }
@@ -42,9 +45,9 @@ class Authentication {
   }
 
   /**
-  * @description Gets token for authenticated user
-  * @param {object} data
-  */
+   * @description Gets token for authenticated user
+   * @param {object} data
+   */
   static async getTokenForAuthenticatedUser(email, user, expiresIn) {
     try {
       let theUser = user;
@@ -54,17 +57,16 @@ class Authentication {
       const id = theUser?._id;
       const token = User.generateJwtToken(theUser, expiresIn);
       return { token, id };
-    }
-    catch (err) {
-      Logger.error('Error getting token for authentocated user', err);
+    } catch (err) {
+      Logger.error("Error getting token for authentocated user", err);
       return null;
     }
   }
 
   /**
-  * @description Issue a token to reset user password
-  * @param {object} userData
-  */
+   * @description Issue a token to reset user password
+   * @param {object} userData
+   */
   static async resetPassword(userData) {
     const { email } = userData;
     if (!email) {
@@ -74,10 +76,9 @@ class Authentication {
       email,
       userData,
       TokenExpiration.THIRTY_MINUTES
-    )
+    );
     return token;
   }
 }
-
 
 module.exports = Authentication;

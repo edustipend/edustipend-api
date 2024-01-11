@@ -1,7 +1,7 @@
 const StipendCategory = {
-	COURSE: "course",
-	DATA: "data",
-	LAPTOP: "laptop"
-}
+  COURSE: "course",
+  DATA: "data",
+  LAPTOP: "laptop"
+};
 
-module.exports = StipendCategory
+module.exports = StipendCategory;

@@ -2,11 +2,10 @@ const UserModel = require("../models/UserV2");
 const ErrorHandler = require("../utils/ErrorHandler");
 const Logger = require("../config/logger");
 
-
 class UserService {
   /**
-    * @description Creates a new user
-    * @param {object} data
+   * @description Creates a new user
+   * @param {object} data
    */
   static async createUser(data) {
     const { email, password } = data;
@@ -19,21 +18,21 @@ class UserService {
             ...data,
             username: email,
             isVerified: false
-          }), password, async (err, user) => {
+          }),
+          password,
+          async (err, user) => {
             if (err) {
               reject(err);
-            }
-            else {
+            } else {
               resolve(user);
             }
           }
         );
-      }
-      catch (err) {
+      } catch (err) {
         Logger.error(err);
         reject(err);
       }
-    })
+    });
   }
 
   /**
@@ -45,13 +44,10 @@ class UserService {
   }
 
   /**
-  * @description Update user password
-  * @param {object} userData
-  */
-  static async updatePassword(
-    newPassword,
-    userToReset
-  ) {
+   * @description Update user password
+   * @param {object} userData
+   */
+  static async updatePassword(newPassword, userToReset) {
     if (!newPassword) {
       throw new ErrorHandler("password is required", 400);
     }
@@ -68,7 +64,6 @@ class UserService {
     Logger.info("Password reset sucessfully for ", userToReset?._id);
   }
 
-
   /**
    * @description Find a user by certain search criteria
    * @param {object} filterOpts
@@ -76,7 +71,6 @@ class UserService {
   static async findUserByProperty(filterOpts) {
     return await UserModel.findOne(filterOpts);
   }
-
 
   /**
    * @description Mark user as verified

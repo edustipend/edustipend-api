@@ -1,29 +1,26 @@
 const catchAsyncError = require("../middleware/catchAsyncError");
-const {
-  Mail,
-  StipendApplication,
-  User
-} = require("../services");
+const { Mail, StipendApplication, User } = require("../services");
 const ErrorHandler = require("../utils/ErrorHandler");
 const {
   validateStipendApplication,
   stipendRequestIdsValidation
 } = require("../validation/StipendApplicationValidation");
 
-
 /**
  * @description Returning users requesting stipend
  * @route POST /v1/stipend-apply
  * @access Public
  */
-exports.createStipendApplication = catchAsyncError(async (req, res,) => {
+exports.createStipendApplication = catchAsyncError(async (req, res) => {
   const validateData = validateStipendApplication(req.body);
   if (validateData.error) {
     throw new ErrorHandler(validateData.error, 400);
   }
 
   //TODO: Add logic to get user creating account and link it
-  const stipend = await StipendApplication.create(validateData.value, /** applicantUser **/);
+  const stipend = await StipendApplication.create(
+    validateData.value /** applicantUser **/
+  );
 
   // Mail.sendRecievedStipendRequest(stipend.stipendCategory, stipend.email);
 
@@ -55,7 +52,6 @@ exports.approveStipend = catchAsyncError(async ({ body }, res, next) => {
   });
 });
 
-
 /**
  * @description approve a stipend request
  * @route PUT /v1/admin/reject-stipend
@@ -73,7 +69,6 @@ exports.rejectStipend = catchAsyncError(async ({ body }, res, next) => {
     message: "Stipend request successfully rejected"
   });
 });
-
 
 /**
  * @description get most recent stipend request

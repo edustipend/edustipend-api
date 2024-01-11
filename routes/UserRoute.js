@@ -1,12 +1,14 @@
 const {
-	createFirstStipendApplication,
-	isValidUser,
-	stipendApplicationHistory,
-	verifyUser
+  createFirstStipendApplication,
+  isValidUser,
+  stipendApplicationHistory,
+  verifyUser
 } = require("../controller/UserController");
 const { isWindowOpen } = require("../middleware/ApplicationWIndowMiddleware");
 const { isAuthenticated } = require("../middleware/isAuthenticatedMiddleware");
-const { verifyEmailMiddleware } = require("../middleware/verifyEmailMiddleware");
+const {
+  verifyEmailMiddleware
+} = require("../middleware/verifyEmailMiddleware");
 const router = require("express").Router();
 
 /**
@@ -15,11 +17,17 @@ const router = require("express").Router();
  */
 // router.use(isWindowOpen)
 
-router.post("/stipend/apply", /** isWindowOpen,  **/ createFirstStipendApplication);
+router.post(
+  "/stipend/apply",
+  /** isWindowOpen,  **/ createFirstStipendApplication
+);
 router.get("/check", isValidUser);
-router.get("/stipend/application-history", isAuthenticated, stipendApplicationHistory);
+router.get(
+  "/stipend/application-history",
+  isAuthenticated,
+  stipendApplicationHistory
+);
 // router.get("/stipend/application-history", stipendApplicationHistory);
 router.post("/verify", verifyEmailMiddleware, verifyUser);
-
 
 module.exports = router;

@@ -7,8 +7,7 @@ const stipendApplicationRouter = require("./StipendApplicationRoute");
 const userRouter = require("./UserRoute");
 const waitlistRouter = require("./JoinWaitlistRoute");
 const User = require("../models/UserV2");
-const LocalStrategy = require('passport-local').Strategy;
-
+const LocalStrategy = require("passport-local").Strategy;
 
 // Passport Middleware Configuration
 passport.use(new LocalStrategy(User.authenticate()));

@@ -31,7 +31,10 @@ exports.register = catchAsyncError(async (req, res) => {
 
   try {
     newUser = await User.createUser(validateData.value);
-    const { token, id } = await Authentication.getTokenForAuthenticatedUser(email, newUser);
+    const { token, id } = await Authentication.getTokenForAuthenticatedUser(
+      email,
+      newUser
+    );
 
     if (token && id) {
       const link = `${process.env.APP_BASE_URL}/application?jwt=${token}`;
@@ -43,20 +46,17 @@ exports.register = catchAsyncError(async (req, res) => {
           "Registration successful, please check your email for verification link",
         id
       });
-    }
-    else {
+    } else {
       return res.status(500).json({
-        error: 'Error generating user token'
+        error: "Error generating user token"
       });
     }
-  }
-  catch (error) {
+  } catch (error) {
     return res.status(500).json({
       error
     });
   }
 });
-
 
 /**
  * @route POST /v1/login
@@ -68,14 +68,12 @@ exports.login = catchAsyncError(async (req, res) => {
   try {
     const response = await Authentication.loginUser(validateData);
     res.status(200).json(response);
-  }
-  catch (error) {
+  } catch (error) {
     res.status(500).json({
       error
     });
   }
 });
-
 
 /**
  * @route POST /v1/logout
@@ -85,13 +83,11 @@ exports.login = catchAsyncError(async (req, res) => {
 exports.logout = catchAsyncError(async (req, res) => {
   try {
     req.logout();
-    res.status(200).json({ message: 'Logout successful' });
-  }
-  catch (error) {
+    res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
     res.status(500).json({ error });
   }
 });
-
 
 /**
  * @route POST api/v1/reset-password
@@ -113,14 +109,12 @@ exports.resetPassword = catchAsyncError(async (_, res) => {
       success: true,
       message: "Please check your email for a reset password code"
     });
-  }
-  catch (error) {
+  } catch (error) {
     res.status(500).json({
       error
     });
   }
 });
-
 
 /**
  * @route POST api/v1/update-password
@@ -132,14 +126,13 @@ exports.updatePassword = catchAsyncError(async (req, res) => {
     await User.updatePassword(req.body.password, res.locals.verifiedUser);
     res.status(200).json({
       success: true,
-      message: "Password update successful.",
+      message: "Password update successful."
     });
-  }
-  catch (error) {
+  } catch (error) {
     Logger.error(error);
     res.status(500).json({
       error,
-      message: "Error updating password",
+      message: "Error updating password"
     });
   }
 });

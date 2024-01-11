@@ -58,26 +58,35 @@ exports.validateRegisterData = (data) => {
       "string.empty": "dateOfBirth field cannot be empty",
       "any.required": "dateOfBirth field is required"
     }),
-    gender: Joi.string().required().messages({
-      "string.base": "gender field must be a string",
-      "string.empty": "gender field cannot be empty",
-      "any.required": "gender field is required"
-    }).valid('male', 'female', 'binary'),
-    stateOfOrigin: Joi.string().required().messages({
-      "string.base": "stateOfOrigin field must be a string",
-      "string.empty": "stateOfOrigin field cannot be empty",
-      "any.required": "stateOfOrigin field is required"
-    }).custom((value, helper) => {
-      if (!STATES_OF_ORIGIN[value]) {
-        return helper.message("Invalid state of origin provided");
-      }
-      return value;
-    }),
-    howDidYouHearAboutUs: Joi.string().required().messages({
-      "string.base": "howDidYouHearAboutUs field must be a string",
-      "string.empty": "howDidYouHearAboutUs field cannot be empty",
-      "any.required": "howDidYouHearAboutUs field is required"
-    }).valid('facebook', 'twitter', 'instagram', 'linkedin', 'other'),
+    gender: Joi.string()
+      .required()
+      .messages({
+        "string.base": "gender field must be a string",
+        "string.empty": "gender field cannot be empty",
+        "any.required": "gender field is required"
+      })
+      .valid("male", "female", "binary"),
+    stateOfOrigin: Joi.string()
+      .required()
+      .messages({
+        "string.base": "stateOfOrigin field must be a string",
+        "string.empty": "stateOfOrigin field cannot be empty",
+        "any.required": "stateOfOrigin field is required"
+      })
+      .custom((value, helper) => {
+        if (!STATES_OF_ORIGIN[value]) {
+          return helper.message("Invalid state of origin provided");
+        }
+        return value;
+      }),
+    howDidYouHearAboutUs: Joi.string()
+      .required()
+      .messages({
+        "string.base": "howDidYouHearAboutUs field must be a string",
+        "string.empty": "howDidYouHearAboutUs field cannot be empty",
+        "any.required": "howDidYouHearAboutUs field is required"
+      })
+      .valid("facebook", "twitter", "instagram", "linkedin", "other")
     // isAdmin: Joi.boolean(),
     // isVerified: Joi.boolean()
   });
@@ -93,7 +102,7 @@ exports.validateUserNameAsEmail = (data) => {
       "string.base": "Not a valid email",
       "string.empty": "Email field is required",
       "any.required": "Email field is required"
-    }),
+    })
   });
   return userNameAsEmailSchema.validateAsync(data, { abortEarly: false });
 };
@@ -106,8 +115,7 @@ exports.validateUpdatePassword = (data) => {
       "string.empty": "Password field is required",
       "string.min": "Password must be atleast 8 characters long",
       "any.required": "Password field is required"
-    }),
+    })
   });
   return passwordUpdateSchema.validateAsync(data, { abortEarly: false });
 };
-
