@@ -1,15 +1,13 @@
+require("dotenv").config();
 const crypto = require("crypto");
-const {
-  Sequelize: { Op }
-} = require("sequelize");
 const ErrorHandler = require("./ErrorHandler");
 
 /**
  * @description: generate a random 6 digit numbers
  */
 
-exports.randomSixDigits = () => {
-  return String(Math.floor(100000 + Math.random() * 900000));
+exports.getVerificationLink = (token) => {
+  return `${process.env.APP_BASE_URL}/application?jwt=${token}`;
 };
 
 /**

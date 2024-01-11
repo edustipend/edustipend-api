@@ -1,5 +1,26 @@
 const Joi = require("@hapi/joi");
 const isEmpty = require("./is-empty");
+const STATES_OF_ORIGIN = require("../constants/statesOfOrigin");
+
+exports.validateLogin = (data) => {
+  data.username = !isEmpty(data.username) ? data.username : "";
+  data.password = !isEmpty(data.password) ? data.password : "";
+
+  const userSchema = Joi.object({
+    username: Joi.string().email().trim().required().messages({
+      "string.email": "Not a valid email",
+      "string.base": "Not a valid email",
+      "string.empty": "Email field is required",
+      "any.required": "Email field is required"
+    }),
+    password: Joi.string().trim().min(8).required().messages({
+      "string.empty": "Password field is required",
+      "string.min": "Password must be atleast 8 characters long",
+      "any.required": "Password field is required"
+    })
+  });
+  return userSchema.validateAsync(data, { abortEarly: false });
+};
 
 exports.validateRegisterData = (data) => {
   data.name = !isEmpty(data.name) ? data.name : "";
@@ -25,7 +46,7 @@ exports.validateRegisterData = (data) => {
     }),
     password: Joi.string().trim().min(8).required().messages({
       "string.empty": "Password field is required",
-      "string.min": "Password must be atleast 8 character long",
+      "string.min": "Password must be atleast 8 characters long",
       "any.required": "Password field is required"
     }),
     confirmPassword: Joi.string()
@@ -41,38 +62,52 @@ exports.validateRegisterData = (data) => {
       "string.base": "gender field must be a string",
       "string.empty": "gender field cannot be empty",
       "any.required": "gender field is required"
-    }),
+    }).valid('male', 'female', 'binary'),
     stateOfOrigin: Joi.string().required().messages({
       "string.base": "stateOfOrigin field must be a string",
       "string.empty": "stateOfOrigin field cannot be empty",
       "any.required": "stateOfOrigin field is required"
+    }).custom((value, helper) => {
+      if (!STATES_OF_ORIGIN[value]) {
+        return helper.message("Invalid state of origin provided");
+      }
+      return value;
     }),
     howDidYouHearAboutUs: Joi.string().required().messages({
       "string.base": "howDidYouHearAboutUs field must be a string",
       "string.empty": "howDidYouHearAboutUs field cannot be empty",
       "any.required": "howDidYouHearAboutUs field is required"
-    }),
-    isApproved: Joi.boolean()
+    }).valid('facebook', 'twitter', 'instagram', 'linkedin', 'other'),
+    // isAdmin: Joi.boolean(),
+    // isVerified: Joi.boolean()
   });
   return userSchema.validate(data, { abortEarly: false });
 };
 
-exports.loginValidation = (data) => {
-  data.email = !isEmpty(data.email) ? data.email : "";
-  data.password = !isEmpty(data.password) ? data.password : "";
+exports.validateUserNameAsEmail = (data) => {
+  data.username = !isEmpty(data.username) ? data.username : "";
 
-  const userSchema = Joi.object({
-    email: Joi.string().email().trim().required().messages({
+  const userNameAsEmailSchema = Joi.object({
+    username: Joi.string().email().trim().required().messages({
       "string.email": "Not a valid email",
       "string.base": "Not a valid email",
       "string.empty": "Email field is required",
       "any.required": "Email field is required"
     }),
-    password: Joi.string().required().messages({
-      "string.empty": "Password field is required",
-      "string.min": "Password must be atleast 8 character long",
-      "any.required": "First name field is required"
-    })
   });
-  return userSchema.validateAsync(data, { abortEarly: false });
+  return userNameAsEmailSchema.validateAsync(data, { abortEarly: false });
 };
+
+exports.validateUpdatePassword = (data) => {
+  data.password = !isEmpty(data.password) ? data.password : "";
+
+  const passwordUpdateSchema = Joi.object({
+    password: Joi.string().trim().min(8).required().messages({
+      "string.empty": "Password field is required",
+      "string.min": "Password must be atleast 8 characters long",
+      "any.required": "Password field is required"
+    }),
+  });
+  return passwordUpdateSchema.validateAsync(data, { abortEarly: false });
+};
+

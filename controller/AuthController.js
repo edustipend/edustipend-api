@@ -1,110 +1,145 @@
 //Auth
-const { Authentication, Mail } = require("../services");
+const { Authentication, Mail, User } = require("../services");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const { hasEmptySpace } = require("../utils/helper");
 const ErrorHandler = require("../utils/ErrorHandler");
 const {
   validateRegisterData,
-  loginValidation
-} = require("../validation/UserValidation");
+  validateLogin: loginValidation
+} = require("../validation/AuthValidation");
+const Logger = require("../config/logger");
 
 /**
  * @route POST api/v1/register
  * @description Register a new user
+ * @deprecated
  * @acess Private
  */
-
-exports.signup = catchAsyncError(async (req, res, next) => {
+exports.register = catchAsyncError(async (req, res) => {
   const passwordEmptySpace = hasEmptySpace(req.body.password);
-
   if (passwordEmptySpace) {
     throw new ErrorHandler("Password cannot contain empty space", 400);
   }
 
-  const validateData = await validateRegisterData(req.body);
+  const validateData = validateRegisterData(req.body);
   if (validateData.error) {
     throw new ErrorHandler(validateData.error, 400);
   }
 
-  const newUser = await Authentication.register(validateData.value);
-  const link = `${process.env.APP_BASE_URL}/application?email=${newUser.email}&code=${newUser.code}`;
+  const { email } = req.body;
+  let newUser;
 
-  Mail.sendVerificationCode(newUser.name, newUser.email, link);
+  try {
+    newUser = await User.createUser(validateData.value);
+    const { token, id } = await Authentication.getTokenForAuthenticatedUser(email, newUser);
 
-  return res.status(201).json({
-    success: true,
-    message:
-      "Registration successful, please check your email for verification link",
-    id: newUser.id
-  });
+    if (token && id) {
+      const link = `${process.env.APP_BASE_URL}/application?jwt=${token}`;
+      //TODO: Mail.sendVerificationCode(name, email, link);
+
+      return res.status(201).json({
+        success: true,
+        message:
+          "Registration successful, please check your email for verification link",
+        id
+      });
+    }
+    else {
+      return res.status(500).json({
+        error: 'Error generating user token'
+      });
+    }
+  }
+  catch (error) {
+    return res.status(500).json({
+      error
+    });
+  }
 });
 
-/**
- * @route POST api/v1/verify
- * @description Verify a user email
- * @acess Private
- */
-
-exports.accountVerify = catchAsyncError(async (req, res, next) => {
-  const { token, name, email, message } = await Authentication.verifyAccount(
-    req.body
-  );
-
-  // Mail.sendWelcomeEmail(name, email);
-
-  res.status(200).json({
-    success: true,
-    message,
-    token: `Bearer ${token}`
-  });
-});
 
 /**
  * @route POST /v1/login
  * @description Login a user
  * @access Public
  */
-
-exports.login = catchAsyncError(async (req, res, next) => {
+exports.login = catchAsyncError(async (req, res) => {
   const validateData = await loginValidation(req.body);
-
-  const response = await Authentication.loginUser(validateData);
-
-  res.status(200).json({ response });
+  try {
+    const response = await Authentication.loginUser(validateData);
+    res.status(200).json(response);
+  }
+  catch (error) {
+    res.status(500).json({
+      error
+    });
+  }
 });
+
+
+/**
+ * @route POST /v1/logout
+ * @description Logs out a user
+ * @access Public
+ */
+exports.logout = catchAsyncError(async (req, res) => {
+  try {
+    req.logout();
+    res.status(200).json({ message: 'Logout successful' });
+  }
+  catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
 
 /**
  * @route POST api/v1/reset-password
  * @description reset a user password
  * @acess Private
  */
-exports.resetPassword = catchAsyncError(async (req, res, next) => {
-  const validateData = await validateRegisterData(req.body);
-  const user = await Authentication.passwordReset(validateData.value);
-  const link = `${process.env.APP_BASE_URL}/reset-password?email=${user.email}&code=${user.code}`;
-  Mail.sendPasswordCode(user.name, user.email, link);
-  return res.status(201).json({
-    success: true,
-    message: "Please check your email for a reset password code"
-  });
+exports.resetPassword = catchAsyncError(async (_, res) => {
+  const verifiedUser = res.locals.verifiedUser;
+
+  try {
+    const resetPassWordRes = await Authentication.resetPassword(verifiedUser);
+    const link = `${process.env.APP_BASE_URL}/reset-password?resetToken=${resetPassWordRes?.token}`;
+
+    //TODO: Add email service to send password reset email
+    // Mail.sendPasswordCode(user.name, user.email, link);
+
+    return res.status(201).json({
+      link, //TODO: Remove link
+      success: true,
+      message: "Please check your email for a reset password code"
+    });
+  }
+  catch (error) {
+    res.status(500).json({
+      error
+    });
+  }
 });
+
 
 /**
  * @route POST api/v1/update-password
  * @description update a user password
  * @acess Private
  */
-
-exports.updatePassword = catchAsyncError(async (req, res, next) => {
-  const passwordHasEmptySpace = await hasEmptySpace(req.body.password);
-  if (passwordHasEmptySpace) {
-    throw new ErrorHandler("Password cannot have empty space");
+exports.updatePassword = catchAsyncError(async (req, res) => {
+  try {
+    await User.updatePassword(req.body.password, res.locals.verifiedUser);
+    res.status(200).json({
+      success: true,
+      message: "Password update successful.",
+    });
   }
-  const { token, email } = await Authentication.passwordUpdate(req.body);
-
-  res.status(200).json({
-    success: true,
-    message: "Password update successful.",
-    token: `Bearer ${token}`
-  });
+  catch (error) {
+    Logger.error(error);
+    res.status(500).json({
+      error,
+      message: "Error updating password",
+    });
+  }
 });
