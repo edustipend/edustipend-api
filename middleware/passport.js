@@ -15,8 +15,6 @@ module.exports = function () {
     User.findById(payload.id, function (err, user) {
       if (err) {
         return done(new Error(ErrorMessage.USER_NOT_FOUND), null);
-        // } else if (payload.expire <= Date.now()) {
-        //   return done(new Error(ErrorMessage.TOKEN_EXPIRED), null);
       } else {
         return done(null, user);
       }

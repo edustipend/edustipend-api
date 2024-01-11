@@ -12,10 +12,7 @@ const router = require("express").Router();
  */
 // router.use(isWindowOpen)
 
-router.post("/apply", /** isWindowOpen,  **/ createStipendApplication);
-
-//TODO:
-// router.get("/application-status/:id", isAuthenticated, applicationStatus);
+router.post("/apply", isAuthenticated, createStipendApplication);
 router.get("/one-click-apply/:email", retrieveForOneClickApply);
 
 module.exports = router;
