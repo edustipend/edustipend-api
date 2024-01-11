@@ -5,11 +5,15 @@ const expressFileupload = require("express-fileupload");
 const server = require("http").Server(app);
 const cors = require("cors");
 
+const dbInitialize = require("./database/init");
+dbInitialize();
+
 // middleware
+require("./middleware/passport.js")();
 const errorMiddleware = require("./middleware/errors");
 const ErrorHandler = require("./utils/ErrorHandler");
 
-// require route
+// require routes
 const allRoutes = require("./routes");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./edustipenddoc.json");
@@ -34,14 +38,14 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/v1", allRoutes);
 
 //entry point
-app.get("/", (req, res) =>
+app.get("/", (_, res) =>
   res.status(200).json({
     message: "Welcome to Edustipend API server"
   })
 );
 
 // Handle unhandled routes
-app.all("*", (req, res, next) => {
+app.all("*", (req, _, next) => {
   next(new ErrorHandler(`${req.originalUrl} route not found`, 404));
 });
 

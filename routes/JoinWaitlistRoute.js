@@ -2,7 +2,7 @@ const router = require("express").Router();
 const {
   joinWaitlist,
   notifyWaitlist
-} = require("../../controller/WaitlistController");
+} = require("../controller/WaitlistController");
 
 router.post("/join-waitlist", joinWaitlist);
 

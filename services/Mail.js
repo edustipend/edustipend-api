@@ -154,6 +154,7 @@ class Mail {
       }
     );
   }
+
   static applicationStatusForDenied(email, stipendCategory, message, subject) {
     this._sendEmail(
       {
