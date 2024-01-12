@@ -21,8 +21,8 @@ router.post(
   "/stipend/apply",
   /** isWindowOpen,  **/ createFirstStipendApplication
 );
-router.get("/check", isValidUser);
-router.get(
+router.post("/check", isValidUser);
+router.post(
   "/stipend/application-history",
   isAuthenticated,
   stipendApplicationHistory
