@@ -101,11 +101,17 @@ exports.resetPassword = catchAsyncError(async (_, res) => {
     const resetPassWordRes = await Authentication.resetPassword(verifiedUser);
     const link = `${process.env.APP_BASE_URL}/reset-password?resetToken=${resetPassWordRes?.token}`;
 
-    //TODO: Add email service to send password reset email
-    // Mail.sendPasswordCode(user.name, user.email, link);
+    try {
+      Mail.sendResetPasswordEmail(verifiedUser.name, verifiedUser.email, link);
+    } catch (error) {
+      Logger.error(error);
+      res.status(500).json({
+        message: "Error sending password reset email",
+        error
+      });
+    }
 
     return res.status(201).json({
-      link, //TODO: Remove link
       success: true,
       message: "Please check your email for a reset password code"
     });

@@ -102,9 +102,22 @@ exports.createFirstStipendApplication = catchAsyncError(async (req, res) => {
 
       if (token && id) {
         const link = getVerificationLink(token);
-
-        // TODO: Mail.sendVerificationCode(name, email, link); - Email confirming application received but needing to verify email
-        //	Mail.sendRecievedStipendRequest(stipend.stipendCategory, stipend.email);
+        try {
+          Mail.applicationReceivedSendVerification(
+            newUser,
+            stipendApplication,
+            link
+          );
+        } catch (error) {
+          // Fail silently and retry
+          Logger.error(error);
+          Logger.info(`Retrying sending email to ${newUser.email}`);
+          Mail.applicationReceivedSendVerification(
+            newUser,
+            stipendApplication,
+            link
+          );
+        }
 
         return res.status(201).json({
           success: true,
@@ -112,8 +125,7 @@ exports.createFirstStipendApplication = catchAsyncError(async (req, res) => {
             "Stipend application submitted successfully, please check your email for verification link",
           data: {
             userId: id,
-            stipendApplicationId: stipendApplication._id,
-            link //TODO: Remove this link
+            stipendApplicationId: stipendApplication._id
           }
         });
       } else {
@@ -131,7 +143,7 @@ exports.createFirstStipendApplication = catchAsyncError(async (req, res) => {
 
 /**
  * @description
- * @route GET /v1/user/check
+ * @route POST /v1/user/check
  * @access Private
  */
 exports.isValidUser = catchAsyncError(async (req, res) => {
@@ -158,7 +170,7 @@ exports.isValidUser = catchAsyncError(async (req, res) => {
 
 /**
  * @description
- * @route GET /v1/user/stipend/application-history
+ * @route POST /v1/user/stipend/application-history
  * @access Private
  */
 //TODO: Paginate this API

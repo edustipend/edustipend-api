@@ -13,10 +13,11 @@ const generateVerificationTokenAndSendMail = async (user) => {
     TokenExpiration.THIRTY_MINUTES
   );
   const link = getVerificationLink(token);
-
-  //TODO: Add email service to send verify email
-  // Mail.sendPasswordCode(user.name, user.email, link);
-  return link;
+  try {
+    Mail.resendVerificationEmail(user.name, user.email, link);
+  } catch (error) {
+    throw error;
+  }
 };
 
 exports.verifyEmailMiddleware = async function (req, res, next) {
@@ -64,11 +65,19 @@ exports.verifyEmailMiddleware = async function (req, res, next) {
     Logger.error(err);
 
     // We are sending user a new token because previous has expired
-    link = await generateVerificationTokenAndSendMail(user);
+    try {
+      await generateVerificationTokenAndSendMail(user);
+    } catch (error) {
+      Logger.error(error);
+      return res.status(500).json({
+        message: "Error resending verify email",
+        error
+      });
+    }
+
     return res.status(498).json({
       message: "Expired token - a new verify email has been sent",
-      error: true,
-      link
+      error: true
     });
   }
 };
