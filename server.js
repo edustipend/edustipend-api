@@ -20,6 +20,9 @@ const swaggerDocument = require("./edustipenddoc.json");
 
 const PORT = process.env.PORT || 4500;
 
+// Setup CORS
+app.use(cors());
+
 // express middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -27,9 +30,6 @@ app.use("/files", express.static(__dirname + "/public"));
 
 // express fileupload
 app.use(expressFileupload());
-
-// Setup CORS
-app.use(cors());
 
 // api documentation
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));

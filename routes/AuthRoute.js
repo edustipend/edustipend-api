@@ -11,9 +11,10 @@ const {
   resetPasswordMiddleware,
   updatePasswordMiddleware
 } = require("../middleware/resetPasswordMiddleware");
+const { isAuthenticated } = require("../middleware/isAuthenticatedMiddleware");
 
 router.post("/login", passport.authenticate("local"), login);
-router.post("/logout", logout);
+router.post("/logout", isAuthenticated, logout);
 router.post("/register", register);
 router.post("/reset-password", resetPasswordMiddleware, resetPassword);
 router.post("/update-password", updatePasswordMiddleware, updatePassword);

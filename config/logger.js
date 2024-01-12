@@ -20,7 +20,11 @@ const Logger = createLogger({
   transports: new DailyRotateFile(options)
 });
 
-if (process.env.NODE_ENV === "development") {
+if (
+  process.env.NODE_ENV === "development" ||
+  // TODO: Add prod logging service, then we can remove this
+  process.env.NODE_ENV === "production"
+) {
   Logger.add(new transports.Console());
 }
 
