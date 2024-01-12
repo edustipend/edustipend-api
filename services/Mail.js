@@ -2,6 +2,7 @@ require("dotenv").config();
 const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
 const path = require("path");
+const Logger = require("../config/logger");
 
 class Mail {
   static transporter = nodemailer.createTransport({
@@ -31,14 +32,22 @@ class Mail {
       ? [{ ...options.attachments }]
       : null;
 
+    const {
+      email,
+      message,
+      subject,
+      params,
+      template
+    } = options;
+
     const mailOptions = {
       from: `${process.env.SMTP_FROM_NAME} <${process.env.SMTP_FROM_EMAIL}>`,
-      to: options.email,
-      subject: options.subject,
-      text: options.message,
-      template: options.template,
+      to: email,
+      subject: subject,
+      text: message,
+      template: template,
       context: {
-        ...options.params
+        ...params
       },
       attachments
     };
@@ -46,41 +55,48 @@ class Mail {
       if (err) {
         return cb(err, null);
       }
-      console.log("Email sent successfully");
+      Logger.info("Email sent successfully");
       return cb(null, data);
     });
   };
 
   /**
-   * @description Send verification code
+   * @description Send verification email on stipend application
    * @param {*} name
    * @param {*} email
-   * @param {*} randomCode
+   * @param {*} link
    */
-  static sendVerificationCode(name, email, link) {
+  static applicationReceivedSendVerification(user, stipendApplication, link) {
     this._sendEmail(
       {
-        email,
-        subject: "Please confirm your email",
-        template: "verification-token",
+        email: user.email,
+        subject: "Complete Your Stipend Application",
+        template: "application-received-verification",
         params: {
-          name: name,
+          name: user.name,
+          stipendCategory: stipendApplication.stipendCategory,
           link,
-          userEmail: email
+          userEmail: user.email
         }
       },
       (err, data) => {
-        if (err) console.log(err);
+        if (err) Logger.error(err);
       }
     );
   }
 
-  static sendPasswordCode(name, email, link) {
+  /**
+   * @description Resends verification email for an expired token
+   * @param {*} name
+   * @param {*} email
+   * @param {*} link
+   */
+  static resendVerificationEmail(name, email, link) {
     this._sendEmail(
       {
         email,
-        subject: "Is this email yours?",
-        template: "password-update",
+        subject: "Please verify your email",
+        template: "resend-verification",
         params: {
           name: name,
           link,
@@ -94,12 +110,36 @@ class Mail {
   }
 
   /**
-   * @description Send stipend request email recieved
+   * @description Send password reset email
+   * @param {*} name
+   * @param {*} email
+   * @param {*} link
+   */
+  static sendResetPasswordEmail(name, email, link) {
+    this._sendEmail(
+      {
+        email,
+        subject: "Password Reset Request",
+        template: "password-reset",
+        params: {
+          name: name,
+          link,
+          userEmail: email
+        }
+      },
+      (err) => {
+        if (err) Logger.error(err);
+      }
+    );
+  }
+
+  /**
+   * @description Send stipend request email recieved for returning users
    * @param {*} stipend request
    * @param {*} email
    */
 
-  static sendRecievedStipendRequest(stipendCategory, email) {
+  static stipendApplicationReceivedConfirmation(stipendCategory, email) {
     this._sendEmail(
       {
         email,
