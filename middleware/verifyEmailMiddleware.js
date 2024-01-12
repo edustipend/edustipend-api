@@ -15,8 +15,7 @@ const generateVerificationTokenAndSendMail = async (user) => {
   const link = getVerificationLink(token);
   try {
     Mail.resendVerificationEmail(user.name, user.email, link);
-  }
-  catch (error) {
+  } catch (error) {
     throw error;
   }
 };
@@ -68,11 +67,10 @@ exports.verifyEmailMiddleware = async function (req, res, next) {
     // We are sending user a new token because previous has expired
     try {
       await generateVerificationTokenAndSendMail(user);
-    }
-    catch (error) {
+    } catch (error) {
       Logger.error(error);
       return res.status(500).json({
-        message: 'Error resending verify email',
+        message: "Error resending verify email",
         error
       });
     }

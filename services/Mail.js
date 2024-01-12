@@ -32,13 +32,7 @@ class Mail {
       ? [{ ...options.attachments }]
       : null;
 
-    const {
-      email,
-      message,
-      subject,
-      params,
-      template
-    } = options;
+    const { email, message, subject, params, template } = options;
 
     const mailOptions = {
       from: `${process.env.SMTP_FROM_NAME} <${process.env.SMTP_FROM_EMAIL}>`,

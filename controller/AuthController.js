@@ -103,11 +103,10 @@ exports.resetPassword = catchAsyncError(async (_, res) => {
 
     try {
       Mail.sendResetPasswordEmail(verifiedUser.name, verifiedUser.email, link);
-    }
-    catch (error) {
+    } catch (error) {
       Logger.error(error);
       res.status(500).json({
-        message: 'Error sending password reset email',
+        message: "Error sending password reset email",
         error
       });
     }
