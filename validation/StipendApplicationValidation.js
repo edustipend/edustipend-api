@@ -68,6 +68,9 @@ exports.validateFirstStipendApplication = (data) => {
         facebook: Joi.string(),
         instagram: Joi.string(),
         linkedin: Joi.string(),
+        //TODO: Remove twitter
+        twitter: Joi.string(),
+        other: Joi.string(),
         x: Joi.string()
       })
       .optional(),
