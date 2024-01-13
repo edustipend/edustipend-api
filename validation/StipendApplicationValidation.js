@@ -63,12 +63,14 @@ exports.validateFirstStipendApplication = (data) => {
         "any.required": "gender field is required"
       })
       .valid("male", "female", "non-binary"),
-    socialMediaHandles: Joi.object().keys({
-      facebook: Joi.string(),
-      instagram: Joi.string(),
-      linkedin: Joi.string(),
-      x: Joi.string(),
-    }).optional(),
+    socialMediaHandles: Joi.object()
+      .keys({
+        facebook: Joi.string(),
+        instagram: Joi.string(),
+        linkedin: Joi.string(),
+        x: Joi.string()
+      })
+      .optional(),
     stateOfOrigin: Joi.string()
       .required()
       .messages({
