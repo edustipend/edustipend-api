@@ -62,7 +62,18 @@ exports.validateFirstStipendApplication = (data) => {
         "string.empty": "gender field cannot be empty",
         "any.required": "gender field is required"
       })
-      .valid("male", "female", "binary"),
+      .valid("male", "female", "non-binary"),
+    socialMediaHandles: Joi.object({
+      arg: Joi.string().valid(
+        "facebook",
+        "twitter",
+        "instagram",
+        "linkedin",
+        "other",
+        "x"
+      ),
+      value: Joi.string()
+    }),
     stateOfOrigin: Joi.string()
       .required()
       .messages({
@@ -84,7 +95,7 @@ exports.validateFirstStipendApplication = (data) => {
         "string.empty": "howDidYouHearAboutUs field cannot be empty",
         "any.required": "howDidYouHearAboutUs field is required"
       })
-      .valid("facebook", "twitter", "instagram", "linkedin", "other"),
+      .valid("facebook", "twitter", "instagram", "linkedin", "other", "x"),
     futureHelpFromUser: Joi.string().required().messages({
       "string.base": "futureHelpFromUser field must be a string",
       "string.empty": "futureHelpFromUser field cannot be empty",
