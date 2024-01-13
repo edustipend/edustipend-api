@@ -40,7 +40,8 @@ exports.createFirstStipendApplication = catchAsyncError(async (req, res) => {
     potentialBenefits,
     reasonForRequest,
     stepsTakenToEaseProblem,
-    stipendCategory
+    stipendCategory,
+    socialMediaHandles
   } = firstStipendApplicationData.value;
 
   try {
@@ -51,11 +52,12 @@ exports.createFirstStipendApplication = catchAsyncError(async (req, res) => {
         dateOfBirth,
         email,
         gender,
+        isAdmin: false,
+        isVerified: false,
         name,
         password,
-        stateOfOrigin,
-        isAdmin: false,
-        isVerified: false
+        socialMediaHandles,
+        stateOfOrigin
       });
     } catch (err) {
       Logger.error(
