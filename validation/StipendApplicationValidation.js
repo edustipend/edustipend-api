@@ -64,8 +64,15 @@ exports.validateFirstStipendApplication = (data) => {
       })
       .valid("male", "female", "non-binary"),
     socialMediaHandles: Joi.object({
-      arg: Joi.string().valid("facebook", "twitter", "instagram", "linkedin", "other", "x"),
-      value: Joi.string(),
+      arg: Joi.string().valid(
+        "facebook",
+        "twitter",
+        "instagram",
+        "linkedin",
+        "other",
+        "x"
+      ),
+      value: Joi.string()
     }),
     stateOfOrigin: Joi.string()
       .required()
