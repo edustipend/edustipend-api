@@ -113,7 +113,7 @@ exports.resetPassword = catchAsyncError(async (_, res) => {
 
     return res.status(201).json({
       success: true,
-      message: "Please check your email for a reset password code"
+      message: "Please check your email for the password reset link."
     });
   } catch (error) {
     res.status(500).json({
