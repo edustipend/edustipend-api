@@ -29,23 +29,23 @@ exports.verifyEmailMiddleware = async function (req, res, next) {
       req.query.email
   });
 
-  if (validateData.error) {
-    //TODO: Remove hardcoded error statuses
-    throw new ErrorHandler(validateData.error, 422);
-  }
+  let userName = validateData?.username;
+  let user;
 
-  const user = await User.findByUserName(validateData.username);
-  if (!user) {
-    return res.status(400).json({
-      error: "User does not exist"
-    });
-  }
+  if (userName) {
+    user = await User.findByUserName(userName);
+    if (!user) {
+      return res.status(400).json({
+        error: "User does not exist"
+      });
+    }
 
-  if (user.isVerified) {
-    return res.status(200).json({
-      success: false,
-      message: "User is already verified"
-    });
+    if (user.isVerified) {
+      return res.status(200).json({
+        success: false,
+        message: "User is already verified"
+      });
+    }
   }
 
   let verifyToken = req.query.jwt;
@@ -57,8 +57,25 @@ exports.verifyEmailMiddleware = async function (req, res, next) {
   }
 
   try {
-    let verified = verifyJWTToken(verifyToken);
-    res.locals.verifiedUser = user;
+    const verified = verifyJWTToken(verifyToken);
+    const userName = verified?.username;
+    if (userName) {
+      user = await User.findByUserName(userName);
+      if (!user) {
+        return res.status(400).json({
+          error: "User does not exist"
+        });
+      }
+
+      if (user.isVerified) {
+        return res.status(200).json({
+          success: false,
+          message: "User is already verified"
+        });
+      }
+    }
+
+    res.locals.verifiedUser = verified;
     res.locals.verifiedUserName = verified.username;
     next();
   } catch (err) {
