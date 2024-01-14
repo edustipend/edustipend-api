@@ -15,13 +15,17 @@ const options = {
   maxFiles: "1d"
 };
 
-const logger = createLogger({
+const Logger = createLogger({
   format: combine(errors({ stack: true }), json(), timestamp(), prettyPrint()),
   transports: new DailyRotateFile(options)
 });
 
-if (process.env.NODE_ENV === "development") {
-  logger.add(new transports.Console());
+if (
+  process.env.NODE_ENV === "development" ||
+  // TODO: Add prod logging service, then we can remove this
+  process.env.NODE_ENV === "production"
+) {
+  Logger.add(new transports.Console());
 }
 
-module.exports = logger;
+module.exports = Logger;

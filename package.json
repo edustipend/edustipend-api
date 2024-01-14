@@ -18,11 +18,14 @@
     "imagemin-mozjpeg": "^9.0.0",
     "imagemin-pngquant": "^9.0.0",
     "jsonwebtoken": "^8.5.1",
+    "mongoose": "^8.0.3",
     "mysql2": "^2.1.0",
     "nodemailer": "^6.4.11",
     "nodemailer-express-handlebars": "^4.0.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^8.0.0",
     "sequelize": "^6.3.4",
     "swagger-ui-express": "^4.1.4",
     "twitter": "^1.7.1",
@@ -42,23 +45,18 @@
     "sinon": "^9.2.1"
   },
   "scripts": {
-    "start": "node server.js",
-    "lint": "eslint .",
-    "fix-lint": "eslint --fix",
-    "format": "prettier --write \"**/*.+(js|json|md)\"",
     "dev": "nodemon server.js",
-    "migrate": "node ./database/migration/index",
-    "seed": "node ./database/seed/index",
-    "db:seed": "npm run migrate & npm run seed",
-    "test:migrate": " cross-env NODE_ENV=testing node ./database/migration/index",
-    "test:seed": "cross-env NODE_ENV=testing node ./database/seed/index",
+    "execute-husky": "npx husky install && npx husky add .husky/pre-commit \"npx --no-install lint-staged\"",
+    "format": "prettier --write \"**/*.+(js|json|md)\"",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix",
+    "start": "node server.js",
     "test": "cross-env NODE_ENV=testing mocha --recursive --exit 'test'",
     "test:coverage": "cross-env NODE_ENV=testing nyc --reporter=html --reporter=text npm run test"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run format",
-      "pre-push": " npm run format"
+      "pre-commit": "npm run format"
     }
   },
   "engines": {

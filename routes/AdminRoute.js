@@ -1,12 +1,12 @@
 const {
   approveStipend,
   rejectStipend
-} = require("../../controller/StipendRequestController");
-const { notifyWaitlist } = require("../../controller/WaitlistController");
+} = require("../controller/StipendApplicationController");
+const { notifyWaitlist } = require("../controller/WaitlistController");
 const {
   setApplicationWindow,
   manuallyCloseApplicationWindow
-} = require("../../controller/ApplicationWindowController");
+} = require("../controller/ApplicationWindowController");
 
 const router = require("express").Router();
 
