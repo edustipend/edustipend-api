@@ -4,7 +4,6 @@ const { Authentication, Mail } = require("../services");
 const User = require("../services/User");
 const { verifyJWTToken } = require("../utils/generateJwtToken");
 const { getVerificationLink } = require("../utils/helper");
-const { validateUserNameAsEmail } = require("../validation/AuthValidation");
 
 const generateVerificationTokenAndSendMail = async (user) => {
   const { token } = await Authentication.getTokenForAuthenticatedUser(
@@ -21,34 +20,9 @@ const generateVerificationTokenAndSendMail = async (user) => {
 };
 
 exports.verifyEmailMiddleware = async function (req, res, next) {
-  const validateData = await validateUserNameAsEmail({
-    username:
-      req.body.email ||
-      req.body.username ||
-      req.query.username ||
-      req.query.email
-  });
-
-  let userName = validateData?.username;
+  let verifyToken = req.query.jwt;
   let user;
 
-  if (userName) {
-    user = await User.findByUserName(userName);
-    if (!user) {
-      return res.status(400).json({
-        error: "User does not exist"
-      });
-    }
-
-    if (user.isVerified) {
-      return res.status(200).json({
-        success: false,
-        message: "User is already verified"
-      });
-    }
-  }
-
-  let verifyToken = req.query.jwt;
   if (!verifyToken) {
     return res.status(400).json({
       success: false,
