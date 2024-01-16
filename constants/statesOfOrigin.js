@@ -20,6 +20,7 @@ const STATES_OF_ORIGIN = {
   KD: "Kaduna",
   KN: "Kano",
   KT: "Katsina",
+  KE: "Kebbi",
   KO: "Kogi",
   KW: "Kwara",
   LA: "Lagos",
