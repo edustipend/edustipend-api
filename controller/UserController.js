@@ -221,3 +221,30 @@ exports.verifyUser = catchAsyncError(async (_, res) => {
     });
   }
 });
+
+/**
+ * @route POST /v1/user/logged-in/verify
+ * @description Send email to logged in user to verify
+ * @acess Private
+ */
+exports.verifyLoggedInUser = catchAsyncError(async (_, res) => {
+  const user = res.locals.verifiedUser;
+  const { token } = await Authentication.getTokenForAuthenticatedUser(
+    user.email,
+    user,
+    TokenExpiration.THIRTY_MINUTES
+  );
+  const link = getVerificationLink(token);
+  res.status(201).json({
+    message: "Verification email sent succesfully"
+  });
+  try {
+    Mail.resendVerificationEmail(user.name, user.email, link);
+  } catch (error) {
+    Logger.error(error);
+    res.status(500).json({
+      message: "Error resending verify email",
+      error
+    });
+  }
+});
