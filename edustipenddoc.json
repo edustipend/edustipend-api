@@ -30,7 +30,7 @@
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "paths": {
-    "/auth/register": {
+    "/register": {
       "post": {
         "tags": ["auth"],
         "summary": "Register a new user",
