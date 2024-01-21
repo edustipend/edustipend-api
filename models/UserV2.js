@@ -56,13 +56,14 @@ const UserSchema = new Schema(
   {
     statics: {
       generateJwtToken(user, expiresIn) {
-        const { _id, email, isAdmin, name, username } = user;
+        const { _id, email, isAdmin, isVerified, name, username } = user;
 
         return Utils.generateJwtToken(
           {
             id: _id,
             email,
             isAdmin,
+            isVerified,
             name,
             username
           },
