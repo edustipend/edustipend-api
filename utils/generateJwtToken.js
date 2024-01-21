@@ -9,8 +9,8 @@ const generateJwtToken = (data, expiresIn) => {
   });
 };
 
-const verifyJWTToken = (token) => {
-  return jwt.verify(token, process.env.APP_TOKEN_KEY);
+const verifyJWTToken = (token, opts) => {
+  return jwt.verify(token, process.env.APP_TOKEN_KEY, opts ?? null);
 };
 
 module.exports = {

@@ -31,7 +31,7 @@ exports.verifyUserMiddleware = async function (req, res, next) {
   }
 
   try {
-    const verified = verifyJWTToken(verifyToken);
+    const verified = verifyJWTToken(verifyToken, { ignoreExpiration: true });
     const userName = verified?.username;
     if (userName) {
       user = await User.findByUserName(userName);
@@ -49,13 +49,19 @@ exports.verifyUserMiddleware = async function (req, res, next) {
       }
     }
 
-    res.locals.verifiedUser = verified;
     res.locals.verifiedUserName = verified.username;
+  } catch (err) {
+    Logger.error(err);
+  }
+
+  try {
+    // Check if token has expired
+    verifyJWTToken(verifyToken);
     next();
   } catch (err) {
     Logger.error(err);
 
-    // We are sending user a new token because previous has expired
+    // We are sending user a new verify email with token because previous has expired
     try {
       await generateVerificationTokenAndSendMail(user);
     } catch (error) {
@@ -65,7 +71,6 @@ exports.verifyUserMiddleware = async function (req, res, next) {
         error
       });
     }
-
     return res.status(498).json({
       message: "Expired token - a new verify email has been sent",
       error: true
