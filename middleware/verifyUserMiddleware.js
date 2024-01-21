@@ -73,7 +73,6 @@ exports.verifyUserMiddleware = async function (req, res, next) {
   }
 };
 
-
 exports.verifyLoggedInUserMiddleware = async function (req, res, next) {
   let verifyToken = req.query.jwt;
   let userName = req.body.email || req.body.username;

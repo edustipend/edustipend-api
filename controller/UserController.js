@@ -222,7 +222,6 @@ exports.verifyUser = catchAsyncError(async (_, res) => {
   }
 });
 
-
 /**
  * @route POST /v1/user/logged-in/verify
  * @description Send email to logged in user to verify
@@ -237,7 +236,7 @@ exports.verifyLoggedInUser = catchAsyncError(async (_, res) => {
   );
   const link = getVerificationLink(token);
   res.status(201).json({
-    message: "Verification email sent succesfully",
+    message: "Verification email sent succesfully"
   });
   try {
     Mail.resendVerificationEmail(user.name, user.email, link);
@@ -249,4 +248,3 @@ exports.verifyLoggedInUser = catchAsyncError(async (_, res) => {
     });
   }
 });
-

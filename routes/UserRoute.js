@@ -30,7 +30,10 @@ router.post(
   stipendApplicationHistory
 );
 router.post("/verify", verifyUserMiddleware, verifyUser);
-router.post("/logged-in/verify", verifyLoggedInUserMiddleware, verifyLoggedInUser);
-
+router.post(
+  "/logged-in/verify",
+  verifyLoggedInUserMiddleware,
+  verifyLoggedInUser
+);
 
 module.exports = router;
