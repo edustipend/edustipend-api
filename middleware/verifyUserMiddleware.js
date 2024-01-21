@@ -52,7 +52,7 @@ exports.verifyUserMiddleware = async function (req, res, next) {
     res.locals.verifiedUserName = verified.username;
   } catch (err) {
     Logger.error(err);
-  };
+  }
 
   try {
     // Check if token has expired
