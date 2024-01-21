@@ -2,13 +2,15 @@ const {
   createFirstStipendApplication,
   isValidUser,
   stipendApplicationHistory,
+  verifyLoggedInUser,
   verifyUser
 } = require("../controller/UserController");
 const { isWindowOpen } = require("../middleware/ApplicationWIndowMiddleware");
 const { isAuthenticated } = require("../middleware/isAuthenticatedMiddleware");
 const {
-  verifyEmailMiddleware
-} = require("../middleware/verifyEmailMiddleware");
+  verifyUserMiddleware,
+  verifyLoggedInUserMiddleware
+} = require("../middleware/verifyUserMiddleware");
 const router = require("express").Router();
 
 /**
@@ -27,6 +29,8 @@ router.post(
   isAuthenticated,
   stipendApplicationHistory
 );
-router.post("/verify", verifyEmailMiddleware, verifyUser);
+router.post("/verify", verifyUserMiddleware, verifyUser);
+router.post("/logged-in/verify", verifyLoggedInUserMiddleware, verifyLoggedInUser);
+
 
 module.exports = router;

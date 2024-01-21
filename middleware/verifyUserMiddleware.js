@@ -19,7 +19,7 @@ const generateVerificationTokenAndSendMail = async (user) => {
   }
 };
 
-exports.verifyEmailMiddleware = async function (req, res, next) {
+exports.verifyUserMiddleware = async function (req, res, next) {
   let verifyToken = req.query.jwt;
   let user;
 
@@ -69,6 +69,57 @@ exports.verifyEmailMiddleware = async function (req, res, next) {
     return res.status(498).json({
       message: "Expired token - a new verify email has been sent",
       error: true
+    });
+  }
+};
+
+
+exports.verifyLoggedInUserMiddleware = async function (req, res, next) {
+  let verifyToken = req.query.jwt;
+  let userName = req.body.email || req.body.username;
+  let user;
+
+  //TODO: Add more validation to check that user id matches requester
+  if (!verifyToken) {
+    return res.status(401).json({
+      success: false,
+      error: "User is unauthorized to perform this operation"
+    });
+  }
+
+  try {
+    if (userName) {
+      user = await User.findByUserName(userName);
+      if (!user) {
+        return res.status(400).json({
+          error: "User does not exist"
+        });
+      }
+
+      if (user.isVerified) {
+        return res.status(200).json({
+          success: false,
+          message: "User is already verified"
+        });
+      }
+    }
+
+    try {
+      const verified = verifyJWTToken(verifyToken);
+      res.locals.verifiedUser = verified;
+    } catch (error) {
+      Logger.error(error);
+      return res.status(400).json({
+        message: "Expired session, user needs to login again",
+        error
+      });
+    }
+    next();
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).json({
+      message: "Error sending verify email to logged in user",
+      error
     });
   }
 };
