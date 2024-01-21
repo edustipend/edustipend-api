@@ -216,7 +216,7 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Input your",
+            "description": "Login details",
             "required": true,
             "type": "string",
             "schema": {
@@ -228,14 +228,8 @@
           "200": {
             "description": "{ success: true, message: 'Sign in successful', token: Bearer token} "
           },
-          "400": {
-            "description": "{ success: false, message: 'Invalid data supplied' }"
-          },
-          "401": {
-            "description": "{ success: false, message: 'Invalid credential/Account not verified' }"
-          },
           "500": {
-            "description": "Could not connect to DB"
+            "description": "Error message"
           }
         }
       }
@@ -661,9 +655,9 @@
       }
     },
     "signIn": {
-      "required": ["email", "password"],
+      "required": ["username", "password"],
       "properties": {
-        "email": {
+        "username": {
           "type": "string"
         },
         "password": {
