@@ -8,7 +8,12 @@
       "email": ""
     }
   },
-  "basePath": "/v1",
+  "servers": [
+    {
+      "url": "http://localhost:4500/v1",
+      "description": "Base URL for testing on local machine"
+    }
+  ],
   "tags": [
     {
       "name": "auth",
@@ -37,21 +42,23 @@
         "description": "Edustipend users can register with this endpoint",
         "consumes": ["application/json"],
         "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "User object that needs to be added to the database",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "$ref": "#/definitions/registerUser"
+        "requestBody": {
+          "description": "This is the request body for login",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/registerUser"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
             "description": "{ success: true, message: 'Registration successful, please check your email for verification link', id: id}"
+          },
+          "400": {
+            "description": "{ success: false, message: 'Bad request'} "
           },
           "500": {
             "description": "Error generating user token"
@@ -212,21 +219,23 @@
         "summary": "Sign in to your account",
         "description": "Sign in to generate an access token",
         "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "Login details",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "$ref": "#/definitions/signIn"
+        "requestBody": {
+          "description": "Details for logging in",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/signIn"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "{ success: true, message: 'Sign in successful', token: Bearer token} "
+          },
+          "401": {
+            "description": "{ success: false, message: 'Unauthorized'}"
           },
           "500": {
             "description": "Error message"
