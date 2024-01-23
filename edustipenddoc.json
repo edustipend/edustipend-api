@@ -283,35 +283,35 @@
         "tags": ["auth"],
         "summary": "Update your password",
         "description": "Edustipend users can update password with this endpoint",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "enter user email and confirmation code",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "$ref": "#/definitions/update-password"
+        "requestBody": {
+          "description": "Details required for password update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/update-password"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
-            "description": "{ success: true, message: 'Account Verification successful.', token: 'Bearer token'}"
+            "description": "{ success: true, message: 'Password update successful' }"
           },
           "400": {
             "description": "{ success: false, message: 'Verification code is required' } "
           },
           "401": {
-            "description": "{ success: false, message: 'Invalid Verification code' } "
+            "description": "{ success: false, message: 'Unauthorized'} "
+          },
+          "422": {
+            "description": "{ success: false, message: 'Invalid or expired token' } "
           },
           "404": {
             "description": "{ success: false, message: 'User not found' } "
           },
           "500": {
-            "description": "Could not connect to DB"
+            "description": "Server error"
           }
         }
       }
@@ -701,18 +701,15 @@
       }
     },
     "update-password": {
-      "required": ["email", "verificationCode", "password", "confirmPassword"],
+      "required": ["resetToken", "userId", "password"],
       "properties": {
-        "email": {
-          "type": "string"
-        },
-        "verificationCode": {
-          "type": "string"
-        },
         "password": {
           "type": "string"
         },
-        "confirmPassword": {
+        "resetToken": {
+          "type": "string"
+        },
+        "userId": {
           "type": "string"
         }
       }
