@@ -248,32 +248,29 @@
         "tags": ["auth"],
         "summary": "Reset your password",
         "description": "Edustipend users can reset password with this endpoint",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "enter user email and confirmation code",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "$ref": "#/definitions/reset-password"
+        "requestBody": {
+          "description": "User email for reset link to be sent to",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/reset-password"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
-            "description": "{ success: true, message: 'Account Verification successful.', token: 'Bearer token'}"
+            "description": "{ success: true, message: 'Please check your email for the password reset link.'}"
           },
           "400": {
-            "description": "{ success: false, message: 'Verification code is required' } "
+            "description": "{ success: false, message: 'Bad request' } "
           },
-          "401": {
-            "description": "{ success: false, message: 'Invalid Verification code' } "
+          "422": {
+            "description": "{ success: false, message: 'Validation issues' } "
           },
           "404": {
-            "description": "{ success: false, message: 'User not found' } "
+            "description": "{ success: false, message: 'If user exists, email will be sent' } "
           },
           "500": {
             "description": "Could not connect to DB"
@@ -688,12 +685,9 @@
       }
     },
     "reset-password": {
-      "required": ["email", "name"],
+      "required": ["email"],
       "properties": {
         "email": {
-          "type": "string"
-        },
-        "name": {
           "type": "string"
         }
       }
