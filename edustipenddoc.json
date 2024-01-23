@@ -367,21 +367,20 @@
     "/waitlist/join-waitlist": {
       "post": {
         "tags": ["waitlist"],
+        "deprecated": true,
         "summary": "join a waitlist",
         "description": "Adds people to be notified when fresh application window opens",
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "User to be added to waitlist",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "$ref": "#/definitions/join-waitlist"
+        "requestBody": {
+          "description": "User to be added to the waitlist",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/join-waitlist"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
             "description": "{ success: true, message: 'Successfully added to the waitlist'}"
@@ -430,9 +429,8 @@
       "post": {
         "tags": ["admin"],
         "summary": "notify the waitlist",
+        "deprecated": true,
         "description": "Notify every email in the wait list",
-        "produces": ["application/json"],
-        "parameters": [],
         "responses": {
           "201": {
             "description": "{ success: true, message: 'Successfully notified to the waitlist'}"
