@@ -30,6 +30,10 @@
     {
       "name": "waitlist",
       "description": "Everything about waitlist"
+    },
+    {
+      "name": "user",
+      "description": "Everything about user actions"
     }
   ],
   "consumes": ["application/json"],
@@ -40,8 +44,6 @@
         "tags": ["auth"],
         "summary": "Register a new user",
         "description": "Edustipend users can register with this endpoint",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
         "requestBody": {
           "description": "This is the request body for login",
           "required": true,
@@ -62,6 +64,35 @@
           },
           "500": {
             "description": "Error generating user token"
+          }
+        }
+      }
+    },
+    "/user/check": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Check for user",
+        "description": "This checks if a user exists",
+        "requestBody": {
+          "description": "This is the request body for checking user",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/checkUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User exists and has been found"
+          },
+          "404": {
+            "description": "User does not exist"
+          },
+          "500": {
+            "description": "Server error"
           }
         }
       }
@@ -703,6 +734,14 @@
           "type": "string"
         },
         "endDate": {
+          "type": "string"
+        }
+      }
+    },
+    "checkUser": {
+      "required": ["email"],
+      "properties": {
+        "email": {
           "type": "string"
         }
       }
