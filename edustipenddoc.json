@@ -97,40 +97,40 @@
         }
       }
     },
-    "/verify": {
+    "/user/verify": {
       "post": {
-        "tags": ["auth"],
+        "tags": ["user"],
         "summary": "Verify a new user via email",
         "description": "Edustipend users can verify with this endpoint",
         "consumes": ["application/json"],
         "produces": ["application/json"],
         "parameters": [
           {
-            "in": "body",
-            "name": "body",
-            "description": "enter user email and confirmation code",
+            "in": "query",
+            "name": "jwt",
+            "description": "Confirm user email from jwt",
             "required": true,
             "type": "string",
             "schema": {
-              "$ref": "#/definitions/verifyUser"
+              "type": "string"
             }
           }
         ],
         "responses": {
+          "200": {
+            "description": "{ success: true, message: 'User is already verified'} "
+          },
           "201": {
-            "description": "{ success: true, message: 'Account Verification successful.', token: 'Bearer token'}"
+            "description": "{ success: true, message: 'Verified user successfully', token: 'Bearer token'}"
           },
           "400": {
-            "description": "{ success: false, message: 'Verification code is required' } "
-          },
-          "401": {
-            "description": "{ success: false, message: 'Invalid Verification code' } "
+            "description": "{ success: false, message: 'Missing required jwt' } "
           },
           "404": {
-            "description": "{ success: false, message: 'User not found' } "
+            "description": "{ success: false, message: ''User does not exist'' } "
           },
           "500": {
-            "description": "Could not connect to DB"
+            "description": "Unable to verify user"
           }
         }
       }
@@ -607,17 +607,6 @@
       "properties": {
         "id": {
           "type": "number"
-        }
-      }
-    },
-    "verifyUser": {
-      "required": ["email", "verificationCode"],
-      "properties": {
-        "email": {
-          "type": "string"
-        },
-        "verificationCode": {
-          "type": "string"
         }
       }
     },
