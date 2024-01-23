@@ -277,26 +277,29 @@
     "/admin/approve-stipend": {
       "put": {
         "tags": ["admin"],
+        "deprecated": true,
         "summary": "approve multiple applications",
         "description": "Admin approve multiple applications",
         "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "applications data",
-            "required": true,
-            "type": "object",
-            "properties": {
-              "stipendRequestIds": {
-                "type": "array",
-                "items": {
-                  "type": "number"
+        "requestBody": {
+          "description": "applications to approve",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "stipendRequestIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "{ success: true, data: 'Stipend request successfully approved' }"
@@ -322,26 +325,29 @@
     "/admin/reject-stipend": {
       "put": {
         "tags": ["admin"],
+        "deprecated": true,
         "summary": "reject multiple applications",
         "description": "Admin reject multiple applications",
         "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "applications data",
-            "required": true,
-            "type": "object",
-            "properties": {
-              "stipendRequestIds": {
-                "type": "array",
-                "items": {
-                  "type": "number"
+        "requestBody": {
+          "description": "applications to reject",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "stipendRequestIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "{ success: true, data: 'Stipend request successfully rejected' }"
