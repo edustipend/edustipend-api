@@ -447,21 +447,21 @@
     "/admin/application-window": {
       "post": {
         "tags": ["admin"],
+        "deprecated": true,
         "summary": "set application window",
         "description": "Admin sets a new application window",
         "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "set the next application window",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "$ref": "#/definitions/set-application-window"
+        "requestBody": {
+          "description": "set the next application window",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/set-application-window"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
             "description": "{ success: true, data: 'Application window has been set' }"
@@ -481,16 +481,13 @@
     "/admin/close-application-window": {
       "put": {
         "tags": ["admin"],
+        "deprecated": true,
         "summary": "close application window",
         "description": "Admin manually ends a current application window",
         "produces": ["application/json"],
-        "parameters": [],
         "responses": {
           "201": {
             "description": "{ success: true, data: 'Application window has been manually closed' }"
-          },
-          "400": {
-            "description": "Bad request"
           },
           "401": {
             "description": "Unauthorized"
