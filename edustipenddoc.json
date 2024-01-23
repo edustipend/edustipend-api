@@ -167,7 +167,82 @@
         }
       }
     },
-
+    "/user/stipend/apply": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Create first application",
+        "description": "Users create their first application alongside account registration",
+        "requestBody": {
+          "description": "user details and stipend request",
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "dateOfBirth": {
+                    "type": "string"
+                  },
+                  "gender": {
+                    "type": "string"
+                  },
+                  "stateOfOrigin": {
+                    "type": "string"
+                  },
+                  "howDidYouHearAboutUs": {
+                    "type": "string",
+                    "enum": [
+                      "facebook",
+                      "twitter",
+                      "instagram",
+                      "whatsapp",
+                      "friend",
+                      "other"
+                    ]
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "stipendCategory": {
+                    "type": "string",
+                    "enum": ["laptop", "data", "course"]
+                  },
+                  "reasonForRequest": {
+                    "type": "string"
+                  },
+                  "stepsTakenToEaseProblem": {
+                    "type": "string"
+                  },
+                  "potentialBenefits": {
+                    "type": "string"
+                  },
+                  "futureHelpFromUser": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully, along with data"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
     "/reset-password": {
       "post": {
         "tags": ["auth"],
@@ -280,7 +355,6 @@
         "deprecated": true,
         "summary": "approve multiple applications",
         "description": "Admin approve multiple applications",
-        "produces": ["application/json"],
         "requestBody": {
           "description": "applications to approve",
           "required": true,
@@ -657,7 +731,7 @@
         "stepsTakenToEaseProblem",
         "potentialBenefits",
         "futureHelpFromUser",
-        "userId"
+        "user"
       ],
       "properties": {
         "email": {
@@ -679,8 +753,19 @@
         "futureHelpFromUser": {
           "type": "string"
         },
-        "userId": {
-          "type": "number"
+        "user": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "username": {
+              "type": "string"
+            }
+          }
         }
       }
     },
