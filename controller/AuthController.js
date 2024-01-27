@@ -130,7 +130,7 @@ exports.resetPassword = catchAsyncError(async (_, res) => {
 exports.updatePassword = catchAsyncError(async (req, res) => {
   try {
     await User.updatePassword(req.body.password, res.locals.verifiedUser);
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       message: "Password update successful."
     });

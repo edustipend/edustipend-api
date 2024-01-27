@@ -1,5 +1,5 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.0",
   "info": {
     "description": "Edustipend api documentation",
     "version": "1.0.0",
@@ -8,7 +8,12 @@
       "email": ""
     }
   },
-  "basePath": "/v1",
+  "servers": [
+    {
+      "url": "http://localhost:4500/v1",
+      "description": "Base URL for testing on local machine"
+    }
+  ],
   "tags": [
     {
       "name": "auth",
@@ -25,6 +30,10 @@
     {
       "name": "waitlist",
       "description": "Everything about waitlist"
+    },
+    {
+      "name": "user",
+      "description": "Everything about user actions"
     }
   ],
   "consumes": ["application/json"],
@@ -35,67 +44,93 @@
         "tags": ["auth"],
         "summary": "Register a new user",
         "description": "Edustipend users can register with this endpoint",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "User object that needs to be added to the database",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "$ref": "#/definitions/registerUser"
+        "requestBody": {
+          "description": "This is the request body for login",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/registerUser"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
-            "description": "{ success: true, message: 'Signup successful! Please check your email for verification code.', data: ''}"
+            "description": "{ success: true, message: 'Registration successful, please check your email for verification link', id: id}"
           },
           "400": {
-            "description": "{ success: false, error: 'Email already exist.' }"
+            "description": "{ success: false, message: 'Bad request'} "
           },
           "500": {
-            "description": "Could not connect to DB"
+            "description": "Error generating user token"
           }
         }
       }
     },
-    "/verify": {
+    "/user/check": {
       "post": {
-        "tags": ["auth"],
+        "tags": ["user"],
+        "summary": "Check for user",
+        "description": "This checks if a user exists",
+        "requestBody": {
+          "description": "This is the request body for checking user",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/checkUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User exists and has been found"
+          },
+          "404": {
+            "description": "User does not exist"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/user/verify": {
+      "post": {
+        "tags": ["user"],
         "summary": "Verify a new user via email",
         "description": "Edustipend users can verify with this endpoint",
         "consumes": ["application/json"],
         "produces": ["application/json"],
         "parameters": [
           {
-            "in": "body",
-            "name": "body",
-            "description": "enter user email and confirmation code",
+            "in": "query",
+            "name": "jwt",
+            "description": "Confirm user email from jwt",
             "required": true,
             "type": "string",
             "schema": {
-              "$ref": "#/definitions/verifyUser"
+              "type": "string"
             }
           }
         ],
         "responses": {
+          "200": {
+            "description": "{ success: true, message: 'User is already verified'} "
+          },
           "201": {
-            "description": "{ success: true, message: 'Account Verification successful.', token: 'Bearer token'}"
+            "description": "{ success: true, message: 'Verified user successfully', token: 'Bearer token'}"
           },
           "400": {
-            "description": "{ success: false, message: 'Verification code is required' } "
-          },
-          "401": {
-            "description": "{ success: false, message: 'Invalid Verification code' } "
+            "description": "{ success: false, message: 'Missing required jwt' } "
           },
           "404": {
-            "description": "{ success: false, message: 'User not found' } "
+            "description": "{ success: false, message: ''User does not exist'' } "
           },
           "500": {
-            "description": "Could not connect to DB"
+            "description": "Unable to verify user"
           }
         }
       }
@@ -132,38 +167,110 @@
         }
       }
     },
-
+    "/user/stipend/apply": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Create first application",
+        "description": "Users create their first application alongside account registration",
+        "requestBody": {
+          "description": "user details and stipend request",
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "dateOfBirth": {
+                    "type": "string"
+                  },
+                  "gender": {
+                    "type": "string"
+                  },
+                  "stateOfOrigin": {
+                    "type": "string"
+                  },
+                  "howDidYouHearAboutUs": {
+                    "type": "string",
+                    "enum": [
+                      "facebook",
+                      "twitter",
+                      "instagram",
+                      "whatsapp",
+                      "friend",
+                      "other"
+                    ]
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "stipendCategory": {
+                    "type": "string",
+                    "enum": ["laptop", "data", "course"]
+                  },
+                  "reasonForRequest": {
+                    "type": "string"
+                  },
+                  "stepsTakenToEaseProblem": {
+                    "type": "string"
+                  },
+                  "potentialBenefits": {
+                    "type": "string"
+                  },
+                  "futureHelpFromUser": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully, along with data"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
     "/reset-password": {
       "post": {
         "tags": ["auth"],
         "summary": "Reset your password",
         "description": "Edustipend users can reset password with this endpoint",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "enter user email and confirmation code",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "$ref": "#/definitions/reset-password"
+        "requestBody": {
+          "description": "User email for reset link to be sent to",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/reset-password"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
-            "description": "{ success: true, message: 'Account Verification successful.', token: 'Bearer token'}"
+            "description": "{ success: true, message: 'Please check your email for the password reset link.'}"
           },
           "400": {
-            "description": "{ success: false, message: 'Verification code is required' } "
+            "description": "{ success: false, message: 'Bad request' } "
           },
-          "401": {
-            "description": "{ success: false, message: 'Invalid Verification code' } "
+          "422": {
+            "description": "{ success: false, message: 'Validation issues' } "
           },
           "404": {
-            "description": "{ success: false, message: 'User not found' } "
+            "description": "{ success: false, message: 'If user exists, email will be sent' } "
           },
           "500": {
             "description": "Could not connect to DB"
@@ -176,35 +283,35 @@
         "tags": ["auth"],
         "summary": "Update your password",
         "description": "Edustipend users can update password with this endpoint",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "enter user email and confirmation code",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "$ref": "#/definitions/update-password"
+        "requestBody": {
+          "description": "Details required for password update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/update-password"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
-            "description": "{ success: true, message: 'Account Verification successful.', token: 'Bearer token'}"
+            "description": "{ success: true, message: 'Password update successful' }"
           },
           "400": {
             "description": "{ success: false, message: 'Verification code is required' } "
           },
           "401": {
-            "description": "{ success: false, message: 'Invalid Verification code' } "
+            "description": "{ success: false, message: 'Unauthorized'} "
+          },
+          "422": {
+            "description": "{ success: false, message: 'Invalid or expired token' } "
           },
           "404": {
             "description": "{ success: false, message: 'User not found' } "
           },
           "500": {
-            "description": "Could not connect to DB"
+            "description": "Server error"
           }
         }
       }
@@ -215,30 +322,26 @@
         "summary": "Sign in to your account",
         "description": "Sign in to generate an access token",
         "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "Input your",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "$ref": "#/definitions/signIn"
+        "requestBody": {
+          "description": "Details for logging in",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/signIn"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "{ success: true, message: 'Sign in successful', token: Bearer token} "
           },
-          "400": {
-            "description": "{ success: false, message: 'Invalid data supplied' }"
-          },
           "401": {
-            "description": "{ success: false, message: 'Invalid credential/Account not verified' }"
+            "description": "{ success: false, message: 'Unauthorized'}"
           },
           "500": {
-            "description": "Could not connect to DB"
+            "description": "Error message"
           }
         }
       }
@@ -246,26 +349,28 @@
     "/admin/approve-stipend": {
       "put": {
         "tags": ["admin"],
+        "deprecated": true,
         "summary": "approve multiple applications",
         "description": "Admin approve multiple applications",
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "applications data",
-            "required": true,
-            "type": "object",
-            "properties": {
-              "stipendRequestIds": {
-                "type": "array",
-                "items": {
-                  "type": "number"
+        "requestBody": {
+          "description": "applications to approve",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "stipendRequestIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "{ success: true, data: 'Stipend request successfully approved' }"
@@ -291,26 +396,29 @@
     "/admin/reject-stipend": {
       "put": {
         "tags": ["admin"],
+        "deprecated": true,
         "summary": "reject multiple applications",
         "description": "Admin reject multiple applications",
         "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "applications data",
-            "required": true,
-            "type": "object",
-            "properties": {
-              "stipendRequestIds": {
-                "type": "array",
-                "items": {
-                  "type": "number"
+        "requestBody": {
+          "description": "applications to reject",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "stipendRequestIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "{ success: true, data: 'Stipend request successfully rejected' }"
@@ -336,21 +444,20 @@
     "/waitlist/join-waitlist": {
       "post": {
         "tags": ["waitlist"],
+        "deprecated": true,
         "summary": "join a waitlist",
         "description": "Adds people to be notified when fresh application window opens",
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "User to be added to waitlist",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "$ref": "#/definitions/join-waitlist"
+        "requestBody": {
+          "description": "User to be added to the waitlist",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/join-waitlist"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
             "description": "{ success: true, message: 'Successfully added to the waitlist'}"
@@ -399,9 +506,8 @@
       "post": {
         "tags": ["admin"],
         "summary": "notify the waitlist",
+        "deprecated": true,
         "description": "Notify every email in the wait list",
-        "produces": ["application/json"],
-        "parameters": [],
         "responses": {
           "201": {
             "description": "{ success: true, message: 'Successfully notified to the waitlist'}"
@@ -418,21 +524,21 @@
     "/admin/application-window": {
       "post": {
         "tags": ["admin"],
+        "deprecated": true,
         "summary": "set application window",
         "description": "Admin sets a new application window",
         "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "set the next application window",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "$ref": "#/definitions/set-application-window"
+        "requestBody": {
+          "description": "set the next application window",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/set-application-window"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
             "description": "{ success: true, data: 'Application window has been set' }"
@@ -452,16 +558,13 @@
     "/admin/close-application-window": {
       "put": {
         "tags": ["admin"],
+        "deprecated": true,
         "summary": "close application window",
         "description": "Admin manually ends a current application window",
         "produces": ["application/json"],
-        "parameters": [],
         "responses": {
           "201": {
             "description": "{ success: true, data: 'Application window has been manually closed' }"
-          },
-          "400": {
-            "description": "Bad request"
           },
           "401": {
             "description": "Unauthorized"
@@ -500,7 +603,7 @@
         }
       }
     },
-    "/user/one-click-apply/{email}": {
+    "/stipend/one-click-apply/{email}": {
       "get": {
         "tags": ["stipend"],
         "summary": "get last application",
@@ -516,8 +619,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "{ success: true, data: 'Application window has been manually closed' }"
+          "200": {
+            "description": "{ success: true, message: lastUsedData }"
           },
           "401": {
             "description": "No previous stipend request was found"
@@ -581,24 +684,10 @@
         }
       }
     },
-    "verifyUser": {
-      "required": ["email", "verificationCode"],
-      "properties": {
-        "email": {
-          "type": "string"
-        },
-        "verificationCode": {
-          "type": "string"
-        }
-      }
-    },
     "reset-password": {
-      "required": ["email", "name"],
+      "required": ["email"],
       "properties": {
         "email": {
-          "type": "string"
-        },
-        "name": {
           "type": "string"
         }
       }
@@ -612,18 +701,15 @@
       }
     },
     "update-password": {
-      "required": ["email", "verificationCode", "password", "confirmPassword"],
+      "required": ["resetToken", "userId", "password"],
       "properties": {
-        "email": {
-          "type": "string"
-        },
-        "verificationCode": {
-          "type": "string"
-        },
         "password": {
           "type": "string"
         },
-        "confirmPassword": {
+        "resetToken": {
+          "type": "string"
+        },
+        "userId": {
           "type": "string"
         }
       }
@@ -636,7 +722,7 @@
         "stepsTakenToEaseProblem",
         "potentialBenefits",
         "futureHelpFromUser",
-        "userId"
+        "user"
       ],
       "properties": {
         "email": {
@@ -658,15 +744,26 @@
         "futureHelpFromUser": {
           "type": "string"
         },
-        "userId": {
-          "type": "number"
+        "user": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "username": {
+              "type": "string"
+            }
+          }
         }
       }
     },
     "signIn": {
-      "required": ["email", "password"],
+      "required": ["username", "password"],
       "properties": {
-        "email": {
+        "username": {
           "type": "string"
         },
         "password": {
@@ -703,6 +800,14 @@
           "type": "string"
         },
         "endDate": {
+          "type": "string"
+        }
+      }
+    },
+    "checkUser": {
+      "required": ["email"],
+      "properties": {
+        "email": {
           "type": "string"
         }
       }

@@ -13,6 +13,7 @@ const router = require("express").Router();
 // router.use(isWindowOpen)
 
 router.post("/apply", isAuthenticated, createStipendApplication);
+// I think they should be authenticated for this
 router.get("/one-click-apply/:email", retrieveForOneClickApply);
 
 module.exports = router;
