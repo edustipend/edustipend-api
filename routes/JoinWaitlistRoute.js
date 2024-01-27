@@ -3,8 +3,10 @@ const {
   joinWaitlist,
   notifyWaitlist
 } = require("../controller/WaitlistController");
+const { isAdminUser } = require("../middleware/isAdminUserMiddleware");
 
-router.post("/join-waitlist", joinWaitlist);
+router.post("/join", joinWaitlist);
+router.post("/notify", isAdminUser, notifyWaitlist);
 
 /**
  * @todo we still need to discuss on whether we will empty the waitlist after every month, or keep it

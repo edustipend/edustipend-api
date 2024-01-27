@@ -6,13 +6,13 @@ const {
 } = require("../validation/WaitlistEntryValidation");
 
 /**
- * @description Add an email to the notification waitlist
- * @route POST /v1/join-waitlist
+ * @description Adds a user to the notification waitlist
+ * @route POST /v1/waitlist/join
  * @access Private
  */
 
-exports.joinWaitlist = catchAsyncError(async (req, res, next) => {
-  const validatedData = await validateWaitlistEntry(req.body);
+exports.joinWaitlist = catchAsyncError(async (req, res) => {
+  const validatedData = validateWaitlistEntry(req.body);
   if (validatedData.error) {
     throw new ErrorHandler(validatedData.error, 400);
   }
@@ -27,7 +27,7 @@ exports.joinWaitlist = catchAsyncError(async (req, res, next) => {
   });
 });
 
-exports.notifyWaitlist = catchAsyncError(async (req, res, next) => {
+exports.notifyWaitlist = catchAsyncError(async (req, res) => {
   const emails = await Waitlist.getPeopleInWaitlist();
   await Waitlist.notifyPeopleInWaitlist(emails);
   return res.status(201).json({

@@ -19,10 +19,7 @@ const router = require("express").Router();
  */
 // router.use(isWindowOpen)
 
-router.post(
-  "/stipend/apply",
-  /** isWindowOpen,  **/ createFirstStipendApplication
-);
+router.post("/stipend/apply", isWindowOpen, createFirstStipendApplication);
 router.post("/check", isValidUser);
 router.post(
   "/stipend/application-history",
