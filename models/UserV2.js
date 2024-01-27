@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
 const Schema = mongoose.Schema;
 const passportLocalMongoose = require("passport-local-mongoose");
 const Utils = require("../utils/generateJwtToken");
@@ -56,13 +55,14 @@ const UserSchema = new Schema(
   {
     statics: {
       generateJwtToken(user, expiresIn) {
-        const { _id, email, isAdmin, name, username } = user;
+        const { _id, email, isAdmin, isVerified, name, username } = user;
 
         return Utils.generateJwtToken(
           {
             id: _id,
             email,
             isAdmin,
+            isVerified,
             name,
             username
           },
