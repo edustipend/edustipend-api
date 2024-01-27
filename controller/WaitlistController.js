@@ -27,8 +27,6 @@ exports.joinWaitlist = catchAsyncError(async (req, res) => {
   });
 });
 
-
-
 exports.notifyWaitlist = catchAsyncError(async (req, res) => {
   const emails = await Waitlist.getPeopleInWaitlist();
   await Waitlist.notifyPeopleInWaitlist(emails);

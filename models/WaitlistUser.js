@@ -19,9 +19,16 @@ const WaitlistUserSchema = new Schema(
     },
     howDidYouHearAboutUs: {
       type: String,
-      enum: ["facebook", "google search", "instagram", "linkedin", "twitter", "other"],
+      enum: [
+        "facebook",
+        "google search",
+        "instagram",
+        "linkedin",
+        "twitter",
+        "other"
+      ],
       required: true
-    },
+    }
   },
   { timestamps: true }
 );

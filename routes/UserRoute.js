@@ -19,22 +19,14 @@ const router = require("express").Router();
  */
 // router.use(isWindowOpen)
 
-router.post(
-  "/stipend/apply",
-  isWindowOpen,
-  createFirstStipendApplication
-);
+router.post("/stipend/apply", isWindowOpen, createFirstStipendApplication);
 router.post("/check", isValidUser);
 router.post(
   "/stipend/application-history",
   isAuthenticated,
   stipendApplicationHistory
 );
-router.post(
-  "/verify",
-  verifyUserMiddleware,
-  verifyUser
-);
+router.post("/verify", verifyUserMiddleware, verifyUser);
 router.post(
   "/logged-in/verify",
   verifyLoggedInUserMiddleware,

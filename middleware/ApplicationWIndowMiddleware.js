@@ -9,7 +9,7 @@ exports.isWindowOpen = async (req, res, next) => {
   if (!isOpen) {
     return res.status(403).json({
       success: false,
-      error: 'Application window is not open',
+      error: "Application window is not open",
       message: "Access Denied! :("
     });
   }

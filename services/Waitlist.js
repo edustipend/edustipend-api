@@ -3,7 +3,6 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const Mail = require("./Mail");
 
 class Waitlist {
-
   /**
    * @description Adds a user to waitlist
    * @param {object} data
