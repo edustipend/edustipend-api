@@ -2,11 +2,13 @@ const Joi = require("@hapi/joi");
 const isEmpty = require("./is-empty");
 
 exports.validateWaitlistEntry = (data) => {
-  data.email = isEmpty(data.email) ? "" : data.email;
+  data.email = data.email || data.username;
   data.name = !isEmpty(data.name) ? data.name : "";
   data.howDidYouHearAboutUs = !isEmpty(data.howDidYouHearAboutUs)
     ? data.howDidYouHearAboutUs
     : "";
+
+  delete data.username;
 
   const waitlistSchema = Joi.object({
     email: Joi.string().email().required().messages({
