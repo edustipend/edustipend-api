@@ -3,15 +3,15 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const Mail = require("./Mail");
 
 class Waitlist {
+
   /**
-   * @description Add an email to waitlist
+   * @description Adds a user to waitlist
    * @param {object} data
    */
-
   static async addToWaitlist(data) {
     const hasBeenNotified = false;
 
-    return await models.waitlist.create({
+    return await models.WaitlistUser.create({
       ...data,
       hasBeenNotified
     });

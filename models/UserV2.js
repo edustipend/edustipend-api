@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
 const Schema = mongoose.Schema;
 const passportLocalMongoose = require("passport-local-mongoose");
 const Utils = require("../utils/generateJwtToken");
