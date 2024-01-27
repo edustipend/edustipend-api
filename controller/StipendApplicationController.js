@@ -77,8 +77,7 @@ exports.createStipendApplication = catchAsyncError(async (req, res) => {
         stipendApplicationId: stipendApplication._id
       }
     });
-  }
-  catch (error) {
+  } catch (error) {
     Logger.error(error);
     res.status(500).json({
       message: "Error completing stipend application",
@@ -115,8 +114,7 @@ exports.updateStipendApplication = catchAsyncError(async (req, res) => {
         updatedStipendApplication
       }
     });
-  }
-  catch (error) {
+  } catch (error) {
     Logger.error(error);
     res.status(500).json({
       message: "Error updating stipend application",
@@ -138,7 +136,6 @@ exports.retrieveForOneClickApply = catchAsyncError(async (req, res, next) => {
     message: lastUsedData
   });
 });
-
 
 //Todo: add middleware to check for admin. This is an admin route
 /**

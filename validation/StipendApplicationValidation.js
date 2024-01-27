@@ -128,7 +128,6 @@ exports.validateFirstStipendApplication = (data) => {
   return firstStipendApplicationSchema.validate(data, { abortEarly: false });
 };
 
-
 exports.validateStipendApplication = (data) => {
   data.stipendCategory = !isEmpty(data.stipendCategory)
     ? data.stipendCategory
@@ -183,7 +182,6 @@ exports.validateStipendApplication = (data) => {
   });
   return stipendApplicationSchema.validate(data, { abortEarly: false });
 };
-
 
 exports.validateUpdateStipendApplication = (data) => {
   data.stipendCategory = !isEmpty(data.stipendCategory)
@@ -240,7 +238,6 @@ exports.validateUpdateStipendApplication = (data) => {
   });
   return stipendUpdateApplicationSchema.validate(data, { abortEarly: false });
 };
-
 
 exports.stipendRequestIdsValidation = async (data) => {
   data.stipendRequestIds = !isEmpty(data.stipendRequestIds)

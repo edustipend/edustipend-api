@@ -9,6 +9,11 @@ const router = require("express").Router();
 
 router.post("/apply", isWindowOpen, isAuthenticated, createStipendApplication);
 router.post("/update", isWindowOpen, isAuthenticated, updateStipendApplication);
-router.post("/apply/one-click", isWindowOpen, isAuthenticated, retrieveForOneClickApply);
+router.post(
+  "/apply/one-click",
+  isWindowOpen,
+  isAuthenticated,
+  retrieveForOneClickApply
+);
 
 module.exports = router;

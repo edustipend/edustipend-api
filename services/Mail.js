@@ -132,7 +132,12 @@ class Mail {
    * @param {*} stipend request
    * @param {*} email
    */
-  static stipendApplicationReceivedConfirmation(stipendCategory, email, name, link) {
+  static stipendApplicationReceivedConfirmation(
+    stipendCategory,
+    email,
+    name,
+    link
+  ) {
     this._sendEmail(
       {
         email,

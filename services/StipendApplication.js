@@ -16,9 +16,9 @@ class StipendApplication {
   }
 
   /**
- * @description Find a single stipend application by id
- * @param {string} id
- */
+   * @description Find a single stipend application by id
+   * @param {string} id
+   */
 
   static async findById(id) {
     const stipendApplication = await models.StipendApplication.findOne({
