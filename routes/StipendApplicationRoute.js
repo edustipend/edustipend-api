@@ -1,19 +1,19 @@
 const {
   createStipendApplication,
-  retrieveForOneClickApply
+  retrieveForOneClickApply,
+  updateStipendApplication
 } = require("../controller/StipendApplicationController");
 const { isWindowOpen } = require("../middleware/ApplicationWIndowMiddleware");
 const { isAuthenticated } = require("../middleware/isAuthenticatedMiddleware");
 const router = require("express").Router();
 
-/**
- * @description add the middleware that will check whether window is open or not
- * @todo uncomment line 10 to use the middleware
- */
-// router.use(isWindowOpen)
-
-router.post("/apply", isAuthenticated, createStipendApplication);
-// I think they should be authenticated for this
-router.get("/one-click-apply/:email", retrieveForOneClickApply);
+router.post("/apply", isWindowOpen, isAuthenticated, createStipendApplication);
+router.post("/update", isWindowOpen, isAuthenticated, updateStipendApplication);
+router.post(
+  "/apply/one-click",
+  isWindowOpen,
+  isAuthenticated,
+  retrieveForOneClickApply
+);
 
 module.exports = router;

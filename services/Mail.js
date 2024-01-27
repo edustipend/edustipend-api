@@ -128,22 +128,29 @@ class Mail {
   }
 
   /**
-   * @description Send stipend request email recieved for returning users
+   * @description Send stipend request email received for returning users
    * @param {*} stipend request
    * @param {*} email
    */
-
-  static stipendApplicationReceivedConfirmation(stipendCategory, email) {
+  static stipendApplicationReceivedConfirmation(
+    stipendCategory,
+    email,
+    name,
+    link
+  ) {
     this._sendEmail(
       {
         email,
         subject: "Stipend Request Received",
-        template: "stipend-request-recieved",
+        template: "stipend-request-received",
         params: {
-          stipendRequest: stipendCategory
+          stipendCategory,
+          email,
+          name,
+          link
         }
       },
-      (err, data) => {
+      (err) => {
         if (err) console.log(err);
       }
     );

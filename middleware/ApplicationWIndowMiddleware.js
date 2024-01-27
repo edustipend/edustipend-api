@@ -1,16 +1,15 @@
 const ApplicationWindow = require("../services/ApplicationWindow");
 
-exports.isWindowOpen = async (req, res, next) => {
-  const isOpen = false;
-
+exports.isWindowOpen = async (_, res, next) => {
+  const isOpen = true;
   // TODO: Update this logic to read from DB
   // const isOpen = await ApplicationWindow.isOpen();
 
   if (!isOpen) {
     return res.status(403).json({
       success: false,
-      error: "Application window is not open",
-      message: "Access Denied! :("
+      error: "Access Denied! :(",
+      message: "Application window is not open"
     });
   }
 
