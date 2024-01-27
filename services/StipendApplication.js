@@ -4,7 +4,7 @@ const ErrorHandler = require("../utils/ErrorHandler");
 
 class StipendApplication {
   /**
-   * @description Create a new stipend request
+   * @description Create a new stipend application
    * @param {object} data
    */
 
@@ -13,6 +13,33 @@ class StipendApplication {
       ...stipendApplication,
       user
     });
+  }
+
+  /**
+ * @description Find a single stipend application by id
+ * @param {string} id
+ */
+
+  static async findById(id) {
+    const stipendApplication = await models.StipendApplication.findOne({
+      _id: id
+    });
+    return stipendApplication;
+  }
+
+  /**
+   * @description Edit an existing stipend application
+   * @param {object} data
+   */
+  static async update(stipendApplication) {
+    const id = stipendApplication.applicationId;
+    delete stipendApplication.applicationId;
+
+    return await models.StipendApplication.findOneAndUpdate(
+      { _id: id },
+      stipendApplication,
+      { new: true }
+    );
   }
 
   /**
@@ -25,19 +52,6 @@ class StipendApplication {
       user: new ObjectId(userId)
     });
     return stipendApplicationHistory;
-  }
-
-  /**
-   * @description Find a single stipend request by stipendRequestId
-   * @param {string} id
-   */
-
-  static async findById(id) {
-    const stipendRequest = await models.stipendRequest.findByPk(id);
-    if (stipendRequest === null) {
-      throw new ErrorHandler("Application not found", 404);
-    }
-    return stipendRequest;
   }
 
   /**
