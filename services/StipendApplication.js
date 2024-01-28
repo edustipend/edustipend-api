@@ -7,7 +7,6 @@ class StipendApplication {
    * @description Create a new stipend application
    * @param {object} data
    */
-
   static async create(stipendApplication, user) {
     return await models.StipendApplication.create({
       ...stipendApplication,
@@ -19,7 +18,6 @@ class StipendApplication {
    * @description Find a single stipend application by id
    * @param {string} id
    */
-
   static async findById(id) {
     const stipendApplication = await models.StipendApplication.findOne({
       _id: id
@@ -51,6 +49,7 @@ class StipendApplication {
     const stipendApplicationHistory = await models.StipendApplication.find({
       user: new ObjectId(userId)
     });
+
     return stipendApplicationHistory;
   }
 

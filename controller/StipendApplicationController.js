@@ -12,27 +12,14 @@ const { getVerificationLink } = require("../utils/helper");
 const {
   validateStipendApplication,
   stipendRequestIdsValidation,
-  validateUpdateStipendApplication
+  validateUpdateStipendApplication,
+  validateOneClickApplyStipendApplication
 } = require("../validation/StipendApplicationValidation");
 
-/**
- * @description Returning users requesting stipend
- * @route POST /v1/stipend/apply
- * @access Public
- */
-exports.createStipendApplication = catchAsyncError(async (req, res) => {
-  const validateData = validateStipendApplication(req.body);
-  if (validateData.error) {
-    throw new ErrorHandler(validateData.error, 400);
-  }
 
-  //TODO: Add validation logic to check if user already has an application in current window
-
-  const { userId, ...applicationData } = validateData.value;
-  const user = await User.findById(userId);
-  if (user === null) {
-    throw new ErrorHandler("User not found", 404);
-  }
+const handleSubmitStipendApplication = async function (applicationData, user, res) {
+  // TODO: Add validation logic to check if user
+  // is already has an application in current window
 
   try {
     let link;
@@ -80,11 +67,33 @@ exports.createStipendApplication = catchAsyncError(async (req, res) => {
   } catch (error) {
     Logger.error(error);
     res.status(500).json({
-      message: "Error completing stipend application",
+      message: "Error submitting stipend application",
       error
     });
   }
+}
+
+
+/**
+ * @description Returning users requesting stipend
+ * @route POST /v1/stipend/apply
+ * @access Public
+ */
+exports.createStipendApplication = catchAsyncError(async (req, res) => {
+  const validateData = validateStipendApplication(req.body);
+  if (validateData.error) {
+    throw new ErrorHandler(validateData.error, 400);
+  }
+
+  const { userId, ...applicationData } = validateData.value;
+  const user = await User.findById(userId);
+  if (user === null) {
+    throw new ErrorHandler("User not found", 404);
+  }
+
+  handleSubmitStipendApplication(applicationData, user, res);
 });
+
 
 /**
  * @description Logged in users update application
@@ -98,8 +107,8 @@ exports.updateStipendApplication = catchAsyncError(async (req, res) => {
   }
 
   const { applicationId } = validateData.value;
-  const stipend = await StipendApplication.findById(applicationId);
-  if (stipend === null) {
+  const stipendApplication = await StipendApplication.findById(applicationId);
+  if (stipendApplication === null) {
     throw new ErrorHandler("Application not found", 404);
   }
 
@@ -123,19 +132,41 @@ exports.updateStipendApplication = catchAsyncError(async (req, res) => {
   }
 });
 
+
 /**
- * @description get most recent stipend request
- * @route POST /v1/user/one-click-apply
+ * @description One-click apply - reuse existing application
+ * @route POST /v1/stipend/apply/one-click
  * @access Private
  */
-exports.retrieveForOneClickApply = catchAsyncError(async (req, res, next) => {
-  const lastUsedData = await StipendRequest.getMostRecent(req.params.email);
+exports.oneClickApply = catchAsyncError(async (req, res) => {
+  const validatedData = validateOneClickApplyStipendApplication(req.body);
+  if (validatedData.error) {
+    throw new ErrorHandler(validatedData.error, 400);
+  }
 
-  return res.status(200).json({
-    success: true,
-    message: lastUsedData
-  });
+  const { userId, ...applicationData } = validatedData.value;
+  const user = await User.findById(userId);
+  if (user === null) {
+    throw new ErrorHandler("User not found", 404);
+  }
+
+  const parentStipendApplication = await StipendApplication.findById(applicationData.parentApplication);
+  if (parentStipendApplication === null) {
+    throw new ErrorHandler("Parent application not found", 404);
+  }
+
+  const stipendApplicationData = {
+    futureHelpFromUser: applicationData.futureHelpFromUser ?? parentStipendApplication.futureHelpFromUser,
+    potentialBenefits: applicationData.potentialBenefits ?? parentStipendApplication.potentialBenefits,
+    reasonForRequest: applicationData.reasonForRequest ?? parentStipendApplication.reasonForRequest,
+    stepsTakenToEaseProblem: applicationData.stepsTakenToEaseProblem ?? parentStipendApplication.stepsTakenToEaseProblem,
+    stipendCategory: applicationData.stipendCategory ?? parentStipendApplication.stipendCategory,
+    parentApplication: applicationData.parentApplication
+  }
+
+  handleSubmitStipendApplication(stipendApplicationData, user, res);
 });
+
 
 //Todo: add middleware to check for admin. This is an admin route
 /**

@@ -174,6 +174,7 @@ exports.validateStipendApplication = (data) => {
         "string.empty": "stipendCategory field cannot be empty",
         "any.required": "stipendCategory field is required"
       }),
+    //TODO: Move this userId from request body to header
     userId: Joi.string().alphanum().required().messages({
       "string.base": "userId field must be a string",
       "string.empty": "userId field cannot be empty",
@@ -237,6 +238,70 @@ exports.validateUpdateStipendApplication = (data) => {
     })
   });
   return stipendUpdateApplicationSchema.validate(data, { abortEarly: false });
+};
+
+exports.validateOneClickApplyStipendApplication = (data) => {
+  const oneClickApplyStipendApplicationSchema = Joi.object({
+    futureHelpFromUser: Joi.when('parentApplication', {
+      is: Joi.string(),
+      then: Joi.string().allow(null, ''),
+      otherwise: Joi.string().required().messages({
+        "string.base": "futureHelpFromUser field must be a string",
+        "string.empty": "futureHelpFromUser field cannot be empty",
+        "any.required": "futureHelpFromUser field is required"
+      })
+    }),
+    potentialBenefits: Joi.when('parentApplication', {
+      is: Joi.string(),
+      then: Joi.string().allow(null, ''),
+      otherwise: Joi.string().required().messages({
+        "string.base": "potentialBenefits field must be a string",
+        "string.empty": "potentialBenefits field cannot be empty",
+        "any.required": "potentialBenefits field is required"
+      })
+    }),
+    reasonForRequest: Joi.when('parentApplication', {
+      is: Joi.string(),
+      then: Joi.string().allow(null, ''),
+      otherwise: Joi.string().required().messages({
+        "string.base": "reasonForRequest field must be a string",
+        "string.empty": "reasonForRequest field cannot be empty",
+        "any.required": "reasonForRequest field is required"
+      })
+    }),
+    stepsTakenToEaseProblem: Joi.when('parentApplication', {
+      is: Joi.string(),
+      then: Joi.string().allow(null, ''),
+      otherwise: Joi.string().required().messages({
+        "string.base": "stepsTakenToEaseProblem field must be a string",
+        "string.empty": "stepsTakenToEaseProblem field cannot be empty",
+        "any.required": "stepsTakenToEaseProblem field is required"
+      }),
+    }),
+    stipendCategory: Joi.when('parentApplication', {
+      is: Joi.string(),
+      then: Joi.string().allow(null, ''),
+      otherwise: Joi.string().required()
+        .valid("laptop", "course", "data")
+        .messages({
+          "string.base": "stipendCategory field must be a string",
+          "string.empty": "stipendCategory field cannot be empty",
+          "any.required": "stipendCategory field is required"
+        })
+    }),
+    parentApplication: Joi.string().alphanum().required().messages({
+      "string.base": "parentApplication field must be a string",
+      "string.empty": "parentApplication field cannot be empty",
+      "any.required": "parentApplication field is required"
+    }),
+    //TODO: Move this userId from request body to header
+    userId: Joi.string().alphanum().required().messages({
+      "string.base": "userId field must be a string",
+      "string.empty": "userId field cannot be empty",
+      "any.required": "userId field is required"
+    })
+  });
+  return oneClickApplyStipendApplicationSchema.validate(data, { abortEarly: false });
 };
 
 exports.stipendRequestIdsValidation = async (data) => {
