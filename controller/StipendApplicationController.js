@@ -16,8 +16,11 @@ const {
   validateOneClickApplyStipendApplication
 } = require("../validation/StipendApplicationValidation");
 
-
-const handleSubmitStipendApplication = async function (applicationData, user, res) {
+const handleSubmitStipendApplication = async function (
+  applicationData,
+  user,
+  res
+) {
   // TODO: Add validation logic to check if user
   // is already has an application in current window
 
@@ -71,8 +74,7 @@ const handleSubmitStipendApplication = async function (applicationData, user, re
       error
     });
   }
-}
-
+};
 
 /**
  * @description Returning users requesting stipend
@@ -93,7 +95,6 @@ exports.createStipendApplication = catchAsyncError(async (req, res) => {
 
   handleSubmitStipendApplication(applicationData, user, res);
 });
-
 
 /**
  * @description Logged in users update application
@@ -132,7 +133,6 @@ exports.updateStipendApplication = catchAsyncError(async (req, res) => {
   }
 });
 
-
 /**
  * @description One-click apply - reuse existing application
  * @route POST /v1/stipend/apply/one-click
@@ -150,23 +150,34 @@ exports.oneClickApply = catchAsyncError(async (req, res) => {
     throw new ErrorHandler("User not found", 404);
   }
 
-  const parentStipendApplication = await StipendApplication.findById(applicationData.parentApplication);
+  const parentStipendApplication = await StipendApplication.findById(
+    applicationData.parentApplication
+  );
   if (parentStipendApplication === null) {
     throw new ErrorHandler("Parent application not found", 404);
   }
 
   const stipendApplicationData = {
-    futureHelpFromUser: applicationData.futureHelpFromUser ?? parentStipendApplication.futureHelpFromUser,
-    potentialBenefits: applicationData.potentialBenefits ?? parentStipendApplication.potentialBenefits,
-    reasonForRequest: applicationData.reasonForRequest ?? parentStipendApplication.reasonForRequest,
-    stepsTakenToEaseProblem: applicationData.stepsTakenToEaseProblem ?? parentStipendApplication.stepsTakenToEaseProblem,
-    stipendCategory: applicationData.stipendCategory ?? parentStipendApplication.stipendCategory,
+    futureHelpFromUser:
+      applicationData.futureHelpFromUser ??
+      parentStipendApplication.futureHelpFromUser,
+    potentialBenefits:
+      applicationData.potentialBenefits ??
+      parentStipendApplication.potentialBenefits,
+    reasonForRequest:
+      applicationData.reasonForRequest ??
+      parentStipendApplication.reasonForRequest,
+    stepsTakenToEaseProblem:
+      applicationData.stepsTakenToEaseProblem ??
+      parentStipendApplication.stepsTakenToEaseProblem,
+    stipendCategory:
+      applicationData.stipendCategory ??
+      parentStipendApplication.stipendCategory,
     parentApplication: applicationData.parentApplication
-  }
+  };
 
   handleSubmitStipendApplication(stipendApplicationData, user, res);
 });
-
 
 //Todo: add middleware to check for admin. This is an admin route
 /**

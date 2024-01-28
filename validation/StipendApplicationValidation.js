@@ -242,46 +242,47 @@ exports.validateUpdateStipendApplication = (data) => {
 
 exports.validateOneClickApplyStipendApplication = (data) => {
   const oneClickApplyStipendApplicationSchema = Joi.object({
-    futureHelpFromUser: Joi.when('parentApplication', {
+    futureHelpFromUser: Joi.when("parentApplication", {
       is: Joi.string(),
-      then: Joi.string().allow(null, ''),
+      then: Joi.string().allow(null, ""),
       otherwise: Joi.string().required().messages({
         "string.base": "futureHelpFromUser field must be a string",
         "string.empty": "futureHelpFromUser field cannot be empty",
         "any.required": "futureHelpFromUser field is required"
       })
     }),
-    potentialBenefits: Joi.when('parentApplication', {
+    potentialBenefits: Joi.when("parentApplication", {
       is: Joi.string(),
-      then: Joi.string().allow(null, ''),
+      then: Joi.string().allow(null, ""),
       otherwise: Joi.string().required().messages({
         "string.base": "potentialBenefits field must be a string",
         "string.empty": "potentialBenefits field cannot be empty",
         "any.required": "potentialBenefits field is required"
       })
     }),
-    reasonForRequest: Joi.when('parentApplication', {
+    reasonForRequest: Joi.when("parentApplication", {
       is: Joi.string(),
-      then: Joi.string().allow(null, ''),
+      then: Joi.string().allow(null, ""),
       otherwise: Joi.string().required().messages({
         "string.base": "reasonForRequest field must be a string",
         "string.empty": "reasonForRequest field cannot be empty",
         "any.required": "reasonForRequest field is required"
       })
     }),
-    stepsTakenToEaseProblem: Joi.when('parentApplication', {
+    stepsTakenToEaseProblem: Joi.when("parentApplication", {
       is: Joi.string(),
-      then: Joi.string().allow(null, ''),
+      then: Joi.string().allow(null, ""),
       otherwise: Joi.string().required().messages({
         "string.base": "stepsTakenToEaseProblem field must be a string",
         "string.empty": "stepsTakenToEaseProblem field cannot be empty",
         "any.required": "stepsTakenToEaseProblem field is required"
-      }),
+      })
     }),
-    stipendCategory: Joi.when('parentApplication', {
+    stipendCategory: Joi.when("parentApplication", {
       is: Joi.string(),
-      then: Joi.string().allow(null, ''),
-      otherwise: Joi.string().required()
+      then: Joi.string().allow(null, ""),
+      otherwise: Joi.string()
+        .required()
         .valid("laptop", "course", "data")
         .messages({
           "string.base": "stipendCategory field must be a string",
@@ -301,7 +302,9 @@ exports.validateOneClickApplyStipendApplication = (data) => {
       "any.required": "userId field is required"
     })
   });
-  return oneClickApplyStipendApplicationSchema.validate(data, { abortEarly: false });
+  return oneClickApplyStipendApplicationSchema.validate(data, {
+    abortEarly: false
+  });
 };
 
 exports.stipendRequestIdsValidation = async (data) => {
