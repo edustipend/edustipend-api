@@ -102,7 +102,8 @@ exports.createStipendApplication = catchAsyncError(async (req, res) => {
  * @access Public
  */
 exports.updateStipendApplication = catchAsyncError(async (req, res) => {
-  const validateData = validateUpdateStipendApplication(req.body);
+  const { userId, ...applicationData } = req.body;
+  const validateData = validateUpdateStipendApplication(applicationData);
   if (validateData.error) {
     throw new ErrorHandler(validateData.error, 400);
   }
