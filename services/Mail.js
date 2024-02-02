@@ -156,6 +156,37 @@ class Mail {
     );
   }
 
+  static sendStipendApplicationStatusUpdate(userStipendApplication) {
+    // Todo: Add date and status this
+    const { email, name, stipendCategory } = userStipendApplication;
+    this._sendEmail(
+      {
+        email,
+        subject: "Application Status Update",
+        template: "stipend-application-update",
+        params: {
+          email,
+          name,
+          stipendCategory
+        }
+      },
+
+      (err, data) => {
+        if (err) console.log(err);
+      }
+    );
+  }
+
+  /**
+   * @description Batch send email updates
+   * @param {*} email
+   */
+  static batchSendApplicationStipendStatusEmails(userStipendApplicationList) {
+    userStipendApplicationList.forEach((userStipendApplication) => {
+      this.sendStipendApplicationStatusUpdate(userStipendApplication);
+    });
+  }
+
   static applicationStatus(email, stipendCategory, message, subject) {
     this._sendEmail(
       {
@@ -217,7 +248,6 @@ class Mail {
    * @description Send notification that user has been added to waitlist
    * @param {*} email
    */
-
   static sendWelcomeToWaitlist(email, name) {
     this._sendEmail(
       {
