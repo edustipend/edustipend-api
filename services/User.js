@@ -36,6 +36,14 @@ class UserService {
   }
 
   /**
+   * @description Find a user by user id
+   * @param {string} userId
+   */
+  static async findById(userId) {
+    return UserModel.findOne({ _id: userId });
+  }
+
+  /**
    * @description Find a user by username (email)
    * @param {string} username
    */

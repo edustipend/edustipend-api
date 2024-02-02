@@ -1,6 +1,5 @@
 const Logger = require("../config/logger");
 const ErrorMessage = require("../constants/error");
-// const { verifyJWTToken } = require("../utils/generateJwtToken");
 
 exports.isAdminUser = async function (req, res, next) {
   // TODO: Update this to read from the headers

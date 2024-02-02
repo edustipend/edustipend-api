@@ -185,7 +185,7 @@ exports.stipendApplicationHistory = catchAsyncError(async (req, res) => {
       data
     });
   } catch (error) {
-    Logger.error(`Error getting user ${userId} application history`, err);
+    Logger.error(`Error getting user ${userId} application history`, error);
     return res.status(500).json({
       error
     });

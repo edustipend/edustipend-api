@@ -19,7 +19,7 @@ exports.resetPasswordMiddleware = async function (req, res, next) {
 
   const user = await User.findByUserName(validateData.username);
   if (!user) {
-    return res.status(400).json({
+    return res.status(404).json({
       message: "if the user exists, an email will be sent to them"
     });
   }

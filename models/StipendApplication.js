@@ -7,22 +7,42 @@ const StipendApplicationSchema = new Schema(
   {
     futureHelpFromUser: {
       type: String,
-      required: true,
+      required: [
+        function () {
+          return !this.parentApplication;
+        },
+        "futureHelpFromUser is required if no parentApplication"
+      ],
       unique: false
     },
     potentialBenefits: {
       type: String,
-      required: true,
+      required: [
+        function () {
+          return !this.parentApplication;
+        },
+        "potentialBenefits is required if no parentApplication"
+      ],
       unique: false
     },
     reasonForRequest: {
       type: String,
-      required: true,
+      required: [
+        function () {
+          return !this.parentApplication;
+        },
+        "reasonForRequest is required if no parentApplication"
+      ],
       unique: false
     },
     stepsTakenToEaseProblem: {
       type: String,
-      required: true,
+      required: [
+        function () {
+          return !this.parentApplication;
+        },
+        "stepsTakenToEaseProblem is required if no parentApplication"
+      ],
       unique: false
     },
     status: {
@@ -34,10 +54,20 @@ const StipendApplicationSchema = new Schema(
     stipendCategory: {
       type: String,
       enum: Object.values(StipendCategory),
-      required: true,
+      required: [
+        function () {
+          return !this.parentApplication;
+        },
+        "stipendCategory is required if no parentApplication"
+      ],
       unique: false
     },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
+    parentApplication: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Application",
+      required: false
+    },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true }
   },
   { timestamps: true }
 );

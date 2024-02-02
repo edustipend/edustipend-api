@@ -128,25 +128,63 @@ class Mail {
   }
 
   /**
-   * @description Send stipend request email recieved for returning users
+   * @description Send stipend request email received for returning users
    * @param {*} stipend request
    * @param {*} email
    */
-
-  static stipendApplicationReceivedConfirmation(stipendCategory, email) {
+  static stipendApplicationReceivedConfirmation(
+    stipendCategory,
+    email,
+    name,
+    link
+  ) {
     this._sendEmail(
       {
         email,
         subject: "Stipend Request Received",
-        template: "stipend-request-recieved",
+        template: "stipend-request-received",
         params: {
-          stipendRequest: stipendCategory
+          stipendCategory,
+          email,
+          name,
+          link
         }
       },
+      (err) => {
+        if (err) console.log(err);
+      }
+    );
+  }
+
+  static sendStipendApplicationStatusUpdate(userStipendApplication) {
+    // Todo: Add date and status this
+    const { email, name, stipendCategory } = userStipendApplication;
+    this._sendEmail(
+      {
+        email,
+        subject: "Application Status Update",
+        template: "stipend-application-update",
+        params: {
+          email,
+          name,
+          stipendCategory
+        }
+      },
+
       (err, data) => {
         if (err) console.log(err);
       }
     );
+  }
+
+  /**
+   * @description Batch send email updates
+   * @param {*} email
+   */
+  static batchSendApplicationStipendStatusEmails(userStipendApplicationList) {
+    userStipendApplicationList.forEach((userStipendApplication) => {
+      this.sendStipendApplicationStatusUpdate(userStipendApplication);
+    });
   }
 
   static applicationStatus(email, stipendCategory, message, subject) {
@@ -210,7 +248,6 @@ class Mail {
    * @description Send notification that user has been added to waitlist
    * @param {*} email
    */
-
   static sendWelcomeToWaitlist(email, name) {
     this._sendEmail(
       {
