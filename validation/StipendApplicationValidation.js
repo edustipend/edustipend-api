@@ -308,13 +308,16 @@ exports.validateOneClickApplyStipendApplication = (data) => {
   });
 };
 
-
 exports.validateAdminUpdateStipendApplicationStatus = (data) => {
   // TODO: Update this to take in time duration
   const updateStipendApplicationStatusPayload = Joi.object({
     status: Joi.string()
       .required()
-      .valid(ApplicationStatus.IN_REVIEW, ApplicationStatus.RECEIVED, ApplicationStatus.APPROVED)
+      .valid(
+        ApplicationStatus.IN_REVIEW,
+        ApplicationStatus.RECEIVED,
+        ApplicationStatus.APPROVED
+      )
       .messages({
         "string.base": "status field must be a string",
         "string.empty": "status field cannot be empty",

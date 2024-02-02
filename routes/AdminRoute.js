@@ -1,12 +1,17 @@
 const { isAdminUser } = require("../middleware/isAdminUserMiddleware");
-const { updateStipendApplicationsToReviewStatus } = require("../controller/StipendApplicationController");
+const {
+  updateStipendApplicationsToReviewStatus
+} = require("../controller/StipendApplicationController");
 const { notifyWaitlist } = require("../controller/WaitlistController");
-
 
 const router = require("express").Router();
 
 router.post("/notify-waitlist", isAdminUser, notifyWaitlist);
-router.put("/stipends/update-status", isAdminUser, updateStipendApplicationsToReviewStatus);
+router.put(
+  "/stipends/update-status",
+  isAdminUser,
+  updateStipendApplicationsToReviewStatus
+);
 
 /**
  * @todo: Fix all the endpoints below

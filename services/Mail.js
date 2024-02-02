@@ -158,11 +158,7 @@ class Mail {
 
   static sendStipendApplicationStatusUpdate(userStipendApplication) {
     // Todo: Add date and status this
-    const {
-      email,
-      name,
-      stipendCategory
-    } = userStipendApplication;
+    const { email, name, stipendCategory } = userStipendApplication;
     this._sendEmail(
       {
         email,
@@ -188,7 +184,7 @@ class Mail {
   static batchSendApplicationStipendStatusEmails(userStipendApplicationList) {
     userStipendApplicationList.forEach((userStipendApplication) => {
       this.sendStipendApplicationStatusUpdate(userStipendApplication);
-    })
+    });
   }
 
   static applicationStatus(email, stipendCategory, message, subject) {

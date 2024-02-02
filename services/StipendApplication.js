@@ -41,11 +41,10 @@ class StipendApplication {
     );
   }
 
-
   /**
- * @description Batch update stipend applications
- * @param {object} data
- */
+   * @description Batch update stipend applications
+   * @param {object} data
+   */
   static async batchUpdate(updateOptions) {
     let verifiedApplicationIds = [];
     let stipendApplications = [];
@@ -57,21 +56,26 @@ class StipendApplication {
           $lte: new Date("2024-01-31T00:00:00Z"), //TODO: Update this to read from req body
           $gt: new Date("2023-12-31T00:00:00Z")
         }
-      }).populate('user').exec();
-    }
-    catch (error) {
+      })
+        .populate("user")
+        .exec();
+    } catch (error) {
       throw error;
     }
 
     try {
-      verifiedStipendApplications = stipendApplications.filter((stipendApplication) => stipendApplication?.user.isVerified).map((stipendApplication) => ({
-        id: stipendApplication._id,
-        name: stipendApplication.user.name.trim(),
-        stipendCategory: stipendApplication.stipendCategory,
-        email: stipendApplication.user.email,
-        isVerified: stipendApplication.user.isVerified,
-      }));
-      verifiedApplicationIds = verifiedStipendApplications.map((stipendApplication) => new ObjectId(stipendApplication.id));
+      verifiedStipendApplications = stipendApplications
+        .filter((stipendApplication) => stipendApplication?.user.isVerified)
+        .map((stipendApplication) => ({
+          id: stipendApplication._id,
+          name: stipendApplication.user.name.trim(),
+          stipendCategory: stipendApplication.stipendCategory,
+          email: stipendApplication.user.email,
+          isVerified: stipendApplication.user.isVerified
+        }));
+      verifiedApplicationIds = verifiedStipendApplications.map(
+        (stipendApplication) => new ObjectId(stipendApplication.id)
+      );
 
       const res = await models.StipendApplication.updateMany(
         { _id: { $in: verifiedApplicationIds } },
@@ -80,16 +84,16 @@ class StipendApplication {
       );
 
       try {
-        Mail.batchSendApplicationStipendStatusEmails(verifiedStipendApplications);
-      }
-      catch (error) {
+        Mail.batchSendApplicationStipendStatusEmails(
+          verifiedStipendApplications
+        );
+      } catch (error) {
         // Fail silently
         Logger.error(error);
       }
 
       return res;
-    }
-    catch (error) {
+    } catch (error) {
       throw error;
     }
   }
