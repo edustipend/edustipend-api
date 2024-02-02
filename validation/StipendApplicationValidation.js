@@ -1,6 +1,7 @@
 const Joi = require("@hapi/joi");
 const isEmpty = require("./is-empty");
 const STATES_OF_ORIGIN = require("../constants/statesOfOrigin");
+const ApplicationStatus = require("../constants/applicationStatus");
 
 exports.validateFirstStipendApplication = (data) => {
   data.name = !isEmpty(data.name) ? data.name : "";
@@ -303,6 +304,24 @@ exports.validateOneClickApplyStipendApplication = (data) => {
     })
   });
   return oneClickApplyStipendApplicationSchema.validate(data, {
+    abortEarly: false
+  });
+};
+
+
+exports.validateAdminUpdateStipendApplicationStatus = (data) => {
+  // TODO: Update this to take in time duration
+  const updateStipendApplicationStatusPayload = Joi.object({
+    status: Joi.string()
+      .required()
+      .valid(ApplicationStatus.IN_REVIEW, ApplicationStatus.RECEIVED, ApplicationStatus.APPROVED)
+      .messages({
+        "string.base": "status field must be a string",
+        "string.empty": "status field cannot be empty",
+        "any.required": "status field is required"
+      })
+  });
+  return updateStipendApplicationStatusPayload.validate(data, {
     abortEarly: false
   });
 };

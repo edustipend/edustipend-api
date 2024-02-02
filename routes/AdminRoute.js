@@ -1,24 +1,19 @@
-const {
-  approveStipend,
-  rejectStipend
-} = require("../controller/StipendApplicationController");
+const { isAdminUser } = require("../middleware/isAdminUserMiddleware");
+const { updateStipendApplicationsToReviewStatus } = require("../controller/StipendApplicationController");
 const { notifyWaitlist } = require("../controller/WaitlistController");
-const {
-  setApplicationWindow,
-  manuallyCloseApplicationWindow
-} = require("../controller/ApplicationWindowController");
+
 
 const router = require("express").Router();
 
-//Todo: Add isAdmin middleware to routes after testing and speaking with Uduak
-router.put("/approve-stipend", approveStipend);
+router.post("/notify-waitlist", isAdminUser, notifyWaitlist);
+router.put("/stipends/update-status", isAdminUser, updateStipendApplicationsToReviewStatus);
+
 /**
- * @todo: Fix the reject-stipend logic.
- * @description: In it's current state, it doesn't make sense to have to add every stipend request to be rejected
+ * @todo: Fix all the endpoints below
  */
-router.put("/reject-stipend", rejectStipend);
-router.post("/notify-waitlist", notifyWaitlist);
-router.post("/application-window", setApplicationWindow);
-router.put("/close-application-window", manuallyCloseApplicationWindow);
+// router.put("/approve-stipend", approveStipend);
+// router.put("/reject-stipend", rejectStipend);
+// router.post("/application-window", setApplicationWindow);
+// router.put("/close-application-window", manuallyCloseApplicationWindow);
 
 module.exports = router;

@@ -13,7 +13,8 @@ const {
   validateStipendApplication,
   stipendRequestIdsValidation,
   validateUpdateStipendApplication,
-  validateOneClickApplyStipendApplication
+  validateOneClickApplyStipendApplication,
+  validateAdminUpdateStipendApplicationStatus
 } = require("../validation/StipendApplicationValidation");
 
 const handleSubmitStipendApplication = async function (
@@ -178,6 +179,39 @@ exports.oneClickApply = catchAsyncError(async (req, res) => {
 
   handleSubmitStipendApplication(stipendApplicationData, user, res);
 });
+
+
+/**
+ * @description Batch update stipend applications from verified USERS to REVIEW
+ * @route PUT /v1/admin/stipends/update-status
+ * @access Private
+ */
+exports.updateStipendApplicationsToReviewStatus = catchAsyncError(async (req, res) => {
+  const validatedData = validateAdminUpdateStipendApplicationStatus(req.body);
+  if (validatedData.error) {
+    throw new ErrorHandler(validatedData.error, 400);
+  }
+
+  try {
+    const updatedStipendApplications = await StipendApplication.batchUpdate(
+      validatedData.value
+    );
+    return res.status(201).json({
+      success: true,
+      message: `Application status successfully updated for ${updatedStipendApplications.modifiedCount} records`,
+      data: {
+        updatedStipendApplication: updatedStipendApplications
+      }
+    });
+  } catch (error) {
+    Logger.error(error);
+    res.status(500).json({
+      message: "Error setting status of stipend applications",
+      error
+    });
+  }
+});
+
 
 //Todo: add middleware to check for admin. This is an admin route
 /**

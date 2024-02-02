@@ -67,7 +67,7 @@ const StipendApplicationSchema = new Schema(
       ref: "Application",
       required: false
     },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true }
   },
   { timestamps: true }
 );
