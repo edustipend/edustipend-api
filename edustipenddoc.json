@@ -441,10 +441,9 @@
         }
       }
     },
-    "/waitlist/join-waitlist": {
+    "/waitlist/join": {
       "post": {
         "tags": ["waitlist"],
-        "deprecated": true,
         "summary": "join a waitlist",
         "description": "Adds people to be notified when fresh application window opens",
         "requestBody": {
@@ -502,11 +501,10 @@
         }
       }
     },
-    "/admin/notify-waitlist": {
+    "/waitlist/notify": {
       "post": {
-        "tags": ["admin"],
+        "tags": ["waitlist"],
         "summary": "notify the waitlist",
-        "deprecated": true,
         "description": "Notify every email in the wait list",
         "responses": {
           "201": {

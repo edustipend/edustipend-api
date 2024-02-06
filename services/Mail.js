@@ -263,6 +263,24 @@ class Mail {
       }
     );
   }
+
+  /**
+   * @description Send notification to waitlist user that window is open
+   * @param {*} email
+   */
+  static notifyWaitlistUser(email, name){
+    this._sendEmail({
+      email,
+      subject: 'We are open again!',
+      template: "notify-waitlist",
+      params: {
+        name
+      }
+    }),
+    (err, data) => {
+      if (err) Logger.log(err)
+    }
+  }
 }
 
 module.exports = Mail;
