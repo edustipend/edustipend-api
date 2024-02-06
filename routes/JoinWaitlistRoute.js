@@ -7,6 +7,8 @@ const { isAdminUser } = require("../middleware/isAdminUserMiddleware");
 
 router.post("/join", joinWaitlist);
 router.post("/notify", isAdminUser, notifyWaitlist);
+// for testing the notification endpoint
+// router.post("/notify", notifyWaitlist)
 
 /**
  * @todo we still need to discuss on whether we will empty the waitlist after every month, or keep it
