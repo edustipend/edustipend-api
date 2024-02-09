@@ -4,5 +4,6 @@ module.exports = {
   Mail: require("./Mail"),
   StipendApplication: require("./StipendApplication"),
   Waitlist: require("./Waitlist"),
-  ApplicationWindow: require("./ApplicationWindow")
+  ApplicationWindow: require("./ApplicationWindow"),
+  Donate: require("./Donate")
 };
