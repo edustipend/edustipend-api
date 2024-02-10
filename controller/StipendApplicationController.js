@@ -10,6 +10,7 @@ const {
 const ErrorHandler = require("../utils/ErrorHandler");
 const { getVerificationLink } = require("../utils/helper");
 const {
+  validateBatchApproveRequest,
   validateStipendApplication,
   stipendRequestIdsValidation,
   validateUpdateStipendApplication,
@@ -183,7 +184,7 @@ exports.oneClickApply = catchAsyncError(async (req, res) => {
 
 /**
  * @description Batch update stipend applications from verified USERS to REVIEW
- * @route PUT /v1/admin/stipends/update-status
+ * @route PUT /v1/admin/applications/batch/update-status
  * @access Private
  */
 exports.updateStipendApplicationsToReviewStatus = catchAsyncError(
@@ -195,7 +196,9 @@ exports.updateStipendApplicationsToReviewStatus = catchAsyncError(
 
     try {
       const updatedStipendApplications = await StipendApplication.batchUpdate(
-        validatedData.value
+        validatedData.value,
+        req.body.startDate,
+        req.body.endDate
       );
       return res.status(201).json({
         success: true,
@@ -208,6 +211,41 @@ exports.updateStipendApplicationsToReviewStatus = catchAsyncError(
       Logger.error(error);
       res.status(500).json({
         message: "Error setting status of stipend applications",
+        error
+      });
+    }
+  }
+);
+
+
+/**
+ * @description Batch approve VERIFIED stipend applications and set others to UNAPPROVED for specific window
+ * @route PUT /v1/admin/applications/batch/approve
+ * @access Private
+ */
+exports.batchApproveStipendApplications = catchAsyncError(
+  async (req, res) => {
+    const validatedData = await validateBatchApproveRequest(req.body);
+    if (validatedData.error) {
+      throw new ErrorHandler(validatedData.error, 400);
+    }
+
+    try {
+      const data = await StipendApplication.batchApprove(
+        validatedData.applicationIds,
+        "2023-12-31T00:00:00Z",
+        "2024-01-31T00:00:00Z"
+      );
+      return res.status(201).json({
+        success: true,
+        message: `Application status successfully updated`,
+        data
+      })
+    }
+    catch (error) {
+      Logger.error(error);
+      res.status(500).json({
+        message: "Error batch approving status applications",
         error
       });
     }
