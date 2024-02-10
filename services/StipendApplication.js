@@ -105,13 +105,15 @@ class StipendApplication {
    * @param {object} data
    */
   static async batchApprove(approvedIds, startDate, endDate) {
-    const mongooseApprovedIds = approvedIds.map((approvedId) => new ObjectId(approvedId));
+    const mongooseApprovedIds = approvedIds.map(
+      (approvedId) => new ObjectId(approvedId)
+    );
     let approvedStipendApplications = [];
     let approvedStipendApplicationUserIds = [];
 
     try {
       approvedStipendApplications = await models.StipendApplication.find({
-        '_id': { $in: mongooseApprovedIds },
+        _id: { $in: mongooseApprovedIds },
         createdAt: {
           $lte: new Date(endDate), //TODO: Update this to read from req body
           $gt: new Date(startDate)
@@ -124,7 +126,9 @@ class StipendApplication {
       throw error;
     }
 
-    Logger.info(`Setting application status to ${ApplicationStatus.APPROVED} for ${approvedStipendApplications.length}`);
+    Logger.info(
+      `Setting application status to ${ApplicationStatus.APPROVED} for ${approvedStipendApplications.length}`
+    );
 
     let userApplicationMapping = {};
     let approvedUpdateRes;
@@ -137,10 +141,9 @@ class StipendApplication {
         { status: ApplicationStatus.APPROVED },
         { multi: true }
       );
-      console.log(approvedUpdateRes)
-    }
-    catch (err) {
-      console.log('Error updating status for approved applications');
+      console.log(approvedUpdateRes);
+    } catch (err) {
+      console.log("Error updating status for approved applications");
       Logger.error(err);
     }
 
@@ -151,37 +154,45 @@ class StipendApplication {
           _id: { $nin: mongooseApprovedIds },
           createdAt: {
             $lt: new Date("2024-01-31T00:00:00Z"),
-            $gte: new Date("2023-12-31T00:00:00Z"),
-          },
+            $gte: new Date("2023-12-31T00:00:00Z")
+          }
         },
         { status: ApplicationStatus.UNAPPROVED },
         { multi: true }
       );
-    }
-    catch (err) {
-      console.log('Error updating status for unapproved applications');
+    } catch (err) {
+      console.log("Error updating status for unapproved applications");
       Logger.error(err);
     }
 
     try {
-      approvedStipendApplicationUserIds = approvedStipendApplications.map((stipendApplication) => {
-        userApplicationMapping[stipendApplication.user._id] = { email: stipendApplication.user.username, id: stipendApplication._id };
-        return stipendApplication.user._id
-      });
+      approvedStipendApplicationUserIds = approvedStipendApplications.map(
+        (stipendApplication) => {
+          userApplicationMapping[stipendApplication.user._id] = {
+            email: stipendApplication.user.username,
+            id: stipendApplication._id
+          };
+          return stipendApplication.user._id;
+        }
+      );
 
       approvedStipendApplicationUserIds.forEach(async (userId) => {
         try {
           await models.User.findOneAndUpdate(
             { _id: userId },
-            { $addToSet: { approvedApplications: userApplicationMapping[userId].id } }
+            {
+              $addToSet: {
+                approvedApplications: userApplicationMapping[userId].id
+              }
+            }
+          );
+        } catch (error) {
+          Logger.error(error);
+          console.log(
+            `Error updating list of approved application for user - ${userApplicationMapping[userId].email} with application id - ${userApplicationMapping[userId].id}`
           );
         }
-        catch (error) {
-          Logger.error(error);
-          console.log(`Error updating list of approved application for user - ${userApplicationMapping[userId].email} with application id - ${userApplicationMapping[userId].id}`);
-        }
       });
-
     } catch (error) {
       throw error;
     }
@@ -189,9 +200,8 @@ class StipendApplication {
     return {
       approved: approvedUpdateRes,
       unapproved: unapprovedUpdateRes
-    }
+    };
   }
-
 
   /**
    * @description Get user's sorted stipend application history

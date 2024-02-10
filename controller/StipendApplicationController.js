@@ -217,40 +217,36 @@ exports.updateStipendApplicationsToReviewStatus = catchAsyncError(
   }
 );
 
-
 /**
  * @description Batch approve VERIFIED stipend applications and set others to UNAPPROVED for specific window
  * @route PUT /v1/admin/applications/batch/approve
  * @access Private
  */
-exports.batchApproveStipendApplications = catchAsyncError(
-  async (req, res) => {
-    const validatedData = await validateBatchApproveRequest(req.body);
-    if (validatedData.error) {
-      throw new ErrorHandler(validatedData.error, 400);
-    }
-
-    try {
-      const data = await StipendApplication.batchApprove(
-        validatedData.applicationIds,
-        "2023-12-31T00:00:00Z",
-        "2024-01-31T00:00:00Z"
-      );
-      return res.status(201).json({
-        success: true,
-        message: `Application status successfully updated`,
-        data
-      })
-    }
-    catch (error) {
-      Logger.error(error);
-      res.status(500).json({
-        message: "Error batch approving status applications",
-        error
-      });
-    }
+exports.batchApproveStipendApplications = catchAsyncError(async (req, res) => {
+  const validatedData = await validateBatchApproveRequest(req.body);
+  if (validatedData.error) {
+    throw new ErrorHandler(validatedData.error, 400);
   }
-);
+
+  try {
+    const data = await StipendApplication.batchApprove(
+      validatedData.applicationIds,
+      "2023-12-31T00:00:00Z",
+      "2024-01-31T00:00:00Z"
+    );
+    return res.status(201).json({
+      success: true,
+      message: `Application status successfully updated`,
+      data
+    });
+  } catch (error) {
+    Logger.error(error);
+    res.status(500).json({
+      message: "Error batch approving status applications",
+      error
+    });
+  }
+});
 
 //Todo: add middleware to check for admin. This is an admin route
 /**

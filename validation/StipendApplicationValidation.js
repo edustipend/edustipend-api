@@ -3,7 +3,6 @@ const isEmpty = require("./is-empty");
 const STATES_OF_ORIGIN = require("../constants/statesOfOrigin");
 const ApplicationStatus = require("../constants/applicationStatus");
 
-
 exports.validateFirstStipendApplication = (data) => {
   data.name = !isEmpty(data.name) ? data.name : "";
   data.email = !isEmpty(data.email) ? data.email : "";
@@ -335,13 +334,12 @@ exports.validateBatchApproveRequest = async (data) => {
     ? data.applicationIds
     : [];
   const batchAproveApplicationRequestSchema = Joi.object({
-    applicationIds: Joi.array()
-      .items(
-        Joi.string().alphanum().required().messages({
-          "string.base": "Application Ids Must be a string",
-          "string.empty": "Applicatin Id field cannot be empty",
-        })
-      )
+    applicationIds: Joi.array().items(
+      Joi.string().alphanum().required().messages({
+        "string.base": "Application Ids Must be a string",
+        "string.empty": "Applicatin Id field cannot be empty"
+      })
+    )
     // startDate: Joi.date().format('YYYY-MM-DD').raw(),
     // endDate: Joi.date().format('YYYY-MM-DD').raw()
   });
