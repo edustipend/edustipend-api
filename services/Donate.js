@@ -4,7 +4,6 @@ class Donate {
    * @param {object} data
    */
   static async makeDonation(details) {
-    console.log("the secret is ", process.env.FLW_SECRET_KEY);
     const url = "https://api.flutterwave.com/v3/payments";
     const headers = {
       Authorization: `Bearer ${process.env.FLW_SECRET_KEY}`,
