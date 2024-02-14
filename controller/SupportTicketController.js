@@ -1,0 +1,89 @@
+const catchAsyncError = require("../middleware/catchAsyncError");
+const SupportTicket = require("../services/SupportTicket")
+
+/**
+ * @todo Validation for every function's payload
+ */
+
+
+
+
+/**
+ * @route GET /v1/support/
+ * @description Gets an existing support ticket
+ * @access Public
+ */
+exports.getSupportTicket = catchAsyncError(async (req, res) => {
+  const { ticketId } = req.body
+  const ticket = await SupportTicket.getSupportTicket(ticketId)
+
+  return res.status(200).json({
+    success: true,
+    message: 'Ticket was found',
+    body: ticket
+  })
+})
+
+/**
+ * @route POST /v1/support/
+ * @description Create a new support ticket
+ * @access Public
+ */
+exports.createSupportTicket = catchAsyncError(async(req, res) => {
+  const ticketPayload = req.body
+  const newTicket = await SupportTicket.createSupportTicket(ticketPayload)
+
+  return res.status(201).json({
+    success: true,
+    message: 'New ticket was created',
+    body: newTicket
+  })
+})
+
+/**
+ * @route PATCH /v1/support/
+ * @description Modifies an existing support ticket
+ * @access Public
+ */
+exports.updateSupportTicket = catchAsyncError(async(req, res) => {
+  const updatedTicketData = req.body
+  const updatedTicket = await SupportTicket.updateSupportTicket(updatedTicketData)
+
+  return res.status(201).json({
+    success: true,
+    message: 'Support ticket has been updated',
+    body: updatedTicket
+  })
+})
+
+/**
+ * @route PATCH /v1/support/close
+ * @description closes an existing support ticket
+ * @access Public
+ */
+exports.closeSupportTicket = catchAsyncError(async(req, res) => {
+  const { ticketId } = req.body
+  const closedTicket = await SupportTicket.closeSupportTicket(ticketId)
+
+  return res.status(201).json({
+    success: true,
+    message: 'Support ticket has been closed',
+    body: closedTicket
+  })
+})
+
+/**
+ * @route PATCH /v1/support/reopen
+ * @description Reopens an existing support ticket
+ * @access Public
+ */
+exports.reopenSupportTicket = catchAsyncError(async(req, res) => {
+  const { ticketId } = req.body
+  const reopenedTicket = await SupportTicket.reopenSupportTicket(ticketId)
+
+  return res.status(201).json({
+    success: true,
+    message: 'Support ticket has been reopened',
+    body: reopenedTicket
+  })
+})
