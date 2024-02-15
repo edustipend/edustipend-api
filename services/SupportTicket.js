@@ -7,7 +7,11 @@ class SupportTicket {
    * @param {object} ticketId
    */
   static async getSupportTicket(ticketId) {
-    return await models.SupportTicket.findOne({ _id: ticketId})
+    try {
+      return await models.SupportTicket.findOne({ _id: ticketId})
+    } catch(e) {
+      throw new ErrorHandler(e, 400)
+    }
   }
 
   /**

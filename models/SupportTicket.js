@@ -29,13 +29,13 @@ const ticketSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['Open', 'Closed'],
-    default: 'Open'
+    enum: ['open', 'closed'],
+    default: 'open'
   },
   priority: {
     type: String,
-    enum: ['Low', 'Medium', 'High'],
-    default: 'Medium'
+    enum: ['low', 'medium', 'high'],
+    default: 'medium'
   },
   createdBy: {
     // to subsequently be modified to use user IDs

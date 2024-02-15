@@ -1,8 +1,14 @@
 const catchAsyncError = require("../middleware/catchAsyncError");
-const SupportTicket = require("../services/SupportTicket")
+const SupportTicket = require("../services/SupportTicket");
+const ErrorHandler = require("../utils/ErrorHandler");
+const { 
+  validateTicketId,
+  validateCreateSupportTicket,
+  validateUpdateSupportTicket,
+} = require("../validation/SupportTicketValidation");
 
 /**
- * @todo Validation for every function's payload
+ * @todo create function for adding new comments
  */
 
 
@@ -14,7 +20,13 @@ const SupportTicket = require("../services/SupportTicket")
  * @access Public
  */
 exports.getSupportTicket = catchAsyncError(async (req, res) => {
-  const { ticketId } = req.body
+  const validatedTicketId = validateTicketId(req.body)
+
+  if (validatedTicketId.error) {
+    throw new ErrorHandler(validatedTicketId.error, 400)
+  }
+
+  const { ticketId } = validatedTicketId.value
   const ticket = await SupportTicket.getSupportTicket(ticketId)
 
   if (!ticket) {
@@ -37,7 +49,13 @@ exports.getSupportTicket = catchAsyncError(async (req, res) => {
  * @access Public
  */
 exports.createSupportTicket = catchAsyncError(async(req, res) => {
-  const ticketPayload = req.body
+  const validatedPayload = validateCreateSupportTicket(req.body)
+  
+  if (validatedPayload.error) {
+    throw new ErrorHandler(validatedPayload.error, 400)
+  }
+
+  const ticketPayload = validatedPayload.value
   const newTicket = await SupportTicket.createSupportTicket(ticketPayload)
 
   if (!newTicket) {
@@ -59,7 +77,13 @@ exports.createSupportTicket = catchAsyncError(async(req, res) => {
  * @description Modifies an existing support ticket
  */
 exports.updateSupportTicket = catchAsyncError(async(req, res) => {
-  const updatedTicketData = req.body
+  const validatedPayload = validateUpdateSupportTicket(req.body)
+
+  if (validatedPayload.error) {
+    throw new ErrorHandler(validatedPayload.error, 400)
+  }
+
+  const updatedTicketData = validatedPayload.value
   const updatedTicket = await SupportTicket.updateSupportTicket(updatedTicketData)
 
   if (!updatedTicket) {
@@ -81,13 +105,19 @@ exports.updateSupportTicket = catchAsyncError(async(req, res) => {
  * @description closes an existing support ticket
  */
 exports.closeSupportTicket = catchAsyncError(async(req, res) => {
-  const { ticketId } = req.body
+  const validatedTicketId = validateTicketId(req.body)
+
+  if (validatedTicketId.error) {
+    throw new ErrorHandler(validatedTicketId.error, 400)
+  }
+
+  const { ticketId } = validatedTicketId.value
   const closedTicket = await SupportTicket.closeSupportTicket(ticketId)
 
   if (!closedTicket) {
     return res.status(404).json({
       success: false,
-      message: 'Ticket not closed'
+      message: 'Ticket not found'
     })
   }
 
@@ -103,13 +133,19 @@ exports.closeSupportTicket = catchAsyncError(async(req, res) => {
  * @description Reopens an existing support ticket
  */
 exports.reopenSupportTicket = catchAsyncError(async(req, res) => {
-  const { ticketId } = req.body
+  const validatedTicketId = validateTicketId(req.body)
+
+  if (validatedTicketId.error) {
+    throw new ErrorHandler(validatedTicketId.error, 400)
+  }
+
+  const { ticketId } = validatedTicketId.value
   const reopenedTicket = await SupportTicket.reopenSupportTicket(ticketId)
 
   if (!reopenedTicket) {
     return res.status(404).json({
       success: false,
-      message: 'Ticket not reopened'
+      message: 'Ticket not found'
     })
   }
 
