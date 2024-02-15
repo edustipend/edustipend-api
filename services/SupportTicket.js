@@ -44,7 +44,7 @@ class SupportTicket {
   static async closeSupportTicket(ticketId) {
     return await models.SupportTicket.findByIdAndUpdate(
       ticketId,
-      { status: 'Closed' },
+      { status: 'closed' },
       { new: true },
     )
   }
@@ -56,7 +56,7 @@ class SupportTicket {
   static async reopenSupportTicket(ticketId) {
     return await models.SupportTicket.findByIdAndUpdate(
       ticketId,
-      { status: 'Open' },
+      { status: 'open' },
       { new: true },
     )
   }
@@ -66,7 +66,7 @@ class SupportTicket {
    */
   static async getOpenSupportTickets() {
     return await models.SupportTicket.find({
-      status: 'Open'
+      status: 'open'
     })
   }
 }

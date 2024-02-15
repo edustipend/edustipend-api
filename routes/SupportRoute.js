@@ -9,7 +9,7 @@ const {
   getOpenSupportTickets,
 } = require("../controller/SupportTicketController")
 
-router.get('/ticket', getSupportTicket)
+router.get('/ticket/:ticketId', getSupportTicket)
 router.get('/tickets', getOpenSupportTickets)
 router.post('/ticket', createSupportTicket)
 router.patch('/ticket', updateSupportTicket)

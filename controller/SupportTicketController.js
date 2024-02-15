@@ -20,7 +20,7 @@ const {
  * @access Public
  */
 exports.getSupportTicket = catchAsyncError(async (req, res) => {
-  const validatedTicketId = validateTicketId(req.body)
+  const validatedTicketId = validateTicketId({ticketId: req.params.ticketId})
 
   if (validatedTicketId.error) {
     throw new ErrorHandler(validatedTicketId.error, 400)

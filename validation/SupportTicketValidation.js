@@ -79,7 +79,6 @@ const updateSupportTicket =  Joi.object({
     "string.empty": "priority field cannot be empty",
     "any.only": "priority field must be one of 'Low', 'Medium', or 'High'"
   }),
-  comments: Joi.array().items(commentSchema)
 })
 
 exports.validateCreateSupportTicket = (data) => {
