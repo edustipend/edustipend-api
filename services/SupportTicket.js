@@ -56,6 +56,15 @@ class SupportTicket {
       { new: true },
     )
   }
+
+  /**
+   * @description Gets all open support tickets
+   */
+  static async getOpenSupportTickets() {
+    return await models.SupportTicket.find({
+      status: 'Open'
+    })
+  }
 }
 
 module.exports = SupportTicket
