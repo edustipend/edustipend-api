@@ -1,39 +1,43 @@
+const { Donation } = require("../models");
+
 class Donate {
+  static initializationUrl = 'https://api.paystack.co/transaction/initialize'
+  static headers = {
+    Authorization: `BEARER ${process.env.PAYSTACK_SECRET_KEY}`,
+    'Content-Type': 'application/json',
+  }
+
   /**
-   * @description create a new Flutterwave transaction
+   * @description create a new Paystack transaction
    * @param {object} data
    */
   static async makeDonation(details) {
-    const url = "https://api.flutterwave.com/v3/payments";
-    const headers = {
-      Authorization: `Bearer ${process.env.FLW_SECRET_KEY}`,
-      "Content-Type": "application/json"
-    };
     const fetchOptions = {
       method: "POST",
-      headers,
+      headers: this.headers,
       body: JSON.stringify(details)
     };
 
     try {
-      const response = await fetch(url, fetchOptions);
+      const response = await fetch(this.initializationUrl, fetchOptions);
       const data = await response.json();
 
-      if (data.status === "error") {
-        return {
-          success: false,
-          error: data.errors
-        };
-      }
-
-      return {
-        success: true,
-        data
-      };
+      return data;
     } catch (err) {
-      console.log(err.code);
-      console.log(err.response.body);
+      throw new ErrorHandler('Bad request', 400)
     }
+  }
+
+  /**
+   * @description record a new transaction in db
+   * @param {object} data
+   */
+  static async recordTransaction(data){
+
+    const newTransaction = new Donation({...data})
+    await newTransaction.save()
+
+    return newTransaction
   }
 }
 
