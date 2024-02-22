@@ -34,6 +34,10 @@
     {
       "name": "user",
       "description": "Everything about user actions"
+    },
+    {
+      "name": "support",
+      "description": "Everything about support tickets"
     }
   ],
   "consumes": ["application/json"],
@@ -630,6 +634,172 @@
           }
         }
       }
+    },
+    "/support/ticket/{ticketId}": {
+      "get": {
+        "tags": ["support"],
+        "summary": "get a ticket",
+        "description": "Retrieves a support ticket by id",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ticketId",
+            "description": "the id of the ticket to be retrieved",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ticket retrieved"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Ticket not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/support/ticket": {
+      "post": {
+        "tags": ["support"],
+        "summary": "create a ticket",
+        "description": "Creates a new support ticket",
+        "requestBody": {
+          "description": "Details of the support ticket",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/create-support-ticket"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "New support ticket created"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["support"],
+        "summary": "modify a ticket",
+        "description": "Modifies an existing support ticket",
+        "requestBody": {
+          "description": "Updates to the support ticket",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/update-support-ticket"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Support ticket updated"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "404": {
+            "description": "No existing ticket found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/support/tickets": {
+      "get": {
+        "tags": ["support"],
+        "summary": "get open tickets",
+        "description": "Retrieves all open support tickets",
+        "responses": {
+          "200": {
+            "description": "Array of open tickets"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "404": {
+            "description": "Nothing found"
+          }
+        }
+      }
+    },
+    "/support/ticket/close": {
+      "patch": {
+        "tags": ["support"],
+        "summary": "Close an open ticket",
+        "description": "Admin closes a previously open ticket",
+        "requestBody": {
+          "description": "Ticket to be closed",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/toggle-ticket"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Ticket closed"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "404": {
+            "description": "Ticket not found"
+          }
+        }
+      }
+    },
+    "/support/ticket/reopen": {
+      "patch": {
+        "tags": ["support"],
+        "summary": "Reopen a closed ticket",
+        "description": "Admin reopens a previously closed ticket",
+        "requestBody": {
+          "description": "Ticket to be reopened",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/toggle-ticket"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Ticket reopened"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "404": {
+            "description": "Ticket not found"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -808,6 +978,43 @@
       "required": ["email"],
       "properties": {
         "email": {
+          "type": "string"
+        }
+      }
+    },
+    "toggle-ticket": {
+      "required": ["ticketId"],
+      "properties": {
+        "ticketId": {
+          "type": "string"
+        }
+      }
+    },
+    "create-support-ticket": {
+      "required": ["title", "description", "createdBy", "assignedTo"],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "createdBy": {
+          "type": "string"
+        },
+        "assignedTo": {
+          "type": "string"
+        },
+        "priority": {
+          "type": "string",
+          "default": "medium"
+        }
+      }
+    },
+    "update-support-ticket": {
+      "required": ["ticketId"],
+      "properties": {
+        "ticketId": {
           "type": "string"
         }
       }
