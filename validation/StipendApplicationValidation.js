@@ -329,6 +329,25 @@ exports.validateAdminUpdateStipendApplicationStatus = (data) => {
   });
 };
 
+exports.validateBatchApproveRequest = async (data) => {
+  data.applicationIds = !isEmpty(data.applicationIds)
+    ? data.applicationIds
+    : [];
+  const batchAproveApplicationRequestSchema = Joi.object({
+    applicationIds: Joi.array().items(
+      Joi.string().alphanum().required().messages({
+        "string.base": "Application Ids Must be a string",
+        "string.empty": "Applicatin Id field cannot be empty"
+      })
+    )
+    // startDate: Joi.date().format('YYYY-MM-DD').raw(),
+    // endDate: Joi.date().format('YYYY-MM-DD').raw()
+  });
+  return await batchAproveApplicationRequestSchema.validateAsync(data, {
+    abortEarly: false
+  });
+};
+
 exports.stipendRequestIdsValidation = async (data) => {
   data.stipendRequestIds = !isEmpty(data.stipendRequestIds)
     ? data.stipendRequestIds

@@ -1,5 +1,6 @@
 const { isAdminUser } = require("../middleware/isAdminUserMiddleware");
 const {
+  batchApproveStipendApplications,
   updateStipendApplicationsToReviewStatus
 } = require("../controller/StipendApplicationController");
 const { notifyWaitlist } = require("../controller/WaitlistController");
@@ -8,9 +9,14 @@ const router = require("express").Router();
 
 router.post("/notify-waitlist", isAdminUser, notifyWaitlist);
 router.put(
-  "/stipends/update-status",
+  "/applications/batch/update-status",
   isAdminUser,
   updateStipendApplicationsToReviewStatus
+);
+router.put(
+  "/applications/batch/approve",
+  isAdminUser,
+  batchApproveStipendApplications
 );
 
 /**

@@ -43,6 +43,10 @@ const UserSchema = new Schema(
       type: Boolean,
       unique: false
     },
+    approvedApplications: {
+      type: [Schema.Types.ObjectId],
+      required: false
+    },
     socialMediaHandles: {
       type: Map,
       of: String
