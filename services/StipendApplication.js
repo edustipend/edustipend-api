@@ -84,7 +84,8 @@ class StipendApplication {
         Query end date: ${endDate},
         Total stipend applications for the month: ${stipendApplications.length},
         Verified stipend applications for the month: ${verifiedApplicationIds.length}
-      `);
+      `
+      );
 
       const res = await models.StipendApplication.updateMany(
         { _id: { $in: verifiedApplicationIds } },

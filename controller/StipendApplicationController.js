@@ -197,7 +197,7 @@ exports.updateStipendApplicationsToReviewStatus = catchAsyncError(
     try {
       const updatedStipendApplications = await StipendApplication.batchUpdate(
         validatedData.value,
-        "2024-02-01T00:00:00Z",  // req.body.startDate,
+        "2024-02-01T00:00:00Z", // req.body.startDate,
         "2024-02-29T00:00:00Z" // req.body.endDate
       );
       return res.status(201).json({
