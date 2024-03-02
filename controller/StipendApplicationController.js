@@ -197,12 +197,12 @@ exports.updateStipendApplicationsToReviewStatus = catchAsyncError(
     try {
       const updatedStipendApplications = await StipendApplication.batchUpdate(
         validatedData.value,
-        req.body.startDate,
-        req.body.endDate
+        "2024-02-01T00:00:00Z",  // req.body.startDate,
+        "2024-02-29T00:00:00Z" // req.body.endDate
       );
       return res.status(201).json({
         success: true,
-        message: `Application status successfully updated for ${updatedStipendApplications.modifiedCount} records`,
+        message: `Application status successfully updated for ${updatedStipendApplications?.modifiedCount} records`,
         data: {
           updatedStipendApplication: updatedStipendApplications
         }
