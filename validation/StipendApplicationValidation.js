@@ -96,7 +96,17 @@ exports.validateFirstStipendApplication = (data) => {
         "string.empty": "howDidYouHearAboutUs field cannot be empty",
         "any.required": "howDidYouHearAboutUs field is required"
       })
-      .valid("facebook", "twitter", "instagram", "linkedin", "other", "x"),
+      .valid(
+        "facebook",
+        "twitter",
+        "instagram",
+        "other",
+        "linkedin",
+        "int'l women's day",
+        "google search",
+        "community",
+        "x"
+      ),
     futureHelpFromUser: Joi.string().required().messages({
       "string.base": "futureHelpFromUser field must be a string",
       "string.empty": "futureHelpFromUser field cannot be empty",
