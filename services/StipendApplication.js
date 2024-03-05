@@ -56,7 +56,7 @@ class StipendApplication {
       stipendApplications = await models.StipendApplication.find({
         createdAt: {
           $lte: new Date(endDate), //TODO: Update this to read from req body
-          $gt: new Date(startDate)
+          $gte: new Date(startDate)
         }
       })
         .populate("user")
@@ -77,6 +77,14 @@ class StipendApplication {
         }));
       verifiedApplicationIds = verifiedStipendApplications.map(
         (stipendApplication) => new ObjectId(stipendApplication.id)
+      );
+
+      Logger.info(
+        `Query start date: ${startDate},
+        Query end date: ${endDate},
+        Total stipend applications for the month: ${stipendApplications.length},
+        Verified stipend applications for the month: ${verifiedApplicationIds.length}
+      `
       );
 
       const res = await models.StipendApplication.updateMany(
