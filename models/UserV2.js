@@ -31,7 +31,17 @@ const UserSchema = new Schema(
     },
     howDidYouHearAboutUs: {
       type: String,
-      enum: ["facebook", "twitter", "instagram", "other", "linkedin", "int'l women's day", "google search", "community", "x"],
+      enum: [
+        "facebook",
+        "twitter",
+        "instagram",
+        "other",
+        "linkedin",
+        "int'l women's day",
+        "google search",
+        "community",
+        "x"
+      ],
       required: false
     },
     isAdmin: {
