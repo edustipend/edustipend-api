@@ -48,7 +48,8 @@ class StipendApplication {
    * @param {object} data
    */
   static async batchUpdate(updateOptions, startDate, endDate) {
-    let verifiedApplicationIds = []; q
+    let verifiedApplicationIds = [];
+    q;
     let stipendApplications = [];
     let verifiedStipendApplications = [];
 
@@ -93,8 +94,7 @@ class StipendApplication {
         { multi: true }
       );
 
-      console.log(verifiedStipendApplications)
-
+      console.log(verifiedStipendApplications);
 
       try {
         Mail.batchSendApplicationStipendStatusEmails(
@@ -104,7 +104,6 @@ class StipendApplication {
         // Fail silently
         Logger.error(error);
       }
-
 
       return res;
     } catch (error) {
@@ -144,7 +143,7 @@ class StipendApplication {
 
     let userApplicationMapping = {};
     let approvedUpdateRes = {};
-    let unapprovedUpdateRes = {}
+    let unapprovedUpdateRes = {};
 
     try {
       //update the status and set it to approved
