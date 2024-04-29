@@ -1,6 +1,6 @@
 const Donation = require("../models/Donation");
 
-class Donate {
+class Transaction {
   /**
    * @description create a new Flutterwave transaction
    * @param {object} data
@@ -22,6 +22,9 @@ class Donate {
       const data = await response.json();
 
       if (data.status === "error") {
+        /**
+         * @todo log this
+         */
         return {
           success: false,
           error: data.errors
@@ -33,6 +36,9 @@ class Donate {
         data
       };
     } catch (err) {
+      /**
+       * @todo Switch to our logger
+       */
       console.log(err.code);
       console.log(err.response.body);
     }
@@ -78,6 +84,9 @@ class Donate {
           data: response.data
         };
       } else {
+        /**
+         * @todo log the failure
+         */
         // Inform the customer their payment was unsuccessful
         return {
           success: false,
@@ -109,4 +118,4 @@ class Donate {
   }
 }
 
-module.exports = Donate;
+module.exports = Transaction;

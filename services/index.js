@@ -5,5 +5,5 @@ module.exports = {
   StipendApplication: require("./StipendApplication"),
   Waitlist: require("./Waitlist"),
   ApplicationWindow: require("./ApplicationWindow"),
-  Donate: require("./Donate")
+  Transaction: require("./Transaction")
 };

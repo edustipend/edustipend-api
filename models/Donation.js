@@ -34,7 +34,7 @@ const TransactionSchema = new Schema({
 });
 
 // The main schema
-const DonationSchema = new Schema({
+const TransactionEventSchema = new Schema({
   event: {
     type: String,
     required: true
@@ -45,6 +45,6 @@ const DonationSchema = new Schema({
   }
 });
 
-const Donation = mongoose.model("Donation", DonationSchema);
+const Transaction = mongoose.model("Donation", TransactionEventSchema);
 
-module.exports = Donation;
+module.exports = Transaction;

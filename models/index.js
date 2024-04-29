@@ -3,5 +3,5 @@ module.exports = {
   User: require("./UserV2"),
   StipendApplication: require("./StipendApplication"),
   WaitlistUser: require("./WaitlistUser"),
-  Donation: require("./Donation")
+  Transaction: require("./Donation")
 };
