@@ -12,7 +12,6 @@ exports.donateNow = catchAsyncError(async (req, res) => {
    */
 
   const donation = await Donate.makeDonation(req.body);
-  console.log("donation is", donation);
   if (donation.success === true)
     return res.status(201).json({
       status: true,
@@ -27,28 +26,32 @@ exports.donateNow = catchAsyncError(async (req, res) => {
 });
 
 /**
-  * @description Flutterwave web hook
-  * @route POST /v1/donate/flw-webhook
-  */
+ * @description Flutterwave web hook
+ * @route POST /v1/donate/flw-webhook
+ */
 exports.flw_Webhook = catchAsyncError(async (req, res) => {
   const secretHash = process.env.FLW_SECRET_HASH;
   const signature = req.headers["verif-hash"];
-  if (!signature || (signature !== secretHash)) {
+  if (!signature || signature !== secretHash) {
     // This request isn't from Flutterwave; discard
     res.status(401).end();
   }
 
   const payload = req.body;
   // verify that received payload matches FLW's copy
-  const transactionValidityBoolean = await Donate.verifyTransaction(payload.data.tx_ref, payload.data.amount, payload.data.currency)
-  if ( transactionValidityBoolean ) {
+  const transactionValidityBoolean = await Donate.verifyTransaction(
+    payload.data.tx_ref,
+    payload.data.amount,
+    payload.data.currency
+  );
+  if (transactionValidityBoolean) {
     // record donation if not already recorded
-    const donationExists = await Donate.donationExists(payload.data.id)
+    const donationExists = await Donate.donationExists(payload.data.id);
     if (!donationExists) {
       await Donate.recordTransaction(payload);
     }
   }
-  
+
   // return 200 to Flutterwave
-  res.status(200).send("Received FLW event")
+  res.status(200).send("Received FLW event");
 });

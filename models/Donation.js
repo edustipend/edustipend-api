@@ -7,13 +7,13 @@ const CustomerSchema = new Schema({
   phone_number: String,
   email: String,
   created_at: Date
-})
+});
 
-const DataSchema = new Schema({
+const TransactionSchema = new Schema({
   id: {
     type: Number,
     required: true,
-    unique: true,
+    unique: true
   },
   tx_ref: String,
   flw_ref: String,
@@ -30,8 +30,8 @@ const DataSchema = new Schema({
   account_id: Number,
   customer: {
     type: CustomerSchema
-  },
-})
+  }
+});
 
 // The main schema
 const DonationSchema = new Schema({
@@ -40,11 +40,11 @@ const DonationSchema = new Schema({
     required: true
   },
   data: {
-    type: DataSchema,
+    type: TransactionSchema,
     required: true
-  },
-})
+  }
+});
 
-const Donation = mongoose.model('Donation', DonationSchema)
+const Donation = mongoose.model("Donation", DonationSchema);
 
-module.exports = Donation
+module.exports = Donation;
