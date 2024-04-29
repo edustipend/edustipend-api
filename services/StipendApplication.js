@@ -48,7 +48,7 @@ class StipendApplication {
    * @param {object} data
    */
   static async batchUpdate(updateOptions, startDate, endDate) {
-    let verifiedApplicationIds = [];
+    let verifiedApplicationIds = []; q
     let stipendApplications = [];
     let verifiedStipendApplications = [];
 
@@ -93,6 +93,9 @@ class StipendApplication {
         { multi: true }
       );
 
+      console.log(verifiedStipendApplications)
+
+
       try {
         Mail.batchSendApplicationStipendStatusEmails(
           verifiedStipendApplications
@@ -101,6 +104,7 @@ class StipendApplication {
         // Fail silently
         Logger.error(error);
       }
+
 
       return res;
     } catch (error) {
@@ -123,8 +127,8 @@ class StipendApplication {
       approvedStipendApplications = await models.StipendApplication.find({
         _id: { $in: mongooseApprovedIds },
         createdAt: {
-          $lte: new Date(endDate), //TODO: Update this to read from req body
-          $gt: new Date(startDate)
+          $lte: new Date(endDate),
+          $gte: new Date(startDate)
         }
       })
         .populate("user")
@@ -139,8 +143,8 @@ class StipendApplication {
     );
 
     let userApplicationMapping = {};
-    let approvedUpdateRes;
-    let unapprovedUpdateRes;
+    let approvedUpdateRes = {};
+    let unapprovedUpdateRes = {}
 
     try {
       //update the status and set it to approved
@@ -161,8 +165,8 @@ class StipendApplication {
         {
           _id: { $nin: mongooseApprovedIds },
           createdAt: {
-            $lt: new Date("2024-01-31T00:00:00Z"),
-            $gte: new Date("2023-12-31T00:00:00Z")
+            $lte: new Date(endDate),
+            $gte: new Date(startDate)
           }
         },
         { status: ApplicationStatus.UNAPPROVED },
