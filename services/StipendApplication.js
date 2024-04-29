@@ -49,7 +49,6 @@ class StipendApplication {
    */
   static async batchUpdate(updateOptions, startDate, endDate) {
     let verifiedApplicationIds = [];
-    q;
     let stipendApplications = [];
     let verifiedStipendApplications = [];
 
@@ -93,8 +92,6 @@ class StipendApplication {
         updateOptions,
         { multi: true }
       );
-
-      console.log(verifiedStipendApplications);
 
       try {
         Mail.batchSendApplicationStipendStatusEmails(
