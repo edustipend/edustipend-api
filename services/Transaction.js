@@ -1,3 +1,4 @@
+const Logger = require("../config/logger");
 const Donation = require("../models/Donation");
 
 class Transaction {
@@ -36,11 +37,8 @@ class Transaction {
         data
       };
     } catch (err) {
-      /**
-       * @todo Switch to our logger
-       */
-      console.log(err.code);
-      console.log(err.response.body);
+      Logger.error(err.code);
+      Logger.error(err.response.body);
     }
   }
 
@@ -94,8 +92,7 @@ class Transaction {
         };
       }
     } catch (err) {
-      console.log(err.code);
-      console.log(err.response.body);
+      Logger.error("The transaction is false");
     }
   }
 
