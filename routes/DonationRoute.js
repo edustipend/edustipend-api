@@ -8,6 +8,10 @@ const {
 } = require("../controller/DonationController");
 
 router.post("/", makeDonation);
-router.post("/flw-webhook", validateFlutterwaveWebhookRequest, handleFluttwerwaveRequests);
+router.post(
+  "/flw-webhook",
+  validateFlutterwaveWebhookRequest,
+  handleFluttwerwaveRequests
+);
 
 module.exports = router;

@@ -18,11 +18,10 @@ exports.makeDonation = catchAsyncError(async (req, res) => {
       message: "Follow this link to complete donation",
       data: res.data
     });
-  }
-  else {
+  } else {
     /**
-    * @todo add logging functionality
-    **/
+     * @todo add logging functionality
+     **/
     return res.status(500).json({
       status: false,
       message: "Unfortunately, something happened"

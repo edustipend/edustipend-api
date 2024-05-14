@@ -27,28 +27,31 @@ const TransactionSchema = new Schema({
   status: String,
   payment_type: String,
   created_at: Date,
-  account_id: Number,
+  account_id: Number
 });
 
 // The main schema
-const DonationSchema = new Schema({
-  transactionId: {
-    type: Number,
-    required: true,
-    unique: true
+const DonationSchema = new Schema(
+  {
+    transactionId: {
+      type: Number,
+      required: true,
+      unique: true
+    },
+    donor: {
+      type: DonorSchema
+    },
+    event: {
+      type: String,
+      required: true
+    },
+    transaction: {
+      type: TransactionSchema,
+      required: true
+    }
   },
-  donor: {
-    type: DonorSchema
-  },
-  event: {
-    type: String,
-    required: true
-  },
-  transaction: {
-    type: TransactionSchema,
-    required: true
-  }
-}, { timestamps: true });
+  { timestamps: true }
+);
 
 const Donation = mongoose.model("Donation", DonationSchema);
 
