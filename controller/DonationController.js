@@ -10,13 +10,13 @@ exports.makeDonation = catchAsyncError(async (req, res) => {
   /**
    * @todo Handle validation for req.body
    */
-  const res = Donation.makeDonation(req.body);
+  const donationRes = Donation.makeDonation(req.body);
 
-  if (res.success === true) {
+  if (donationRes.success === true) {
     return res.status(201).json({
       status: true,
       message: "Follow this link to complete donation",
-      data: res.data
+      data: donationRes.data
     });
   } else {
     /**
