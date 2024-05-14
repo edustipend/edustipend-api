@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const CustomerSchema = new Schema({
+const DonorSchema = new Schema({
   id: Number,
   name: String,
   phone_number: String,
@@ -28,23 +28,28 @@ const TransactionSchema = new Schema({
   payment_type: String,
   created_at: Date,
   account_id: Number,
-  customer: {
-    type: CustomerSchema
-  }
 });
 
 // The main schema
-const TransactionEventSchema = new Schema({
+const DonationSchema = new Schema({
+  transactionId: {
+    type: Number,
+    required: true,
+    unique: true
+  },
+  donor: {
+    type: DonorSchema
+  },
   event: {
     type: String,
     required: true
   },
-  data: {
+  transaction: {
     type: TransactionSchema,
     required: true
   }
-});
+}, { timestamps: true });
 
-const Transaction = mongoose.model("Donation", TransactionEventSchema);
+const Donation = mongoose.model("Donation", DonationSchema);
 
-module.exports = Transaction;
+module.exports = Donation;

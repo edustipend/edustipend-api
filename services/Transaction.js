@@ -3,11 +3,11 @@ const Donation = require("../models/Donation");
 
 class Transaction {
   /**
-   * @description create a new Flutterwave transaction
+   * @description Makes a call to Fluttwerave to create a new transaction
    * @param {object} data
    */
-  static async makeDonation(details) {
-    const url = "https://api.flutterwave.com/v3/payments";
+  static async createTransaction(reqObj) {
+    const url = "https://api.flutterwave.com/v3/payments"; //@TODO: Move this to environment variable
     const headers = {
       Authorization: `Bearer ${process.env.FLW_SECRET_KEY}`,
       "Content-Type": "application/json"
@@ -15,7 +15,7 @@ class Transaction {
     const fetchOptions = {
       method: "POST",
       headers,
-      body: JSON.stringify(details)
+      body: JSON.stringify(reqObj)
     };
 
     try {
@@ -40,17 +40,6 @@ class Transaction {
       Logger.error(err.code);
       Logger.error(err.response.body);
     }
-  }
-
-  /**
-   * @description record a new transaction in db
-   * @param {object} data
-   */
-  static async recordTransaction(data) {
-    const newTransaction = new Donation({ ...data });
-    await newTransaction.save();
-
-    return newTransaction;
   }
 
   /**
@@ -93,24 +82,6 @@ class Transaction {
       }
     } catch (err) {
       Logger.error("The transaction is false");
-    }
-  }
-
-  /**
-   * @description check whether donation has been previously recorded
-   * @param {Number} id
-   */
-  static async donationExists(id) {
-    try {
-      // Query the database for a donation with the given id
-      const existingDonation = await Donation.findOne({ "data.id": id });
-
-      // If a donation with the given donation_id exists, return true
-      // Otherwise, return false
-      return existingDonation !== null;
-    } catch (error) {
-      console.error("Error checking donation existence:", error);
-      return false;
     }
   }
 }
