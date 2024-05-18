@@ -1,4 +1,4 @@
-const { Donation } = require("../services");
+const { Donation, Transaction } = require("../services");
 const catchAsyncError = require("../middleware/catchAsyncError");
 
 /**
