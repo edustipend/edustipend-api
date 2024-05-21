@@ -1,5 +1,6 @@
 const { Donation, Transaction } = require("../services");
 const catchAsyncError = require("../middleware/catchAsyncError");
+const generateFlutterwaveTxref = require("../utils/txref-generator");
 
 /**
  * @description Donate
@@ -10,9 +11,12 @@ exports.makeDonation = catchAsyncError(async (req, res) => {
   /**
    * @todo Handle validation for req.body
    */
-  const donationRes = Donation.makeDonation(req.body);
 
-  if (donationRes.success === true) {
+  const donationRes = await Donation.makeDonation({
+    ...req.body,
+    tx_ref: generateFlutterwaveTxref()
+  });
+  if (donationRes.status === "success") {
     return res.status(201).json({
       status: true,
       message: "Follow this link to complete donation",
@@ -36,19 +40,9 @@ exports.makeDonation = catchAsyncError(async (req, res) => {
 exports.handleFluttwerwaveRequests = catchAsyncError(async (req, res) => {
   const payload = req.body;
 
-  // verify that received payload matches FLW's copy
-  const isVerifiedTransaction = await Transaction.verifyTransaction(
-    payload.data.tx_ref,
-    payload.data.amount,
-    payload.data.currency
-  );
-
-  if (isVerifiedTransaction) {
-    // record donation if not already recorded
-    const donationExists = await Donation.donationExists(payload.data.id);
-    if (!donationExists) {
-      await Donation.createDonation(payload);
-    }
+  const donationExists = await Donation.donationExists(payload.data.id);
+  if (!donationExists) {
+    await Donation.createDonation(payload);
   }
 
   res.status(200).send("Received FLW event");

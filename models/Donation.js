@@ -10,11 +10,6 @@ const DonorSchema = new Schema({
 });
 
 const TransactionSchema = new Schema({
-  id: {
-    type: Number,
-    required: true,
-    unique: true
-  },
   tx_ref: String,
   flw_ref: String,
   amount: Number,

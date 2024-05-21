@@ -6,7 +6,7 @@ const adminRouter = require("./AdminRoute");
 const stipendApplicationRouter = require("./StipendApplicationRoute");
 const userRouter = require("./UserRoute");
 const waitlistRouter = require("./JoinWaitlistRoute");
-const donateRouter = require("./DonateRoute");
+const donateRouter = require("./DonationRoute");
 const User = require("../models/UserV2");
 const LocalStrategy = require("passport-local").Strategy;
 
