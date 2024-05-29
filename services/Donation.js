@@ -11,7 +11,7 @@ class DonationService {
     try {
       const transaction = await Transaction.createTransaction(data);
 
-      if (transaction?.error) {
+      if (!transaction || transaction?.error) {
         throw new Error("Error creating request with Flutterwave");
       } else {
         return transaction.data;
