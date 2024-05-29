@@ -60,7 +60,7 @@ class Transaction {
           data
         };
       } else {
-        throw new Error('Transaction verification failed')
+        throw new Error("Transaction verification failed");
       }
     } catch (err) {
       Logger.error(err);
