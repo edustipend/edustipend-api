@@ -22,7 +22,8 @@ const TransactionSchema = new Schema({
   status: String,
   payment_type: String,
   created_at: Date,
-  account_id: Number
+  account_id: Number,
+  ip: String
 });
 
 // The main schema
