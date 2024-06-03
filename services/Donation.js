@@ -60,6 +60,84 @@ class DonationService {
       return false;
     }
   }
+
+  /**
+   * @description get total donations
+   */
+  static async getTotal() {
+    /**
+     * @todo Find a way to sort it by weekly or daily etc. Allow it to be filterable
+     */
+    try {
+      const totalDonations = await Donation.aggregate([
+        { $group: { _id: null, totalAmount: { $sum: "$transaction.amount" } } }
+      ]);
+
+      if (totalDonations.length === 0) {
+        return { totalAmount: 0 };
+      }
+
+      return { totalAmount: totalDonations[0].totalAmount };
+    } catch (e) {
+      throw new Error("Internal Server Error");
+    }
+  }
+
+  /**
+   * @description get total donations and donors
+   */
+  static async getTotalDonorsAndAmount() {
+    try {
+      const donationStats = await Donation.aggregate([
+        {
+          $group: {
+            _id: null,
+            totalAmount: { $sum: "$transaction.amount" },
+            uniqueDonorsCount: { $addToSet: "$donor.email" }
+          }
+        }
+      ]);
+
+      const result = {
+        totalAmount:
+          donationStats.length > 0 ? donationStats[0].totalAmount : 0,
+        uniqueDonorsCount:
+          donationStats.length > 0
+            ? donationStats[0].uniqueDonorsCount.length
+            : 0
+      };
+
+      return result;
+    } catch (e) {
+      throw new Error("Internal Server Error");
+    }
+  }
+
+  /**
+   * @description get all donations
+   * @param {Number} page
+   * @param {Number} limit
+   */
+  static async getDonations(page, limit) {
+    try {
+      const startIndex = (page - 1) * limit;
+
+      // Count total donations (optional for pagination info)
+      const totalDonations = await Donation.countDocuments();
+
+      const donations = await Donation.find(
+        {},
+        { _id: 0, "donor.name": 1, "transaction.amount": 1, createdAt: 1 }
+      )
+        .sort({ createdAt: -1 })
+        .skip(startIndex)
+        .limit(limit);
+
+      return { totalDonations, donations };
+    } catch (e) {
+      throw new Error("Internal Server Error");
+    }
+  }
 }
 
 module.exports = DonationService;
