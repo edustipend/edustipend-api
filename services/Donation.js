@@ -64,12 +64,15 @@ class DonationService {
   /**
    * @description get total donations
    */
-  static async getTotal() {
-    /**
-     * @todo Find a way to sort it by weekly or daily etc. Allow it to be filterable
-     */
+  static async getTotal(startDate, endDate) {
     try {
+      const matchQuery = {};
+      if (startDate & endDate) {
+        matchQuery.createdAt = { $gte: startDate, $lte: endDate };
+      }
+
       const totalDonations = await Donation.aggregate([
+        { $match: matchQuery },
         { $group: { _id: null, totalAmount: { $sum: "$transaction.amount" } } }
       ]);
 

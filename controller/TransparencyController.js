@@ -7,7 +7,10 @@ const catchAsyncError = require("../middleware/catchAsyncError");
  * @access PUBLIC
  */
 exports.getTotalAmount = catchAsyncError(async (req, res) => {
-  const totalDonations = await Donation.getTotal();
+  const startDate = new Date(req.query.startDate);
+  const endDate = new Date(req.query.endDate);
+
+  const totalDonations = await Donation.getTotal(startDate, endDate);
 
   return res.status(200).json({
     status: true,
