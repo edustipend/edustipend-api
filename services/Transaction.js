@@ -1,3 +1,4 @@
+const axios = require("axios");
 const Logger = require("../config/logger");
 const Donation = require("../models/Donation");
 
@@ -13,32 +14,22 @@ class Transaction {
       "Content-Type": "application/json"
     };
     const fetchOptions = {
-      method: "POST",
-      headers,
-      body: JSON.stringify(reqObj)
+      headers
     };
 
     try {
-      const response = await fetch(url, fetchOptions);
-      const data = await response.json();
-
-      if (data.status === "error") {
-        /**
-         * @todo log this
-         */
-        return {
-          success: false,
-          error: data.errors
-        };
-      }
-
+      const response = await axios.post(url, reqObj, fetchOptions);
       return {
         success: true,
-        data
+        data: response?.data
       };
     } catch (err) {
-      Logger.error(err.code);
-      Logger.error(err.response.body);
+      Logger.error(err.response.data);
+      Logger.error(err.response.status);
+      return {
+        success: false,
+        error: err?.response?.data
+      };
     }
   }
 
@@ -52,36 +43,31 @@ class Transaction {
       Authorization: `Bearer ${process.env.FLW_SECRET_KEY}`
     };
     const fetchOptions = {
-      method: "GET",
       headers
     };
 
     try {
-      const rawData = await fetch(url, fetchOptions);
-      const response = await rawData.json();
+      const response = await axios.get(url, reqObj, fetchOptions);
+      const data = response?.data;
 
       if (
-        response.data.status === "successful" &&
-        response.data.amount === expectedAmount &&
-        response.data.currency === expectedCurrency
+        data.status === "successful" &&
+        data.amount === expectedAmount &&
+        data.currency === expectedCurrency
       ) {
-        // Success! Confirm the customer's payment
         return {
           success: true,
-          data: response.data
+          data
         };
       } else {
-        /**
-         * @todo log the failure
-         */
-        // Inform the customer their payment was unsuccessful
-        return {
-          success: false,
-          error: "Not successful"
-        };
+        throw new Error("Transaction verification failed");
       }
     } catch (err) {
-      Logger.error("The transaction is false");
+      Logger.error(err);
+      return {
+        success: false,
+        error: "Not successful"
+      };
     }
   }
 }

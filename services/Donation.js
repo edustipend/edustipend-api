@@ -11,14 +11,10 @@ class DonationService {
     try {
       const transaction = await Transaction.createTransaction(data);
 
-      if (transaction?.error) {
+      if (!transaction || transaction?.error) {
         throw new Error("Error creating request with Flutterwave");
       } else {
-        const donation = await this.createDonation(transaction?.data);
-        return {
-          success: true,
-          data: donation
-        };
+        return transaction.data;
       }
     } catch (err) {
       Logger.error(err);
@@ -30,13 +26,14 @@ class DonationService {
    * @description Creates a new donation in Edustipend system after validating with Flutterwave
    * @param {object} data
    */
-  static async createDonation(data) {
-    const { customer, ...transactionObj } = data;
+  static async createDonation(payload) {
+    const { event, data } = payload;
+    const { id, customer, ...transactionObj } = data;
     try {
       const donationData = {
-        transactionId: data.id,
+        transactionId: id,
         donor: customer,
-        event: data.event,
+        event: event,
         transaction: transactionObj
       };
       const newDonation = new Donation(donationData);

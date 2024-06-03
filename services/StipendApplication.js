@@ -149,7 +149,6 @@ class StipendApplication {
         { status: ApplicationStatus.APPROVED },
         { multi: true }
       );
-      console.log(approvedUpdateRes);
     } catch (err) {
       console.log("Error updating status for approved applications");
       Logger.error(err);
