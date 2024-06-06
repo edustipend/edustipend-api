@@ -1,5 +1,6 @@
 const Logger = require("../config/logger");
 const Donation = require("../models/Donation");
+const ErrorHandler = require("../utils/ErrorHandler");
 const Transaction = require("./Transaction");
 
 class DonationService {
@@ -76,13 +77,13 @@ class DonationService {
         { $group: { _id: null, totalAmount: { $sum: "$transaction.amount" } } }
       ]);
 
-      if (totalDonations.length === 0) {
-        return { totalAmount: 0 };
-      }
-
-      return { totalAmount: totalDonations[0].totalAmount };
+      return {
+        totalAmount:
+          totalDonations?.length === 0 ? 0 : totalDonations[0].totalAmount
+      };
     } catch (e) {
-      throw new Error("Internal Server Error");
+      Logger.error("Error getting total donations", JSON.stringify(e));
+      throw new ErrorHandler(e, 500);
     }
   }
 
@@ -96,49 +97,74 @@ class DonationService {
           $group: {
             _id: null,
             totalAmount: { $sum: "$transaction.amount" },
-            uniqueDonorsCount: { $addToSet: "$donor.email" }
+            uniqueDonorsCount: { $addToSet: "$donor.email" },
+            donationCount: { $sum: 1 }
           }
         }
       ]);
-
+      console.log(donationStats);
       const result = {
         totalAmount:
           donationStats.length > 0 ? donationStats[0].totalAmount : 0,
         uniqueDonorsCount:
           donationStats.length > 0
             ? donationStats[0].uniqueDonorsCount.length
-            : 0
+            : 0,
+        donationCount:
+          donationStats.length > 0 ? donationStats[0].donationCount : 0
       };
 
       return result;
     } catch (e) {
-      throw new Error("Internal Server Error");
+      Logger.error("Error getting total donations", JSON.stringify(e));
+      throw new ErrorHandler(e, 500);
     }
   }
 
   /**
    * @description get all donations
-   * @param {Number} page
+   * @param {Id} cursor
    * @param {Number} limit
    */
-  static async getDonations(page, limit) {
+  static async getDonations(cursor, limit) {
     try {
-      const startIndex = (page - 1) * limit;
+      // const startIndex = (page - 1) * limit;
 
-      // Count total donations (optional for pagination info)
-      const totalDonations = await Donation.countDocuments();
+      // const donations = await Donation.find(
+      //   {},
+      //   { _id: 0, "donor.name": 1, "transaction.amount": 1, createdAt: 1 }
+      // )
+      //   .sort({ createdAt: -1 })
+      //   .skip(startIndex)
+      //   .limit(limit);
 
-      const donations = await Donation.find(
-        {},
-        { _id: 0, "donor.name": 1, "transaction.amount": 1, createdAt: 1 }
-      )
-        .sort({ createdAt: -1 })
-        .skip(startIndex)
+      // return donations;
+      let query = {};
+
+      // if cursor is provided, add to query
+      if (cursor) {
+        query._id = { $lt: cursor };
+      }
+
+      const donations = await Donation.find(query, {
+        _id: 1,
+        "donor.name": 1,
+        "transaction.amount": 1,
+        createdAt: 1
+      })
+        .sort({ _id: -1 }) // Sorting by _id in descending order
         .limit(limit);
 
-      return { totalDonations, donations };
+      let nextPageCursor = null;
+
+      if (donations.length > 0) {
+        nextPageCursor = donations[donations.length - 1]._id;
+      }
+
+      return { donations, nextPageCursor };
     } catch (e) {
-      throw new Error("Internal Server Error");
+      Logger.error("Error getting total donations", JSON.stringify(e));
+      throw new ErrorHandler(e, 500);
     }
   }
 }

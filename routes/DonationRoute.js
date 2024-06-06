@@ -4,7 +4,10 @@ const {
 } = require("../middleware/verifyFlutterwaveWebhookRequest");
 const {
   makeDonation,
-  handleFluttwerwaveRequests
+  handleFluttwerwaveRequests,
+  getTotalDonationsWithinTimeRange,
+  getDonations,
+  getTotalDonorsAndAmount
 } = require("../controller/DonationController");
 
 router.post("/", makeDonation);
@@ -13,5 +16,8 @@ router.post(
   validateFlutterwaveWebhookRequest,
   handleFluttwerwaveRequests
 );
+router.get("/range", getTotalDonationsWithinTimeRange);
+router.get("/overview", getTotalDonorsAndAmount);
+router.get("/timeline", getDonations);
 
 module.exports = router;
