@@ -102,7 +102,6 @@ class DonationService {
           }
         }
       ]);
-      console.log(donationStats);
       const result = {
         totalAmount:
           donationStats.length > 0 ? donationStats[0].totalAmount : 0,
@@ -123,10 +122,10 @@ class DonationService {
 
   /**
    * @description get all donations
-   * @param {Id} cursor
+   * @param {Id} start
    * @param {Number} limit
    */
-  static async getDonations(cursor, limit) {
+  static async getDonations(start, limit) {
     try {
       // const startIndex = (page - 1) * limit;
 
@@ -141,9 +140,9 @@ class DonationService {
       // return donations;
       let query = {};
 
-      // if cursor is provided, add to query
-      if (cursor) {
-        query._id = { $lt: cursor };
+      // if start is provided, add to query
+      if (start) {
+        query._id = { $lt: start };
       }
 
       const donations = await Donation.find(query, {
@@ -155,13 +154,13 @@ class DonationService {
         .sort({ _id: -1 }) // Sorting by _id in descending order
         .limit(limit);
 
-      let nextPageCursor = null;
+      let next = null;
 
       if (donations.length > 0) {
-        nextPageCursor = donations[donations.length - 1]._id;
+        next = donations[donations.length - 1]._id;
       }
 
-      return { donations, nextPageCursor };
+      return { donations, next };
     } catch (e) {
       Logger.error("Error getting total donations", JSON.stringify(e));
       throw new ErrorHandler(e, 500);

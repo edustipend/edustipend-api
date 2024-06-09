@@ -85,10 +85,10 @@ exports.getTotalDonorsAndAmount = catchAsyncError(async (req, res) => {
  * @access PUBLIC
  */
 exports.getDonations = catchAsyncError(async (req, res) => {
-  const cursor = req.query.cursor;
+  const start = req.query.start;
   const limit = parseInt(req.query.limit) || 50;
 
-  const donors = await Donation.getDonations(cursor, limit);
+  const donors = await Donation.getDonations(start, limit);
 
   return res.status(200).json({
     status: true,
