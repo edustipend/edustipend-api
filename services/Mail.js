@@ -263,6 +263,25 @@ class Mail {
       }
     );
   }
+
+  /**
+   * @description Send appreciation email after successful donation
+   */
+  static sendThankYouForDonation(email, amount) {
+    this._sendEmail(
+      {
+        email,
+        subject: "Thank You For Your Support",
+        template: "thank-you-for-donating",
+        params: {
+          amount
+        }
+      },
+      (err, data) => {
+        if (err) console.log(err);
+      }
+    );
+  }
 }
 
 module.exports = Mail;
