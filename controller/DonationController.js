@@ -47,3 +47,51 @@ exports.handleFluttwerwaveRequests = catchAsyncError(async (req, res) => {
 
   res.status(200).send("Received FLW event");
 });
+
+/**
+ * @description get donations made within a time range
+ * @route GET /v1/donate/range
+ * @access PUBLIC
+ */
+exports.getTotalDonationsWithinTimeRange = catchAsyncError(async (req, res) => {
+  const startDate = new Date(req.query.startDate);
+  const endDate = new Date(req.query.endDate);
+
+  const totalDonations = await Donation.getTotal(startDate, endDate);
+
+  return res.status(200).json({
+    status: true,
+    data: totalDonations
+  });
+});
+
+/**
+ * @description get total donation amount and number of donors
+ * @route GET /v1/donate/overview
+ * @access PUBLIC
+ */
+exports.getTotalDonorsAndAmount = catchAsyncError(async (req, res) => {
+  const totalDonorsAndDonations = await Donation.getTotalDonorsAndAmount();
+
+  return res.status(200).json({
+    status: true,
+    data: totalDonorsAndDonations
+  });
+});
+
+/**
+ * @description get details of donations in a timeline
+ * @route GET /v1/donate/timeline
+ * @access PUBLIC
+ */
+exports.getDonations = catchAsyncError(async (req, res) => {
+  const start = req.query.start;
+  const limit = parseInt(req.query.limit) || 50;
+
+  const donors = await Donation.getDonations(start, limit);
+
+  return res.status(200).json({
+    status: true,
+    data: donors
+  });
+});
