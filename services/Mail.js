@@ -279,7 +279,7 @@ class Mail {
       },
       (err, data) => {
         if (err) {
-          Logger.error('Error sending thank you email', err);
+          Logger.error("Error sending thank you email", err);
         }
       }
     );
