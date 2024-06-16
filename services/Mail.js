@@ -278,7 +278,9 @@ class Mail {
         }
       },
       (err, data) => {
-        if (err) console.log(err);
+        if (err) {
+          Logger.error('Error sending thank you email', err);
+        }
       }
     );
   }
