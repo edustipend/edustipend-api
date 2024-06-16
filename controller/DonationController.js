@@ -1,4 +1,4 @@
-const { Donation, Transaction } = require("../services");
+const { Donation, Transaction, Mail } = require("../services");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const generateFlutterwaveTxref = require("../utils/txref-generator");
 
@@ -45,6 +45,10 @@ exports.handleFluttwerwaveRequests = catchAsyncError(async (req, res) => {
     await Donation.createDonation(payload);
   }
 
+  Mail.sendThankYouForDonation(
+    payload.data.customer.email,
+    payload.data.amount
+  );
   res.status(200).send("Received FLW event");
 });
 
