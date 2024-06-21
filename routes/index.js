@@ -21,6 +21,6 @@ router.use("/stipend", stipendApplicationRouter);
 router.use("/user", userRouter);
 router.use("/admin", adminRouter);
 router.use("/waitlist", waitlistRouter);
-router.use("/donate", donateRouter);
+router.use("/donation", donateRouter);
 
 module.exports = router;
