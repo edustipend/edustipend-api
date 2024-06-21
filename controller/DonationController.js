@@ -45,10 +45,16 @@ exports.handleFluttwerwaveRequests = catchAsyncError(async (req, res) => {
     await Donation.createDonation(payload);
   }
 
-  Mail.sendThankYouForDonation(
-    payload.data.customer.email,
-    payload.data.amount
-  );
+  try {
+    if (payload.data.customer.name.toLowerCase() !== "anonymous") {
+      Mail.sendThankYouForDonation(
+        payload.data.customer.email,
+        payload.data.amount
+      );
+    }
+  } catch (e) {
+    // Fail silently
+  }
   res.status(200).send("Received FLW event");
 });
 

@@ -24,8 +24,12 @@ class Transaction {
         data: response?.data
       };
     } catch (err) {
-      Logger.error(err.response.data);
-      Logger.error(err.response.status);
+      Logger.error(
+        `Error status of ${err.response.status}
+        Email: ${reqObj.email}
+        Amount: ${reqObj.amount}
+        Transaction ref: ${reqObj.tx_ref}`
+      );
       return {
         success: false,
         error: err?.response?.data
@@ -63,7 +67,11 @@ class Transaction {
         throw new Error("Transaction verification failed");
       }
     } catch (err) {
-      Logger.error(err);
+      Logger.error(
+        `Verifying transaction of id ${tx_ref} a& expected amount ${expectedAmount} causes ${JSON.stringify(
+          err
+        )}`
+      );
       return {
         success: false,
         error: "Not successful"
