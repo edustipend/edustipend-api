@@ -46,10 +46,14 @@ exports.handleFluttwerwaveRequests = catchAsyncError(async (req, res) => {
   }
 
   try {
-    if (payload.data.customer.name.toLowerCase() !== "anonymous") {
+    if (
+      !payload?.data?.customer?.name ||
+      payload?.data?.customer?.name.toLowerCase() !== "anonymous"
+    ) {
       Mail.sendThankYouForDonation(
-        payload.data.customer.email,
-        payload.data.amount
+        payload?.data?.customer?.email,
+        payload?.data?.amount,
+        payload?.data?.name
       );
     }
   } catch (e) {
