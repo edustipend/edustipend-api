@@ -267,14 +267,15 @@ class Mail {
   /**
    * @description Send appreciation email after successful donation
    */
-  static sendThankYouForDonation(email, amount) {
+  static sendThankYouForDonation(email, amount, name) {
     this._sendEmail(
       {
         email,
         subject: "Thank You For Your Support",
         template: "thank-you-for-donating",
         params: {
-          amount
+          amount,
+          name
         }
       },
       (err, data) => {

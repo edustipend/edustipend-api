@@ -13,12 +13,15 @@ class DonationService {
       const transaction = await Transaction.createTransaction(data);
 
       if (!transaction || transaction?.error) {
+        Logger.error(`Error initiating FLW transaction of id: ${data.tx_ref}`);
         throw new Error("Error creating request with Flutterwave");
       } else {
         return transaction.data;
       }
     } catch (err) {
-      Logger.error(err);
+      Logger.error(
+        `Error while initiating FLW transaction of id: ${data.tx_ref}`
+      );
       return { success: false };
     }
   }
@@ -41,7 +44,7 @@ class DonationService {
       await newDonation.save();
       return newDonation;
     } catch (err) {
-      Logger.error(err);
+      Logger.error(`${err.message} when creating transaction of id ${id}`);
     }
   }
 
@@ -57,7 +60,9 @@ class DonationService {
       });
       return existingDonation !== null;
     } catch (error) {
-      console.error("Error checking donation existence:", error);
+      Logger.error(
+        `Failed while checking if donation of transaction id ${transactionId} exists`
+      );
       return false;
     }
   }
@@ -162,7 +167,7 @@ class DonationService {
 
       return { donations, next };
     } catch (e) {
-      Logger.error("Error getting total donations", JSON.stringify(e));
+      Logger.error(`${e.message} with cursor: ${start}`);
       throw new ErrorHandler(e, 500);
     }
   }
