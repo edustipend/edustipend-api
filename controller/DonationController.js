@@ -4,7 +4,7 @@ const generateFlutterwaveTxref = require("../utils/txref-generator");
 
 /**
  * @description Donate
- * @route POST /v1/donate
+ * @route POST /v1/donation
  * @access PUBLIC
  */
 exports.makeDonation = catchAsyncError(async (req, res) => {
@@ -35,7 +35,7 @@ exports.makeDonation = catchAsyncError(async (req, res) => {
 
 /**
  * @description Flutterwave web hook
- * @route POST /v1/donate/flw-webhook
+ * @route POST /v1/donation/flw-webhook
  */
 exports.handleFluttwerwaveRequests = catchAsyncError(async (req, res) => {
   const payload = req.body;
@@ -64,7 +64,7 @@ exports.handleFluttwerwaveRequests = catchAsyncError(async (req, res) => {
 
 /**
  * @description get donations made within a time range
- * @route GET /v1/donate/range
+ * @route GET /v1/donation/range
  * @access PUBLIC
  */
 exports.getTotalDonationsWithinTimeRange = catchAsyncError(async (req, res) => {
@@ -81,7 +81,7 @@ exports.getTotalDonationsWithinTimeRange = catchAsyncError(async (req, res) => {
 
 /**
  * @description get total donation amount and number of donors
- * @route GET /v1/donate/overview
+ * @route GET /v1/donation/overview
  * @access PUBLIC
  */
 exports.getTotalDonorsAndAmount = catchAsyncError(async (req, res) => {
@@ -95,7 +95,7 @@ exports.getTotalDonorsAndAmount = catchAsyncError(async (req, res) => {
 
 /**
  * @description get details of donations in a timeline
- * @route GET /v1/donate/timeline
+ * @route GET /v1/donation/timeline
  * @access PUBLIC
  */
 exports.getDonations = catchAsyncError(async (req, res) => {
