@@ -6,5 +6,6 @@ module.exports = {
   Mail: require("./Mail"),
   StipendApplication: require("./StipendApplication"),
   Transaction: require("./Transaction"),
-  Waitlist: require("./Waitlist")
+  Waitlist: require("./Waitlist"),
+  Referral: require("./Referral")
 };

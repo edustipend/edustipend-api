@@ -1,4 +1,4 @@
-const { Donation, Transaction, Mail } = require("../services");
+const { Donation, Transaction, Mail, Referral } = require("../services");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const generateFlutterwaveTxref = require("../utils/txref-generator");
 
@@ -11,12 +11,20 @@ exports.makeDonation = catchAsyncError(async (req, res) => {
   /**
    * @todo Handle validation for req.body
    */
+  const { referrer, campaign, ...donationPayload } = req.body;
+  const tx_ref = generateFlutterwaveTxref();
 
   const donationRes = await Donation.makeDonation({
-    ...req.body,
-    tx_ref: generateFlutterwaveTxref()
+    ...donationPayload,
+    tx_ref
   });
   if (donationRes.status === "success") {
+    // Create referral only when FLW transaction is triggered
+    await Referral.createReferral({
+      ...req.body,
+      tx_ref
+    });
+
     return res.status(201).json({
       status: true,
       message: "Follow this link to complete donation",
@@ -43,6 +51,7 @@ exports.handleFluttwerwaveRequests = catchAsyncError(async (req, res) => {
   const donationExists = await Donation.donationExists(payload.data.id);
   if (!donationExists) {
     await Donation.createDonation(payload);
+    await Referral.updateReferral(payload.data.tx_ref);
   }
 
   try {
