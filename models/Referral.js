@@ -8,10 +8,7 @@ const ReferralSchema = new Schema(
       required: true,
       unique: true
     },
-    campaign: {
-      type: String,
-      enum: ["Support A Learner", "Edustipend at 2"]
-    },
+    campaign: String,
     referrer: String,
     amount: Number,
     transactionCompleted: {
