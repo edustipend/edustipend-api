@@ -6,7 +6,8 @@ const adminRouter = require("./AdminRoute");
 const stipendApplicationRouter = require("./StipendApplicationRoute");
 const userRouter = require("./UserRoute");
 const waitlistRouter = require("./JoinWaitlistRoute");
-const donateRouter = require("./DonateRoute");
+const donateRouter = require("./DonationRoute");
+const referralRouter = require("./ReferralRoute");
 const User = require("../models/UserV2");
 const LocalStrategy = require("passport-local").Strategy;
 
@@ -21,6 +22,7 @@ router.use("/stipend", stipendApplicationRouter);
 router.use("/user", userRouter);
 router.use("/admin", adminRouter);
 router.use("/waitlist", waitlistRouter);
-router.use("/donate", donateRouter);
+router.use("/donation", donateRouter);
+router.use("/referral", referralRouter);
 
 module.exports = router;
