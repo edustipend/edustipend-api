@@ -57,7 +57,7 @@ exports.handleFluttwerwaveRequests = catchAsyncError(async (req, res) => {
   try {
     if (
       !payload?.data?.customer?.name ||
-      payload?.data?.customer?.name.toLowerCase() !== "anonymous"
+      payload?.data?.customer?.name.toLowerCase().trim() !== "anonymous"
     ) {
       Mail.sendThankYouForDonation(
         payload?.data?.customer?.email,
