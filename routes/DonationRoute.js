@@ -3,7 +3,11 @@ const {
   validateFlutterwaveWebhookRequest
 } = require("../middleware/verifyFlutterwaveWebhookRequest");
 const {
+  canRecordBulkDonations
+} = require("../middleware/canRecordBulkDonation");
+const {
   makeDonation,
+  recordBulkDonation,
   handleFluttwerwaveRequests,
   getTotalDonationsWithinTimeRange,
   getDonations,
@@ -11,6 +15,7 @@ const {
 } = require("../controller/DonationController");
 
 router.post("/", makeDonation);
+router.post("/bulk-sum", canRecordBulkDonations, recordBulkDonation);
 router.post(
   "/flw-webhook",
   validateFlutterwaveWebhookRequest,

@@ -7,7 +7,12 @@ class Referral {
    * @param {object} data
    */
   static async createReferral(object) {
-    return await ReferralModel.create(object);
+    try {
+      const newReferral = await ReferralModel.create(object);
+      return newReferral;
+    } catch (e) {
+      return null;
+    }
   }
 
   /**

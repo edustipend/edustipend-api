@@ -42,6 +42,42 @@ exports.makeDonation = catchAsyncError(async (req, res) => {
 });
 
 /**
+ * @description Donate larger sums of money (NGN 500,001 and upwards)
+ * @route POST /v1/donation/bulk-sum
+ * @access PUBLIC
+ */
+exports.recordBulkDonation = catchAsyncError(async (req, res) => {
+  /**
+   * @todo Handle validation for req.body
+   */
+  const { name, email, phone_number, ...referralDetails } = req.body;
+  const newReferral = await Referral.createReferral({
+    ...referralDetails,
+    transactionCompleted: true
+  });
+
+  if (!newReferral) {
+    return res.status(400).json({
+      status: false,
+      message: "Could not record donation, possibly duplicate tx_ref"
+    });
+  }
+
+  const newDonation = await Donation.recordBulkDonation(req.body);
+
+  if (!newDonation) {
+    return res.status(500).json({
+      status: false,
+      message: "Could not record donation, please try again"
+    });
+  }
+  return res.status(201).json({
+    status: true,
+    message: "Donation recorded"
+  });
+});
+
+/**
  * @description Flutterwave web hook
  * @route POST /v1/donation/flw-webhook
  */
