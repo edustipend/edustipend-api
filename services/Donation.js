@@ -176,13 +176,14 @@ class DonationService {
    * @description Records a bulk donation not done via Flutterwave
    * @param {object} data
    */
-  static async recordBulkDonation(payload) {
+  static async createManualDonation(payload) {
     const { name, email, phone_number, ...referralDetails } = payload;
+    const arbitraryId = 1111111;
     try {
       // This should mirror Flutterwave's webhook payload
       const transactionPayload = {
         tx_ref: referralDetails.tx_ref,
-        flw_ref: "Not applicable",
+        flw_ref: "REDACTED",
         amount: referralDetails.amount,
         currency: "NGN",
         charged_amount: referralDetails.amount,
@@ -192,11 +193,11 @@ class DonationService {
         auth_model: "INTERNET_BANKING",
         status: "successful",
         payment_type: "direct",
-        account_id: 1111111 // An arbitrary value just to mirror Flutterwave
+        account_id: arbitraryId // An arbitrary value just to mirror Flutterwave
       };
 
       const donorPayload = {
-        id: 1111111, // Arbitrary value to mirror FLW
+        id: arbitraryId, // Arbitrary value to mirror FLW
         name,
         email,
         phone_number

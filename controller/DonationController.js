@@ -1,6 +1,7 @@
 const { Donation, Transaction, Mail, Referral } = require("../services");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const generateFlutterwaveTxref = require("../utils/txref-generator");
+const Logger = require("../config/logger");
 
 /**
  * @description Donate
@@ -46,7 +47,7 @@ exports.makeDonation = catchAsyncError(async (req, res) => {
  * @route POST /v1/donation/bulk-sum
  * @access PUBLIC
  */
-exports.recordBulkDonation = catchAsyncError(async (req, res) => {
+exports.createManualDonation = catchAsyncError(async (req, res) => {
   /**
    * @todo Handle validation for req.body
    */
@@ -63,17 +64,19 @@ exports.recordBulkDonation = catchAsyncError(async (req, res) => {
     });
   }
 
-  const newDonation = await Donation.recordBulkDonation(req.body);
+  const newDonation = await Donation.createManualDonation(req.body);
 
   if (!newDonation) {
     return res.status(500).json({
       status: false,
-      message: "Could not record donation, please try again"
+      message: "Could not create manual donation entry, please try again."
     });
   }
+
+  Logger.info("Manual donation created")
   return res.status(201).json({
     status: true,
-    message: "Donation recorded"
+    message: "Manual donation created"
   });
 });
 
