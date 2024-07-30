@@ -1001,7 +1001,14 @@
       }
     },
     "donation": {
-      "required": ["amount", "redirect_url", "payment_options", "currency", "campaign", "customer"],
+      "required": [
+        "amount",
+        "redirect_url",
+        "payment_options",
+        "currency",
+        "campaign",
+        "customer"
+      ],
       "properties": {
         "amount": {
           "type": "string",
@@ -1038,11 +1045,7 @@
         },
         "customer": {
           "type": "object",
-          "required": [
-            "email",
-            "name",
-            "phone_number"
-          ],
+          "required": ["email", "name", "phone_number"],
           "properties": {
             "email": {
               "type": "string",

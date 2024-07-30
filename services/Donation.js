@@ -171,6 +171,55 @@ class DonationService {
       throw new ErrorHandler(e, 500);
     }
   }
+
+  /**
+   * @description Records a bulk donation not done via Flutterwave
+   * @param {object} data
+   */
+  static async createManualDonation(payload) {
+    const { name, email, phone_number, ...referralDetails } = payload;
+    const arbitraryId = 1111111;
+    try {
+      // This should mirror Flutterwave's webhook payload
+      const transactionPayload = {
+        tx_ref: referralDetails.tx_ref,
+        flw_ref: "REDACTED",
+        amount: referralDetails.amount,
+        currency: "NGN",
+        charged_amount: referralDetails.amount,
+        app_fee: 0,
+        merchant_fee: 0,
+        processor_response: "Successful",
+        auth_model: "INTERNET_BANKING",
+        status: "successful",
+        payment_type: "direct",
+        account_id: arbitraryId // An arbitrary value just to mirror Flutterwave
+      };
+
+      const donorPayload = {
+        id: arbitraryId, // Arbitrary value to mirror FLW
+        name,
+        email,
+        phone_number
+      };
+
+      const donationData = {
+        transactionId: Math.floor(Math.random() * 9000000) + 1000000, // Arbitrary value,
+        donor: donorPayload,
+        event: "charge.completed", // As would be returned by FLW
+        transaction: transactionPayload
+      };
+
+      const newDonation = new Donation(donationData);
+      await newDonation.save();
+      return newDonation;
+    } catch (err) {
+      Logger.error(
+        `${err.message} when creating manual transaction of ${name}`
+      );
+      return null;
+    }
+  }
 }
 
 module.exports = DonationService;
