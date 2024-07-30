@@ -1,6 +1,6 @@
 const ErrorMessage = require("../constants/error");
 
-exports.canRecordManualDonations = async function (req, res, next) {
+exports.canCreateManualDonation = async function (req, res, next) {
   const permittedAdmin = req.headers["x-manual-tranx-authorization"];
 
   if (

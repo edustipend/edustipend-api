@@ -73,7 +73,9 @@ exports.createManualDonation = catchAsyncError(async (req, res) => {
     });
   }
 
-  Logger.info("Manual donation created")
+  Logger.info(
+    `Manual donation created with transaction id: ${referralDetails.tx_ref}`
+  );
   return res.status(201).json({
     status: true,
     message: "Manual donation created"

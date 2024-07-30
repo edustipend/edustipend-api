@@ -11,6 +11,10 @@ class Referral {
       const newReferral = await ReferralModel.create(object);
       return newReferral;
     } catch (e) {
+      Logger.error(
+        `Could not add referral for transaction of ref ${object.tx_ref} due to error`,
+        e
+      );
       return null;
     }
   }

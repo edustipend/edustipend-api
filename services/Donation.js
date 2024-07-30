@@ -214,7 +214,9 @@ class DonationService {
       await newDonation.save();
       return newDonation;
     } catch (err) {
-      Logger.error(`${err.message} when creating bulk transaction of ${name}`);
+      Logger.error(
+        `${err.message} when creating manual transaction of ${name}`
+      );
       return null;
     }
   }

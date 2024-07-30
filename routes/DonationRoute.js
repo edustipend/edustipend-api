@@ -3,8 +3,8 @@ const {
   validateFlutterwaveWebhookRequest
 } = require("../middleware/verifyFlutterwaveWebhookRequest");
 const {
-  canRecordManualDonations
-} = require("../middleware/canRecordManualDonation");
+  canCreateManualDonation
+} = require("../middleware/canCreateManualDonation");
 const {
   makeDonation,
   createManualDonation,
@@ -15,7 +15,7 @@ const {
 } = require("../controller/DonationController");
 
 router.post("/", makeDonation);
-router.post("/manual", canRecordManualDonations, createManualDonation);
+router.post("/manual", canCreateManualDonation, createManualDonation);
 router.post(
   "/flw-webhook",
   validateFlutterwaveWebhookRequest,
