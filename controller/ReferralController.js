@@ -33,17 +33,35 @@ exports.getReferrals = catchAsyncError(async (req, res) => {
 });
 
 /**
- * @description get top n referrers
- * @route GET v1/referral/top-referrers
+ * @description get top n referrers by amount
+ * @route GET v1/referral/top-referrers-by-amount
  * @access PUBLIC
  */
-exports.getTopReferrers = catchAsyncError(async (req, res) => {
+exports.getTopReferrersByAmount = catchAsyncError(async (req, res) => {
   const { top } = req.query;
 
-  const topReferrers = await Referral.getTopReferrers(top);
+  const topReferrers = await Referral.getTopReferrersByAmount(top);
 
   return res.status(200).json({
     status: true,
     data: topReferrers
+  });
+});
+
+/**
+ * @description get top n referrers by count
+ * @route GET v1/referral/top-referrers-by-count
+ * @access PUBLIC
+ */
+exports.getTopReferrersByReferralCount = catchAsyncError(async (req, res) => {
+  const { top } = req.query;
+
+  const topReferrersByCount = await Referral.getTopReferrersByReferralCount(
+    top
+  );
+
+  return res.status(200).json({
+    status: true,
+    data: topReferrersByCount
   });
 });
