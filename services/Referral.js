@@ -22,11 +22,10 @@ class Referral {
     }
   }
 
-
   /**
    * @description Creates a referral link in shortened URL form
-   * @param {string} email 
-   * @param {string} name 
+   * @param {string} email
+   * @param {string} name
    * @returns {object} response
    */
   static async createReferralLink(email, name) {
@@ -40,22 +39,17 @@ class Referral {
       });
 
       if (referralLink) {
-        Logger.info(`Link already created for ${email}, returning entry in DB`)
-        return referralLink
+        Logger.info(`Link already created for ${email}, returning entry in DB`);
+        return referralLink;
       }
-    }
-    catch (e) {
-      Logger.error(
-        `Error finding referral link for ${email}`,
-        e
-      );
+    } catch (e) {
+      Logger.error(`Error finding referral link for ${email}`, e);
     }
 
     // Create long form encoded URL
     try {
       longFormEncodedUrl = constructEncodedSALReferralUrl(name, email);
-    }
-    catch (e) {
+    } catch (e) {
       Logger.error(
         `Error creating long form encoded referral url for ${email}`,
         e
@@ -63,7 +57,7 @@ class Referral {
       return null;
     }
 
-    Logger.info(`Creating short-form referral url from ${longFormEncodedUrl}`)
+    Logger.info(`Creating short-form referral url from ${longFormEncodedUrl}`);
 
     // Make a call to Short.io to create the link
     try {
@@ -84,7 +78,7 @@ class Referral {
       );
 
       const data = response?.data;
-      Logger.info(`Data response from Short IO API ${data}`)
+      Logger.info(`Data response from Short IO API ${data}`);
 
       // Persist the Link in the DB
       const referralLink = await ReferralLink.create({
@@ -93,7 +87,7 @@ class Referral {
         title,
         originalURL: data?.originalURL,
         secureShortURL: data?.secureShortURL,
-        shortURL: data?.secureShortURL.replace('https', 'http')
+        shortURL: data?.secureShortURL.replace("https", "http")
       });
 
       return referralLink;

@@ -1,7 +1,6 @@
 const catchAsyncError = require("../middleware/catchAsyncError");
 const { Referral } = require("../services");
 
-
 /**
  * @description Create a referral short-form link
  * @route POST v1/referral/link
@@ -16,7 +15,6 @@ exports.createReferralLink = catchAsyncError(async (req, res) => {
     data: referralLink
   });
 });
-
 
 /**
  * @description fetch all successful referrals
