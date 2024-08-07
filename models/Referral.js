@@ -9,7 +9,9 @@ const ReferralSchema = new Schema(
       unique: true
     },
     campaign: String,
+    medium: String,
     referrer: String,
+    source: String,
     amount: Number,
     transactionCompleted: {
       type: Boolean,

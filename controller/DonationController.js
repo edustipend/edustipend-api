@@ -1,6 +1,7 @@
 const { Donation, Transaction, Mail, Referral } = require("../services");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const generateFlutterwaveTxref = require("../utils/txref-generator");
+const Logger = require("../config/logger");
 
 /**
  * @description Donate
@@ -39,6 +40,46 @@ exports.makeDonation = catchAsyncError(async (req, res) => {
       message: "Unfortunately, something happened"
     });
   }
+});
+
+/**
+ * @description Donate larger sums of money (NGN 500,001 and upwards)
+ * @route POST /v1/donation/bulk-sum
+ * @access PUBLIC
+ */
+exports.createManualDonation = catchAsyncError(async (req, res) => {
+  /**
+   * @todo Handle validation for req.body
+   */
+  const { name, email, phone_number, ...referralDetails } = req.body;
+  const newReferral = await Referral.createReferral({
+    ...referralDetails,
+    transactionCompleted: true
+  });
+
+  if (!newReferral) {
+    return res.status(400).json({
+      status: false,
+      message: "Could not record donation, possibly duplicate tx_ref"
+    });
+  }
+
+  const newDonation = await Donation.createManualDonation(req.body);
+
+  if (!newDonation) {
+    return res.status(500).json({
+      status: false,
+      message: "Could not create manual donation entry, please try again."
+    });
+  }
+
+  Logger.info(
+    `Manual donation created with transaction id: ${referralDetails.tx_ref}`
+  );
+  return res.status(201).json({
+    status: true,
+    message: "Manual donation created"
+  });
 });
 
 /**

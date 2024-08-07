@@ -12,6 +12,10 @@
     {
       "url": "http://localhost:4500/v1",
       "description": "Base URL for testing on local machine"
+    },
+    {
+      "url": "https://edustipend-api-dad9440ec9e5.herokuapp.com/v1",
+      "description": "Base URL for testing on dev server"
     }
   ],
   "tags": [
@@ -34,6 +38,14 @@
     {
       "name": "user",
       "description": "Everything about user actions"
+    },
+    {
+      "name": "donation",
+      "description": "Everything about donations"
+    },
+    {
+      "name": "referral",
+      "description": "Everything about referrals"
     }
   ],
   "consumes": ["application/json"],
@@ -630,6 +642,182 @@
           }
         }
       }
+    },
+    "/donation": {
+      "post": {
+        "tags": ["donation"],
+        "summary": "Make a donation",
+        "description": "Donors can initiate a Flutterwave transaction with this endpoint",
+        "requestBody": {
+          "description": "Payload for Flutterwave transactions",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/donation"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "{ success: true, message: 'Link to continue' }"
+          },
+          "500": {
+            "description": "Error message"
+          }
+        }
+      }
+    },
+    "/donation/range": {
+      "get": {
+        "tags": ["donation"],
+        "summary": "Get total donations within a date range",
+        "description": "Retrieve the total donations from a particular date range. If no date range is provided, it will return the total donations ever.",
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-06-13"
+            },
+            "description": "Start date for the range in YYYY-MM-DD format"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-06-14"
+            },
+            "description": "End date for the range in YYYY-MM-DD format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "JSON response"
+          },
+          "404": {
+            "description": "Not found error"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/donation/overview": {
+      "get": {
+        "tags": ["donation"],
+        "summary": "Get an overview of all donations",
+        "description": "Retrieve an overview of all donations. This endpoint takes no payload or parameters.",
+        "responses": {
+          "200": {
+            "description": "Overview of total donations and unique donors"
+          },
+          "404": {
+            "description": "Not found error"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/donation/timeline": {
+      "get": {
+        "tags": ["donation"],
+        "summary": "Get a list of donations with optional cursor-based pagination",
+        "description": "Retrieve a list of all donations and the cursor for the next page. The optional 'start' query parameter is used for cursor-based pagination.",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "664cdf392862bf2421c4b266"
+            },
+            "description": "Cursor for pagination, start after this donation ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of donations"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/referral": {
+      "get": {
+        "tags": ["referral"],
+        "summary": "Get a list of referrals",
+        "description": "Retrieve a list of all referrals. Optionally filter by referrer using the 'referrer' query parameter.",
+        "parameters": [
+          {
+            "name": "referrer",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Mezuo"
+            },
+            "description": "Filter referrals by referrer name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of referrals"
+          },
+          "404": {
+            "description": "Not found error"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/top-referrers": {
+      "get": {
+        "tags": ["referral"],
+        "summary": "Get the top referrers and the sum of their referrals",
+        "description": "Retrieve the top referrers and the sum of their referrals. Optionally specify the top 'n' referrers using the 'top' query parameter.",
+        "parameters": [
+          {
+            "name": "top",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 2
+            },
+            "description": "Specify the top 'n' referrers to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Top referrers and the summation of their impact"
+          },
+          "404": {
+            "description": "Not found error"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -809,6 +997,69 @@
       "properties": {
         "email": {
           "type": "string"
+        }
+      }
+    },
+    "donation": {
+      "required": [
+        "amount",
+        "redirect_url",
+        "payment_options",
+        "currency",
+        "campaign",
+        "customer"
+      ],
+      "properties": {
+        "amount": {
+          "type": "string",
+          "example": "10200"
+        },
+        "redirect_url": {
+          "type": "string",
+          "example": "http://edustipend.org"
+        },
+        "payment_options": {
+          "type": "string",
+          "example": "card"
+        },
+        "currency": {
+          "type": "string",
+          "example": "NGN"
+        },
+        "campaign": {
+          "type": "string",
+          "example": "Support A Learner"
+        },
+        "referrer": {
+          "type": "string",
+          "example": "Mezuo"
+        },
+        "meta": {
+          "type": "object",
+          "properties": {
+            "companyName": {
+              "type": "string",
+              "example": "Edustipend"
+            }
+          }
+        },
+        "customer": {
+          "type": "object",
+          "required": ["email", "name", "phone_number"],
+          "properties": {
+            "email": {
+              "type": "string",
+              "example": "donor@email.com"
+            },
+            "name": {
+              "type": "string",
+              "example": "John Doe"
+            },
+            "phone_number": {
+              "type": "string",
+              "example": "09012345678"
+            }
+          }
         }
       }
     }
