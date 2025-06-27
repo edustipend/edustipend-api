@@ -154,6 +154,7 @@ class DonationService {
         _id: 1,
         "donor.name": 1,
         "transaction.amount": 1,
+        "transaction.currency": 1,
         createdAt: 1
       })
         .sort({ _id: -1 }) // Sorting by _id in descending order
